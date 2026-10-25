@@ -1,0 +1,1430 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Intelligent Systems — HSC Enterprise Vault</title><style>
+:root{--paper:#faf8f2;--ink:#1e1b16;--muted:#6b655a;--line:#e3ddd0;--accent:#1d4ed8;--card:#fffdf8;--side:#f3efe6;--side-bg:rgba(243,239,230,.88);--active:#e8e0cd;--rail-tint:rgba(29,78,216,.14);--rail-tint-soft:rgba(29,78,216,.07);--code:#efe9db;--quote:#4a4438;--dot-rgb:30,27,22;--scheme:light}
+[data-theme="dark"]{--paper:#13151b;--ink:#e9e7e1;--muted:#9aa0ab;--line:#2b2f3a;--accent:#8ab4ff;--card:#1b1e27;--side:#101218;--side-bg:rgba(16,18,24,.88);--active:#262b38;--rail-tint:rgba(138,180,255,.18);--rail-tint-soft:rgba(138,180,255,.09);--code:#262a36;--quote:#c3c7cf;--dot-rgb:233,231,225;--scheme:dark}
+*{box-sizing:border-box}html{color-scheme:var(--scheme)}body{margin:0;background:var(--paper);color:var(--ink);font:16.5px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none;transition:color .18s ease}a:hover{text-decoration:underline}
+#dotgrid{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;padding:22px 18px;border-right:1px solid var(--line);background:var(--side-bg)}
+.side h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:22px 0 6px}
+.side ul{list-style:none;margin:0;padding:0}.side li{margin:3px 0}
+.side a{display:block;padding:7px 10px;border-radius:8px;color:var(--ink);transition:background .18s ease,transform .18s ease}
+.side a.active{background:var(--active);font-weight:600}
+.side a:hover{background:var(--active);text-decoration:none;transform:translateX(3px)}
+.side-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.theme-btn{flex:none;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--ink);font-size:18px;cursor:pointer;transition:background .18s ease}
+.theme-btn:hover{background:var(--active)}
+.home-link{font-weight:700;font-size:18px}.side-search{width:100%;margin:14px 0 4px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-size:16px}
+.side-note{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:24px}
+.topbar{display:none}.backdrop{display:none}
+main{padding:36px 44px;max-width:860px}.prose h1{font-size:32px;line-height:1.2;letter-spacing:-.02em;margin:0 0 6px}
+.prose h2{font-size:23px;margin:34px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
+.prose h3{font-size:18px;margin:26px 0 6px}.prose p{margin:10px 0}
+.prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.prose th,.prose td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--side)}.prose blockquote{border-left:3px solid var(--line);margin:14px 0;padding:2px 14px;color:var(--quote);background:var(--card)}
+.prose code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:14px}.prose pre{background:#0d0f14;color:#f5f1e6;padding:14px;border-radius:8px;overflow:auto}
+.prose pre code{background:none;color:inherit;padding:0}.prose hr{border:none;border-top:1px solid var(--line);margin:24px 0}
+.meta{color:var(--muted);font-size:14px;margin-bottom:20px}.toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:18px 0}
+.toc b{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.toc ul{margin:8px 0 0;padding-left:18px}.toc li{margin:3px 0}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.card h3{margin:0 0 4px}.card p{margin:0;color:var(--muted);font-size:14.5px}
+#search{width:100%;padding:13px 14px;font-size:17px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.result{border-bottom:1px solid var(--line);padding:14px 6px;border-radius:8px;transition:background .18s ease,transform .18s ease}
+.result:hover{background:var(--card);transform:translateX(3px)}
+.result h3{margin:0}.result p{margin:4px 0;color:var(--quote)}.result .path{font-size:13px;color:var(--muted)}
+mark{background:#fde68a;color:#1e1b16;padding:0 1px}
+html{scroll-behavior:smooth}
+.rail{display:none}
+@media(min-width:1280px){
+main{max-width:min(860px,calc(100vw - 692px))}
+.rail{display:block;position:fixed;right:24px;top:50%;transform:translateY(-50%);width:340px;max-height:76vh;overflow:auto;z-index:15;background:none;border:none;box-shadow:none;padding:18px 14px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%)}
+.rail-title{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:2px 0 12px 12px}
+.rail ul{list-style:none;margin:0;padding:0}
+.rail li{margin:3px 0}
+.rail a{display:block;padding:11px 14px;border-radius:10px;color:var(--ink);font-size:17px;line-height:1.4;transition:transform .2s ease,background .2s ease}
+.rail a:hover,.rail a:focus-visible{background:var(--rail-tint-soft);transform:translateX(-4px) scale(1.02);text-decoration:none}
+.rail a.active{background:var(--rail-tint);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-weight:600;transform:translateX(-12px);width:calc(100% + 12px)}
+.rail a.parent-active{background:var(--rail-tint-soft)}
+.rail ul.sub{margin:3px 0 3px 14px;padding-left:14px;border-left:1px solid var(--line)}
+.rail ul.sub a{padding:9px 12px;font-size:15px;color:var(--muted)}
+.rail ul.sub a:hover{color:var(--ink)}
+.rail ul.sub a.active{color:var(--ink);transform:translateX(-8px);width:calc(100% + 8px)}
+}
+@media(max-width:900px){
+.topbar{display:flex;position:sticky;top:0;z-index:20;align-items:center;gap:10px;padding:12px 14px;background:var(--side);border-bottom:1px solid var(--line)}
+.topbar b{flex:1;font-size:17px}.menu-btn,.topbar .theme-btn{width:44px;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:19px;cursor:pointer}
+.wrap{grid-template-columns:1fr}
+.wrap{z-index:auto}
+.side{background:var(--side)}
+.side a{padding:11px 12px}
+body.menu-open{overflow:hidden}
+.side{position:fixed;inset:0 auto 0 0;width:300px;max-width:86vw;height:100dvh;z-index:30;transform:translateX(-105%);transition:transform .25s ease;box-shadow:0 0 40px rgba(0,0,0,.4)}
+body.menu-open .side{transform:translateX(0)}
+.backdrop{display:none}body.menu-open .backdrop{display:block;position:fixed;inset:0;z-index:25;background:rgba(0,0,0,.45)}
+main{padding:22px 16px}.prose h1{font-size:26px}.prose h2{font-size:21px}.cards{grid-template-columns:1fr}
+.prose table{font-size:14px}.prose pre{font-size:13.5px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style><script>(function(){try{var t=localStorage.getItem("vault-theme")||"dark";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark")}})()</script></head><body><canvas id="dotgrid" aria-hidden="true"></canvas><header class="topbar"><button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Open notes menu">☰</button><b>Enterprise Vault</b><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></header><div class="backdrop" onclick="toggleMenu(false)"></div><div class="wrap"><nav class="side" id="side"><div class="side-head"><a class="home-link" href="index.html">⌂ Vault home</a><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></div><input class="side-search" type="search" placeholder="Search notes…  ( / )" onkeydown="if(event.key==='Enter'){location.href='index.html?q='+encodeURIComponent(this.value)}"><h3>Enterprise Computing</h3><ul><li><a class="" href="MOC.html">MOC</a></li><li><a class="" href="Data_Science.html">Data Science</a></li><li><a class="" href="Data_Visualisation.html">Data Visualisation</a></li><li><a class="" href="Enterprise_Project.html">Enterprise Project</a></li><li><a class="active" href="Intelligent_Systems.html">Intelligent Systems</a></li><li><a class="" href="Principles_of_Cybersecurity.html">Principles of Cybersecurity</a></li><li><a class="" href="Terminology.html">Terminology</a></li></ul><p class="side-note">Source: TheSashi HSC Enterprise Computing Notes. Cloned 25 Oct 2026. Content unchanged.</p></nav><main><article class="prose"><h1>Intelligent Systems</h1><p class="meta">Enterprise Computing · Intelligent_Systems.md</p><div class="toc"><b>On this page</b><ul><li><a href="#1-decision-support-systems">1. Decision Support Systems</a></li><li><a href="#2-expert-systems">2. Expert Systems</a></li><li><a href="#3-evolution-of-expert-systems">3. Evolution of Expert Systems</a></li><li><a href="#4-intelligent-agents">4. Intelligent Agents</a></li><li><a href="#5-inference-engine-techniques">5. Inference Engine Techniques</a></li><li><a href="#6-hardware-for-intelligent-systems">6. Hardware for Intelligent Systems</a></li><li><a href="#7-computational-thinking-in-system-design">7. Computational Thinking in System Design</a></li><li><a href="#8-communicating-system-processes">8. Communicating System Processes</a></li><li><a href="#9-disruptive-effects">9. Disruptive Effects</a></li><li><a href="#10-intelligent-networks-and-iot">10. Intelligent Networks and IoT</a></li><li><a href="#11-simulation-data-modelling-and-surveillance">11. Simulation, Data Modelling and Surveillance</a></li><li><a href="#12-building-expert-systems">12. Building Expert Systems</a></li><li><a href="#13-evaluating-intelligent-systems">13. Evaluating Intelligent Systems</a></li><li><a href="#14-confusing-terms-quick-reference">14. Confusing Terms — Quick Reference</a></li></ul></div><h1>Intelligent Systems — HSC Final Notes</h1>
+<blockquote>
+<p>✅ <strong>Named topic in the Trial (Task 4).</strong> 15 lessons across 5 weeks.
+Outcomes: <strong>EC-12-01, EC-12-02, EC-12-03, EC-12-04, EC-12-05, EC-12-06, EC-12-07, EC-12-08, EC-12-10, EC-12-11</strong>
+Terminology: <a href="Terminology.html">Terminology</a> · Index: <a href="MOC.html">MOC</a></p>
+</blockquote>
+<hr>
+<h2 id="1-decision-support-systems">1. Decision Support Systems</h2>
+<blockquote>
+<p>A <strong>decision support system (DSS)</strong> is an interactive computer-based system that helps individuals and organisations make decisions by analysing large sets of data. It combines <strong>data</strong>, <strong>sophisticated analytical models</strong> and <strong>user-friendly software</strong> to support decision-making, especially in complex and uncertain environments.</p>
+</blockquote>
+<h3 id="1-1-the-three-categories-of-decision-making">1.1 The Three Categories of Decision-Making</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Definition</th>
+<th>Human involvement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Structured</strong></td>
+<td>Routine, repetitive decisions with <strong>clear rules</strong> and known outcomes</td>
+<td><strong>None or minimal</strong> — the system decides and acts</td>
+</tr>
+<tr>
+<td><strong>Semi-structured</strong></td>
+<td>Some elements can be automated, but <strong>judgement is still required</strong></td>
+<td>The system <strong>recommends</strong>, a human <strong>decides</strong></td>
+</tr>
+<tr>
+<td><strong>Unstructured</strong></td>
+<td>Novel, complex decisions with <strong>no clear procedure</strong>. Depend on experience, intuition and negotiation</td>
+<td>The system <strong>informs discussion</strong>, humans decide</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>The tell in a scenario question:</strong> ask <em>who makes the final call</em>. Nobody → structured. System suggests, human confirms → semi-structured. Humans debating with data as one input → unstructured.</p>
+</blockquote>
+<h3 id="1-2-worked-classification">1.2 Worked Classification</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Type</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Supermarket <strong>automatically reorders</strong> stock below a threshold, no human involvement</td>
+<td><strong>Structured</strong></td>
+<td>Fixed rule, system acts alone</td>
+</tr>
+<tr>
+<td>Factory <strong>shift scheduling</strong> follows strict rules, updates weekly without manager input</td>
+<td><strong>Structured</strong></td>
+<td>Rule-driven, no judgement</td>
+</tr>
+<tr>
+<td><strong>Airline route optimisation</strong> automatically updates routes before each flight</td>
+<td><strong>Structured</strong></td>
+<td>Calculation against known variables</td>
+</tr>
+<tr>
+<td><strong>Loan approval</strong> auto-approves or rejects standard applications; staff review only borderline cases</td>
+<td><strong>Structured</strong></td>
+<td>Rules decide; exceptions escalate</td>
+</tr>
+<tr>
+<td><strong>Financial advisor</strong> software suggests investments; the advisor makes the final decision</td>
+<td><strong>Semi-structured</strong></td>
+<td>System recommends, human decides</td>
+</tr>
+<tr>
+<td><strong>Medical diagnosis assistant</strong> suggests diagnoses; the doctor confirms or adjusts</td>
+<td><strong>Semi-structured</strong></td>
+<td>System supports professional judgement</td>
+</tr>
+<tr>
+<td><strong>Marketing dashboard</strong> shows feedback and trends; the manager uses experience and intuition</td>
+<td><strong>Semi-structured</strong></td>
+<td>Data informs, intuition decides</td>
+</tr>
+<tr>
+<td><strong>City transport planning</strong> — models, pollution data and public surveys discussed in meetings</td>
+<td><strong>Unstructured</strong></td>
+<td>No procedure; negotiation and competing priorities</td>
+</tr>
+<tr>
+<td><strong>University expansion</strong> — forecasts and financials plus community feedback and long-term goals</td>
+<td><strong>Unstructured</strong></td>
+<td>Novel, value-laden, no clear rule</td>
+</tr>
+</tbody></table>
+<h3 id="1-3-risks-of-relying-on-a-dss">1.3 Risks of Relying on a DSS</h3>
+<ul>
+<li><strong>Over-reliance</strong> — users stop applying their own judgement</li>
+<li><strong>Garbage in, garbage out</strong> — poor data produces confidently wrong recommendations</li>
+<li><strong>Bias</strong> embedded in the data or rules is applied consistently and invisibly</li>
+<li><strong>Lack of transparency</strong> — users can&#39;t tell <em>why</em> a recommendation was made</li>
+<li><strong>Accountability gap</strong> — who is responsible when an automated decision causes harm?</li>
+</ul>
+<hr>
+<h2 id="2-expert-systems">2. Expert Systems</h2>
+<blockquote>
+<p>An <strong>expert system</strong> mimics the decision-making of a human expert in a specific domain using a knowledge base of facts and rules.</p>
+</blockquote>
+<h3 id="2-1-applications">2.1 Applications</h3>
+<pre><code>Diagnosis              medical, mechanical fault-finding
+Monitoring             continuous observation against expected parameters
+Process control        adjusting an industrial process in real time
+Scheduling             allocating time, staff, machines
+Planning               sequencing actions to reach a goal
+</code></pre>
+<h3 id="2-2-the-three-key-features">2.2 The Three Key Features</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Contains</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Knowledge base</strong></td>
+<td><strong>Facts and rules</strong></td>
+<td>Stores domain knowledge</td>
+</tr>
+<tr>
+<td><strong>Inference engine</strong></td>
+<td>The <strong>rule base</strong> — a set of IF–THEN rules</td>
+<td>Applies <strong>judgement and reasoning</strong> to the knowledge base and the user&#39;s responses to reach a decision</td>
+</tr>
+<tr>
+<td><strong>User interface</strong></td>
+<td>Input forms, output displays</td>
+<td>Allows the user to enter data and receive recommendations</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>Some systems add an <strong>explanation module</strong> (explains <em>how</em> the decision was made) and a <strong>data store</strong> (keeps input and results for later analysis).</p>
+</blockquote>
+<h3 id="2-3-two-kinds-of-knowledge">2.3 Two Kinds of Knowledge</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Source</th>
+<th>Nature</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Factual knowledge</strong></td>
+<td>Textbooks and shared resources, <strong>agreed upon by experts</strong></td>
+<td>Objective, verifiable</td>
+</tr>
+<tr>
+<td><strong>Heuristic knowledge</strong></td>
+<td><strong>Experience and reasoning</strong> — &quot;rules of thumb&quot;</td>
+<td>Judgement-based, harder to codify</td>
+</tr>
+</tbody></table>
+<h3 id="2-4-rules-and-boolean-operators">2.4 Rules and Boolean Operators</h3>
+<p>Rules take the form <code>IF … THEN</code>, combined with Boolean operators:</p>
+<pre><code>AND   &amp;&amp;     both conditions must be true
+OR    ||     either condition may be true
+
+IF (feathers &amp;&amp; beak || 2 legs) THEN it is a bird
+</code></pre>
+<h3 id="2-5-forward-vs-backward-chaining">2.5 Forward vs Backward Chaining</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Forward chaining</strong></th>
+<th><strong>Backward chaining</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Also called</strong></td>
+<td><strong>Data-driven</strong> reasoning</td>
+<td><strong>Goal-driven</strong> reasoning</td>
+</tr>
+<tr>
+<td><strong>Starts with</strong></td>
+<td>Known <strong>facts / conditions</strong></td>
+<td>A <strong>goal or hypothesis</strong></td>
+</tr>
+<tr>
+<td><strong>Process</strong></td>
+<td>Applies rules to derive new conclusions until it reaches a goal</td>
+<td>Works backward to check whether the facts support the goal</td>
+</tr>
+<tr>
+<td><strong>Best when</strong></td>
+<td>You have data and want to know what it means</td>
+<td>You have a suspected answer and want to confirm it</td>
+</tr>
+</tbody></table>
+<p><strong>Worked example — medical diagnosis</strong></p>
+<p><em>Knowledge base:</em></p>
+<pre><code>Rule 1:  IF fever AND cough        THEN might have the flu
+Rule 2:  IF sore throat            THEN might have a cold
+Rule 3:  IF body aches             THEN might have the flu
+Rule 4:  IF might have the flu     THEN recommend rest and fluids
+</code></pre>
+<p><strong>Forward chaining</strong> — known facts: fever, cough, body aches.</p>
+<ol>
+<li>Check which rules have matching conditions</li>
+<li>Rule 1 (fever AND cough) is true → conclude: might have the flu</li>
+<li>Rule 3 (body aches) also true → confirms the conclusion</li>
+<li>That conclusion triggers Rule 4 → recommend rest and fluids</li>
+</ol>
+<p><strong>Backward chaining</strong> — goal: <em>does the patient have the flu?</em></p>
+<ol>
+<li>Find a rule that concludes &quot;might have the flu&quot; → Rule 1 or Rule 3</li>
+<li>Ask: does the patient have a fever? → yes</li>
+<li>Ask: does the patient have a cough? → yes</li>
+<li>Both true, so Rule 1 is satisfied → the goal is confirmed</li>
+</ol>
+<blockquote>
+<p><strong>Which is better?</strong> Forward chaining suits <strong>many inputs, unknown outcome</strong> (monitoring, sensors). Backward chaining suits <strong>few candidate outcomes, expensive data collection</strong> — it only asks the questions it needs.</p>
+</blockquote>
+<hr>
+<h2 id="3-evolution-of-expert-systems">3. Evolution of Expert Systems</h2>
+<h3 id="3-1-factors-that-advanced-rule-based-systems-into-probabilistic-ones">3.1 Factors That Advanced Rule-Based Systems into Probabilistic Ones</h3>
+<table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Processing power</strong></td>
+<td>Enables analysis of vast datasets instantly</td>
+</tr>
+<tr>
+<td><strong>Data availability and access</strong></td>
+<td>Digital records improve accuracy and coverage</td>
+</tr>
+<tr>
+<td><strong>Hardware costs</strong></td>
+<td>Falling costs make powerful infrastructure affordable to deploy</td>
+</tr>
+<tr>
+<td><strong>Neural networks</strong></td>
+<td>Allow interpretation with <strong>nuance</strong> and handling of uncertainty</td>
+</tr>
+<tr>
+<td><strong>Webometrics</strong></td>
+<td>Measurement and analysis of web data ensures <strong>real-time updates</strong> refine decision-making</td>
+</tr>
+</tbody></table>
+<h3 id="3-2-changing-needs-driving-proliferation">3.2 Changing Needs Driving Proliferation</h3>
+<table>
+<thead>
+<tr>
+<th>Driver</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>IoT</strong> — Internet of Things</td>
+<td>Networked physical devices collecting continuous data</td>
+</tr>
+<tr>
+<td><strong>IoMe</strong> — Internet of Me</td>
+<td>Personalised, individual-centred connected services and data</td>
+</tr>
+<tr>
+<td><strong>Industry 4.0</strong></td>
+<td>The integration of automation, data exchange and intelligent systems into manufacturing and enterprise</td>
+</tr>
+</tbody></table>
+<h3 id="3-3-the-progression">3.3 The Progression</h3>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>What happens</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Rule-based expert system</strong></td>
+<td>Fixed IF–THEN rules, static knowledge base, <strong>no learning</strong></td>
+</tr>
+<tr>
+<td><strong>Probabilistic expert system</strong></td>
+<td>Adds <strong>probabilities</strong> to handle uncertainty (Bayesian networks)</td>
+</tr>
+<tr>
+<td><strong>Learning expert system</strong></td>
+<td>Uses <strong>historical data</strong> to improve decisions (machine learning)</td>
+</tr>
+<tr>
+<td><strong>Fully intelligent system</strong></td>
+<td>Integrates multiple inputs, <strong>adapts, predicts</strong> and may act <strong>autonomously</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><em>Example:</em> <strong>MYCIN</strong> (1970s) diagnosed disease using fixed rules. Modern medical AI learns from millions of patient records, predicts likelihoods and updates its knowledge automatically.</p>
+</blockquote>
+<h3 id="3-4-expert-systems-vs-intelligent-systems">3.4 Expert Systems vs Intelligent Systems</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Expert system (rule-based)</th>
+<th>Intelligent system</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Definition</strong></td>
+<td>Mimics human experts using facts and IF–THEN rules</td>
+<td><strong>Learns, adapts and reasons under uncertainty</strong></td>
+</tr>
+<tr>
+<td><strong>Reasoning</strong></td>
+<td><strong>Deterministic</strong> — fixed rules only</td>
+<td><strong>Probabilistic</strong> — handles incomplete data</td>
+</tr>
+<tr>
+<td><strong>Learning</strong></td>
+<td>Limited — rules must be <strong>manually updated</strong></td>
+<td>Machine learning improves decisions over time</td>
+</tr>
+<tr>
+<td><strong>Inputs</strong></td>
+<td>Requires high-quality <strong>structured</strong> knowledge</td>
+<td>Integrates text, voice, images, IoT data</td>
+</tr>
+<tr>
+<td><strong>Example</strong></td>
+<td>MYCIN</td>
+<td>Google Assistant, self-driving cars, recommendation engines</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="4-intelligent-agents">4. Intelligent Agents</h2>
+<h3 id="4-1-simplistic-vs-complex">4.1 Simplistic vs Complex</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th><strong>Simplistic agent</strong></th>
+<th><strong>Complex agent</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Definition</strong></td>
+<td>Follows <strong>predefined rules</strong> or simple logic. Does <strong>not learn or adapt</strong></td>
+<td>Uses <strong>machine learning, reasoning and adaptation</strong> to improve over time and predict outcomes</td>
+</tr>
+<tr>
+<td><strong>Behaviour</strong></td>
+<td><strong>Reactive</strong> — responds directly to specific conditions</td>
+<td><strong>Proactive or adaptive</strong> — anticipates and adjusts</td>
+</tr>
+<tr>
+<td><strong>Knowledge base</strong></td>
+<td>Small, <strong>fixed</strong> IF–THEN rule set</td>
+<td>Large and <strong>dynamic</strong>, updated through data and experience</td>
+</tr>
+<tr>
+<td><strong>Probability / learning</strong></td>
+<td><strong>None</strong> — purely deterministic</td>
+<td>Probabilistic reasoning, deep learning, reinforcement learning</td>
+</tr>
+<tr>
+<td><strong>Processing needs</strong></td>
+<td><strong>Low</strong></td>
+<td><strong>High</strong> — greater power and data access</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>Simplistic</th>
+<th>Complex</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Healthcare</td>
+<td>Rule-based diagnosis checklist</td>
+<td>IBM Watson Health using probability</td>
+</tr>
+<tr>
+<td>Transport</td>
+<td>Traffic light timer</td>
+<td>Smart traffic system adapting to live flow</td>
+</tr>
+<tr>
+<td>Home automation</td>
+<td>Fixed schedule thermostat</td>
+<td>Nest thermostat learning user habits</td>
+</tr>
+<tr>
+<td>Finance</td>
+<td>Fixed budget calculator</td>
+<td>Predictive trading system</td>
+</tr>
+<tr>
+<td>Customer service</td>
+<td>Scripted chatbot</td>
+<td>Conversational AI using NLP and intent recognition</td>
+</tr>
+</tbody></table>
+<h3 id="4-2-search-engine-agents">4.2 Search Engine Agents</h3>
+<p><strong>Predictive search strings</strong> — predictive text guesses the next word using <strong>natural language processing (NLP)</strong> and <strong>machine learning</strong>. <em>You type &quot;This weekend, I&#39;m planning to&quot; → it suggests &quot;go&quot;, &quot;visit&quot;, &quot;relax&quot;.</em></p>
+<p><strong>Voice assistants</strong> — capture speech, convert it to text, interpret intent using NLP, then query and respond. More complex than text agents because they must handle <strong>accent, background noise and continuous speech</strong>.</p>
+<hr>
+<h2 id="5-inference-engine-techniques">5. Inference Engine Techniques</h2>
+<blockquote>
+<p>Inference engines are the <strong>core component</strong> of an expert system, responsible for drawing conclusions from data and rules.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Technique</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Truth maintenance system (TMS)</strong></td>
+<td>Tracks which beliefs or facts are <strong>true in a dynamic environment</strong>. When new information is added or existing information revised, it <strong>consistently updates all related facts</strong></td>
+</tr>
+<tr>
+<td><strong>Hypothetical reasoning</strong></td>
+<td>Explores <strong>&quot;what-if&quot; scenarios</strong> — tests different hypotheses or assumptions to determine possible outcomes</td>
+</tr>
+<tr>
+<td><strong>Heuristic knowledge</strong></td>
+<td>Uses practical <strong>&quot;rules of thumb&quot;</strong> based on experience rather than formal proof</td>
+</tr>
+<tr>
+<td><strong>Fuzzy logic</strong></td>
+<td>Reasoning that is <strong>approximate rather than precise</strong> — handles uncertainty and imprecision. Values between true and false, not just 0 or 1</td>
+</tr>
+<tr>
+<td><strong>Ontology classification</strong></td>
+<td>Organises knowledge into <strong>categories or concepts</strong> and defines the <strong>relationships between them</strong>, so the system can reason about data in a structured way</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing pair — Heuristic knowledge vs Fuzzy logic</strong>
+<strong>Heuristic</strong> = the rule is a <strong>shortcut from experience</strong> (&quot;if it&#39;s cloudy in the morning, expect rain&quot;).
+<strong>Fuzzy logic</strong> = the <strong>value itself is imprecise</strong> (&quot;the room is <em>somewhat</em> warm&quot; = 0.7 warm).
+Heuristic is about where the rule came from. Fuzzy is about how precisely it&#39;s expressed.</p>
+</blockquote>
+<hr>
+<h2 id="6-hardware-for-intelligent-systems">6. Hardware for Intelligent Systems</h2>
+<table>
+<thead>
+<tr>
+<th>Hardware</th>
+<th>What it is</th>
+<th>Features</th>
+<th>Processing challenges</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Biometrics</strong></td>
+<td>Measures human <strong>physical or behavioural characteristics</strong> for identification and authentication</td>
+<td>Unique to each individual · requires sensors or scanners · high accuracy but needs calibration and secure storage</td>
+<td>Encrypting sensitive personal data · matching accuracy in poor lighting or noise · ethical and privacy concerns</td>
+<td>Fingerprint smart locks · Face ID · biometric attendance</td>
+</tr>
+<tr>
+<td><strong>Haptics</strong></td>
+<td>Uses <strong>touch, vibration or motion feedback</strong> to simulate physical interaction</td>
+<td>Tactile feedback via motors or actuators · both <strong>input</strong> (touch detection) and <strong>output</strong> (vibration/force) · enhances realism</td>
+<td>Real-time response with minimal delay · high bandwidth · hard to synchronise with visual and audio</td>
+<td>VR gloves in surgery simulators · force-feedback steering</td>
+</tr>
+<tr>
+<td><strong>Touch and gesture</strong></td>
+<td>Sensors detecting <strong>physical contact or body movement</strong></td>
+<td>Intuitive natural interface · multi-touch and gesture recognition · sensitive to environment</td>
+<td>Gesture recognition algorithms · misreads from movement noise · high processing for real-time recognition</td>
+<td>Industrial touchscreens · gesture-controlled kiosks</td>
+</tr>
+<tr>
+<td><strong>VR / AR</strong></td>
+<td>Cameras, sensors and controllers <strong>track motion</strong> and overlay virtual content</td>
+<td>Immersive 3D interaction · motion and spatial tracking · high graphic demand</td>
+<td>Synchronising visuals and motion · high CPU/GPU load · <strong>latency</strong> affects experience</td>
+<td>AR-assisted surgery · VR maintenance trainers</td>
+</tr>
+<tr>
+<td><strong>Voice and sound</strong></td>
+<td>Captures <strong>spoken commands or environmental sound</strong> via microphones</td>
+<td>Converts sound waves to digital data · requires <strong>NLP</strong> · keyword or continuous recognition</td>
+<td>Background noise · complex language understanding · accent and pronunciation variation</td>
+<td>Siri, Alexa, Google Assistant · call-centre systems</td>
+</tr>
+<tr>
+<td><strong>Microcontrollers</strong></td>
+<td>Compact ICs performing <strong>specific control tasks</strong> in an embedded system</td>
+<td>Contains <strong>CPU, memory and I/O ports</strong> · real-time processing · cost-effective and energy efficient</td>
+<td>Limited memory and speed · requires efficient code · difficulty integrating multiple complex inputs</td>
+<td>Arduino in IoT devices · smart appliances</td>
+</tr>
+<tr>
+<td><strong>Sensors</strong></td>
+<td>Detect and measure <strong>physical conditions</strong> and convert them to digital signals</td>
+<td>Converts real-world data into measurable values · analogue or digital · crucial for system awareness</td>
+<td>Calibration and accuracy · large volumes needing real-time processing · <strong>sensor drift or failure</strong></td>
+<td>Temperature sensors · proximity sensors in robotics</td>
+</tr>
+<tr>
+<td><strong>Actuators and motors</strong></td>
+<td>Convert <strong>electrical signals into physical motion</strong></td>
+<td>Includes <strong>servo, stepper and DC</strong> motors · provides feedback via sensors</td>
+<td>Precise timing and calibration · energy and thermal management · synchronising with sensor feedback loops</td>
+<td>Robotic arms · smart windows · vehicle components</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>The system loop to memorise:</strong>
+<strong>Sensors</strong> collect → <strong>microcontroller</strong> processes against the <strong>knowledge base</strong> via the <strong>inference engine</strong> → <strong>actuators</strong> execute the decision.
+Sensors are <strong>input</strong>. Actuators are <strong>output</strong>. Microcontrollers are the <strong>control centre</strong>.</p>
+</blockquote>
+<h3 id="6-1-worked-scenario-mapping">6.1 Worked Scenario Mapping</h3>
+<table>
+<thead>
+<tr>
+<th>System</th>
+<th>Input</th>
+<th>Inference engine processes</th>
+<th>Knowledge base holds</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Smart greenhouse</strong></td>
+<td>Sensors (temperature, humidity, soil moisture)</td>
+<td>Rules for irrigation scheduling</td>
+<td>Historical crop condition data</td>
+<td>Automatic activation of irrigation motors</td>
+</tr>
+<tr>
+<td><strong>Building security</strong></td>
+<td>Biometric + motion sensors</td>
+<td>Matching captured images against the employee database</td>
+<td>Employee facial data and authorisation levels</td>
+<td>Security alert and door lock activation</td>
+</tr>
+<tr>
+<td><strong>Voice warehouse assistant</strong></td>
+<td>Microphone</td>
+<td>Speech-to-text interpretation and command logic</td>
+<td>Product codes and warehouse map data</td>
+<td>Verbal confirmation and on-screen updates</td>
+</tr>
+<tr>
+<td><strong>VR safety training</strong></td>
+<td>VR headset and haptic gloves</td>
+<td>Detection of unsafe gestures</td>
+<td>Safety rules and correct movement data</td>
+<td>Haptic feedback vibration alert</td>
+</tr>
+<tr>
+<td><strong>Factory production robot</strong></td>
+<td>Sensors</td>
+<td>Sensor data for position correction</td>
+<td>Assembly design patterns and alignment parameters</td>
+<td>Actuator movements for precision adjustment</td>
+</tr>
+<tr>
+<td><strong>Fleet maintenance</strong></td>
+<td>Engine sensors</td>
+<td>Rules identifying abnormal engine data</td>
+<td>Normal engine operation parameters</td>
+<td>Maintenance alert to fleet manager</td>
+</tr>
+<tr>
+<td><strong>AR retail mirror</strong></td>
+<td>Camera and motion sensors</td>
+<td>Body tracking and clothing overlay logic</td>
+<td>Clothing size data and 3D models</td>
+<td>AR visual simulation on screen</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="7-computational-thinking-in-system-design">7. Computational Thinking in System Design</h2>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>Definition</th>
+<th>Example</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Decomposition</strong></td>
+<td>Breaking a complex problem into <strong>smaller, manageable parts</strong></td>
+<td>Designing an autonomous car by separating object detection, route planning and speed control</td>
+<td>Smaller tasks are easier to analyse and solve, leading to <strong>more efficient development</strong></td>
+</tr>
+<tr>
+<td><strong>Pattern recognition</strong></td>
+<td>Identifying <strong>recurring patterns or trends</strong> in data or processes</td>
+<td>Facial recognition identifying the distance between eyes or nose shape</td>
+<td>Helps the system <strong>learn and predict</strong> more effectively</td>
+</tr>
+<tr>
+<td><strong>Abstraction</strong></td>
+<td>Focusing on important details while <strong>ignoring irrelevant information</strong></td>
+<td>A navigation app focuses on roads, traffic and directions, ignoring building colours</td>
+<td><strong>Reduces unnecessary complexity</strong></td>
+</tr>
+<tr>
+<td><strong>Algorithms</strong></td>
+<td><strong>Step-by-step instructions</strong> for solving a problem</td>
+<td>A store recommendation system suggesting products from user preferences</td>
+<td><strong>Powers the decision-making process</strong></td>
+</tr>
+</tbody></table>
+<p><strong>Worked — an energy efficiency advisor expert system</strong></p>
+<p><em>Decomposition into subsystems:</em></p>
+<table>
+<thead>
+<tr>
+<th>Subsystem</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>User interface</strong></td>
+<td>Collects user input and displays recommendations</td>
+</tr>
+<tr>
+<td><strong>Knowledge base</strong></td>
+<td>Stores expert knowledge as rules and facts</td>
+</tr>
+<tr>
+<td><strong>Inference engine</strong></td>
+<td>Applies logical reasoning to the knowledge base and user data</td>
+</tr>
+<tr>
+<td><strong>Explanation module</strong></td>
+<td>Explains <strong>how</strong> the decision was made</td>
+</tr>
+<tr>
+<td><strong>Database / data store</strong></td>
+<td>Keeps input and results for later analysis</td>
+</tr>
+</tbody></table>
+<p><em>Pattern recognition — recurring input patterns become rules:</em></p>
+<table>
+<thead>
+<tr>
+<th>Input pattern</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>High daily energy use + poor insulation</td>
+<td>Improve insulation</td>
+</tr>
+<tr>
+<td>High device count + long operation hours</td>
+<td>Switch to energy-efficient devices</td>
+</tr>
+<tr>
+<td>Low natural light + high lighting energy</td>
+<td>Install skylights or LED lighting</td>
+</tr>
+<tr>
+<td>Old appliances + frequent maintenance</td>
+<td>Upgrade appliances</td>
+</tr>
+</tbody></table>
+<p><em>Abstraction — keep what matters:</em></p>
+<pre><code>KEEP:    building type · energy consumption (kWh/day) · insulation quality
+         device types and usage hours · lighting type
+IGNORE:  wall colour · window size · furniture layout · device brand names
+</code></pre>
+<p><em>Algorithm:</em></p>
+<pre><code>START
+  INPUT building_type, insulation, device_count, energy_use
+  IF insulation = &quot;poor&quot; AND energy_use &gt; 50
+     THEN recommendation = &quot;Improve insulation&quot;
+  ELSE IF device_count &gt; 20 AND energy_use &gt; 60
+     THEN recommendation = &quot;Replace old devices with efficient ones&quot;
+  ELSE IF lighting_type != &quot;LED&quot; AND energy_use &gt; 40
+     THEN recommendation = &quot;Install LED lighting&quot;
+  ELSE
+     recommendation = &quot;Energy usage is optimal&quot;
+  OUTPUT recommendation
+END
+</code></pre>
+<blockquote>
+<p><strong>Modular design matters</strong> because new rules can be added later without rebuilding the system.</p>
+</blockquote>
+<hr>
+<h2 id="8-communicating-system-processes">8. Communicating System Processes</h2>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Shows</th>
+<th>Read</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Flowchart</strong></td>
+<td><strong>Step-by-step logic</strong> in a process — the algorithm</td>
+<td>Top to bottom, left to right</td>
+</tr>
+<tr>
+<td><strong>Data flow diagram (DFD)</strong></td>
+<td><strong>How data moves</strong> through the system</td>
+<td>Follow the arrows</td>
+</tr>
+<tr>
+<td><strong>Infographic</strong></td>
+<td>Simplifies complex processes for <strong>easy understanding</strong>. A static, single-point-in-time dashboard counts as an infographic</td>
+<td>Visually, at a glance</td>
+</tr>
+</tbody></table>
+<h3 id="8-1-dfd-components">8.1 DFD Components</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>What it is</th>
+<th>Named with</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>External entities</strong></td>
+<td>Sources or <strong>sinks</strong> of data — users, sensors</td>
+<td><strong>Nouns</strong> (they are things)</td>
+</tr>
+<tr>
+<td><strong>Processes</strong></td>
+<td>Calculations, logic — they <strong>change</strong> the data</td>
+<td><strong>Verbs</strong> (they are actions)</td>
+</tr>
+<tr>
+<td><strong>Data stores</strong></td>
+<td>Databases and files</td>
+<td>Nouns</td>
+</tr>
+<tr>
+<td><strong>Data flows</strong></td>
+<td>Arrows showing <strong>data movement</strong></td>
+<td>Labelled with the data</td>
+</tr>
+</tbody></table>
+<h3 id="8-2-dfd-levels">8.2 DFD Levels</h3>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Purpose</th>
+<th>Audience</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Level 0</strong> (context diagram)</td>
+<td>The <strong>whole system as ONE process</strong>, with its inputs, outputs and external entities</td>
+<td>Big picture for <strong>managers and clients</strong></td>
+</tr>
+<tr>
+<td><strong>Level 1</strong></td>
+<td>Breaks the main process into <strong>sub-processes</strong></td>
+<td>Helps <strong>programmers</strong> design modules and interfaces</td>
+</tr>
+</tbody></table>
+<p><strong>Worked — SmartLoan Expert System</strong></p>
+<pre><code>LEVEL 0
+  Process:          Loan Decision System
+  External entities: Bank Officer · Credit Bureau
+  Data stores:       Applicant Database · Loan Rules Database
+
+LEVEL 1
+  1.1 Collect Applicant Data
+  1.2 Retrieve Credit Report
+  1.3 Apply Lending Rules
+  1.4 Generate Decision Report
+  Data stores: Applicant Database · Loan Rules Database · Decision Report Archive
+</code></pre>
+<p><em>Flowchart for the same system:</em></p>
+<pre><code>Start
+  → Input applicant data
+  → Check credit score      IF &lt; 600 → Reject
+  → Check income-to-loan ratio   IF &gt; 40% → Review manually
+  → Else → Approve
+  → Display decision and reasoning
+End
+</code></pre>
+<blockquote>
+<p><strong>DFD vs flowchart — the distinction they examine:</strong> a <strong>DFD shows data movement</strong>; a <strong>flowchart shows decision logic</strong>. They complement each other, they don&#39;t substitute.</p>
+</blockquote>
+<hr>
+<h2 id="9-disruptive-effects">9. Disruptive Effects</h2>
+<table>
+<thead>
+<tr>
+<th>Effect</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Multitasking vs digital distraction</strong></td>
+<td>Productivity apps and AI assistants aim to help users multitask, but <strong>frequent interruptions decrease attention span and lower work quality</strong></td>
+</tr>
+<tr>
+<td><strong>Working differently to complete the same task</strong></td>
+<td>Tasks become faster and more accurate but require <strong>new skills</strong> — giving clear voice commands, interpreting AI-generated results. <em>Planning a trip traditionally means researching flights, hotels and activities separately; a travel AI automates it into a tailored itinerary</em></td>
+</tr>
+<tr>
+<td><strong>Automation of processes</strong></td>
+<td>Repetitive tasks performed by systems, reducing human effort and error. Improves efficiency and lowers cost but <strong>displaces workers</strong>. <em>Automated warehouses use AI robots to pick, pack and ship faster than humans</em></td>
+</tr>
+<tr>
+<td><strong>Impact of AI on employment</strong></td>
+<td><strong>Creates new jobs while eliminating others.</strong> Self-driving technology reduces demand for truck drivers but increases demand for AI engineers and vehicle technicians. Roles requiring <strong>creativity, emotional intelligence and complex decision-making</strong> are least likely to be replaced. Workers must <strong>reskill</strong></td>
+</tr>
+</tbody></table>
+<h3 id="9-1-social-vs-ethical-issues">9.1 Social vs Ethical Issues</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Definition</th>
+<th>Concerned with</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Social issues</strong></td>
+<td>Challenges impacting <strong>individuals, communities or society</strong> when intelligent systems are developed and used</td>
+<td>Fairness, <strong>access</strong>, human rights, societal wellbeing</td>
+</tr>
+<tr>
+<td><strong>Ethical issues</strong></td>
+<td>Concerns about what is <strong>morally right or wrong</strong> in designing and using systems</td>
+<td><strong>Values</strong> — fairness, transparency, accountability, responsible use</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Category</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Job displacement due to AI automation</td>
+<td><strong>Social</strong></td>
+</tr>
+<tr>
+<td>Digital divide — unequal access to AI and technology</td>
+<td><strong>Social</strong></td>
+</tr>
+<tr>
+<td>AI in healthcare — access to AI-driven medical care</td>
+<td><strong>Social</strong></td>
+</tr>
+<tr>
+<td>Bias in AI algorithms</td>
+<td><strong>Ethical</strong></td>
+</tr>
+<tr>
+<td>Privacy violations — data misuse and surveillance</td>
+<td><strong>Ethical</strong></td>
+</tr>
+<tr>
+<td>Transparency of AI decisions</td>
+<td><strong>Ethical</strong></td>
+</tr>
+<tr>
+<td>AI in law enforcement, e.g. facial recognition</td>
+<td><strong>Ethical</strong></td>
+</tr>
+<tr>
+<td>AI weaponisation — military applications</td>
+<td><strong>Ethical</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>The distinguishing question:</strong> does it concern <strong>who is affected and how</strong> (social), or <strong>whether it is right</strong> (ethical)? Job losses are social. The bias causing them is ethical.</p>
+</blockquote>
+<hr>
+<h2 id="10-intelligent-networks-and-iot">10. Intelligent Networks and IoT</h2>
+<blockquote>
+<p>An <strong>intelligent network</strong> integrates devices and technologies to enhance operational efficiency, data management and decision-making. With <strong>IoT</strong>, it connects sensors, machines and servers for seamless communication and automation.</p>
+</blockquote>
+<h3 id="10-1-infrastructure-requirements">10.1 Infrastructure Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Networks with servers</strong></td>
+<td>Central processing and coordination of device traffic</td>
+</tr>
+<tr>
+<td><strong>Local storage</strong></td>
+<td>On-device or on-premises — fast, no internet dependency</td>
+</tr>
+<tr>
+<td><strong>Cloud storage</strong></td>
+<td>Scalable, accessible anywhere, supports large IoT data streams</td>
+</tr>
+<tr>
+<td><strong>End-point devices</strong></td>
+<td>The sensors, actuators and user devices at the network edge</td>
+</tr>
+<tr>
+<td><strong>Communication links</strong></td>
+<td>Wired and wireless connections carrying data between endpoints, servers and cloud</td>
+</tr>
+</tbody></table>
+<h3 id="10-2-data-in-iot-systems">10.2 Data in IoT Systems</h3>
+<p><strong>Where data comes from:</strong> sensors, users, APIs, devices, social media, enterprise databases.
+<strong>Who provides it:</strong> machines (IoT devices) · humans (forms, voice commands) · external systems (cloud services, APIs).
+<strong>How it&#39;s collected:</strong> real-time (continuous streams) · batch (daily uploads) · manual entry.</p>
+<blockquote>
+<p><strong>How much to collect:</strong> enough for accurate decisions, but <strong>surplus data slows processing and wastes storage</strong>.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Example</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Quantitative</strong></td>
+<td>Temperature, heart rate, light intensity</td>
+<td>Measurable patterns</td>
+</tr>
+<tr>
+<td><strong>Qualitative</strong></td>
+<td>Voice input, text feedback</td>
+<td>User experience insights</td>
+</tr>
+<tr>
+<td><strong>Structured</strong></td>
+<td>Tables, spreadsheets, databases</td>
+<td>Easy to query</td>
+</tr>
+<tr>
+<td><strong>Unstructured</strong></td>
+<td>Images, videos, text logs</td>
+<td>Requires more processing</td>
+</tr>
+</tbody></table>
+<h3 id="10-3-data-processing-stages">10.3 Data Processing Stages</h3>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>What it does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Cleaning</strong></td>
+<td>Remove duplicates, fix missing values, correct errors</td>
+<td>Remove duplicate temperature readings caused by a sensor glitch</td>
+</tr>
+<tr>
+<td><strong>Validation</strong></td>
+<td>Check data meets specific rules and standards</td>
+<td>Ensure temperature readings fall within −20 °C to 60 °C</td>
+</tr>
+<tr>
+<td><strong>Filtering</strong></td>
+<td>Select relevant data, discard <strong>surplus</strong></td>
+<td>Keep the average daily temperature instead of every second&#39;s reading</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><em>Smart traffic system:</em> IoT cameras collect thousands of images per hour. The system <strong>cleans</strong> (removes corrupted images), <strong>validates</strong> (checks timestamp and location tags) and <strong>filters</strong> (keeps only rush-hour data) before analysis.</p>
+</blockquote>
+<h3 id="10-4-transmission">10.4 Transmission</h3>
+<table>
+<thead>
+<tr>
+<th>Flow type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Device-to-Device (D2D)</strong></td>
+<td>Data exchanged <strong>directly</strong> between IoT devices</td>
+<td>Smart lights adjusting brightness from sensor input</td>
+</tr>
+<tr>
+<td><strong>Device-to-Cloud</strong></td>
+<td>Sensors send data to the cloud for storage or analysis</td>
+<td>Fitness tracker sending heart-rate data</td>
+</tr>
+<tr>
+<td><strong>Cloud-to-Device</strong></td>
+<td>Commands sent from cloud down to a device</td>
+<td>Cloud sends an alert to a phone app</td>
+</tr>
+</tbody></table>
+<p><strong>Impact on network performance:</strong></p>
+<pre><code>Structured data (small packets)      transmits FASTER
+Unstructured data (images, video)    uses MORE BANDWIDTH
+Surplus data (redundant readings)    causes LAG and HIGHER COST
+</code></pre>
+<blockquote>
+<p><em>Smart city network:</em> filters air quality data <strong>locally at each sensor node</strong>, transmitting only <strong>hourly averages</strong> to the cloud — reducing network load while keeping insights fast and relevant.</p>
+</blockquote>
+<hr>
+<h2 id="11-simulation-data-modelling-and-surveillance">11. Simulation, Data Modelling and Surveillance</h2>
+<h3 id="11-1-applications-in-enterprise">11.1 Applications in Enterprise</h3>
+<table>
+<thead>
+<tr>
+<th>Application</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Education and training</strong></td>
+<td>Simulated environments let learners practise safely and repeatedly</td>
+</tr>
+<tr>
+<td><strong>Business analytics</strong></td>
+<td>Modelling scenarios to forecast outcomes and support planning</td>
+</tr>
+<tr>
+<td><strong>High-risk applications</strong></td>
+<td>Testing decisions where real-world failure is dangerous or expensive — aviation, mining, medicine</td>
+</tr>
+</tbody></table>
+<h3 id="11-2-intelligent-systems-in-surveillance">11.2 Intelligent Systems in Surveillance</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>CCTV</strong></td>
+<td>Automated monitoring, motion detection, facial recognition</td>
+</tr>
+<tr>
+<td><strong>Biometrics</strong></td>
+<td>Identity verification and access control</td>
+</tr>
+<tr>
+<td><strong>Customer loyalty</strong></td>
+<td>Tracking purchase behaviour to profile and target customers</td>
+</tr>
+<tr>
+<td><strong>Fraud prevention</strong></td>
+<td>Detecting anomalous transactions against normal patterns</td>
+</tr>
+<tr>
+<td><strong>Sniffing</strong></td>
+<td>Intercepting and analysing <strong>network traffic</strong></td>
+</tr>
+<tr>
+<td><strong>Trolling</strong></td>
+<td>Detecting and moderating hostile or manipulative online behaviour</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="12-building-expert-systems">12. Building Expert Systems</h2>
+<h3 id="12-1-rules-facts-and-decision-trees">12.1 Rules, Facts and Decision Trees</h3>
+<blockquote>
+<p>A <strong>decision tree</strong> is a data model that helps a system make choices by breaking decisions into simple <strong>IF–THEN</strong> steps.
+Each <strong>branch</strong> is a question or condition (<em>Is temperature &gt; 30 °C?</em>). Each <strong>leaf</strong> is an outcome or action (<em>Turn on the cooling system</em>).</p>
+</blockquote>
+<p><strong>Certainty factors</strong> attach a confidence value to a rule or conclusion, letting the system express <em>how sure</em> it is rather than a flat yes/no.</p>
+<blockquote>
+<p><strong>Where things live:</strong> the <strong>knowledge base holds facts</strong>. The <strong>inference engine holds and applies the rules</strong>. Both are examinable and frequently confused.</p>
+</blockquote>
+<h3 id="12-2-verifying-data-sources">12.2 Verifying Data Sources</h3>
+<blockquote>
+<p>Verifying data sources is critical to ensuring a DSS provides reliable insight. Unverified data leads to harmful outcomes — a healthcare DSS acting on incorrect medication history risks dangerous drug interactions; a retail DSS on unverified sales forecasts causes excess inventory and holding costs.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Questions to ask</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Source credibility</strong></td>
+<td>Who collected it — government, university, private company? Is the source reputable? Is it biased (sponsored research, political influence)?</td>
+</tr>
+<tr>
+<td><strong>Accuracy and timeliness</strong></td>
+<td>When was it collected? Is it still relevant? Any updates or revisions?</td>
+</tr>
+<tr>
+<td><strong>Compare with other sources</strong></td>
+<td>Do other reputable sources report similar data? Where they differ, why?</td>
+</tr>
+<tr>
+<td><strong>Collection methods</strong></td>
+<td>Surveys, sensors or user input? Scientifically sound and free from bias? Large and representative sample?</td>
+</tr>
+<tr>
+<td><strong>Transparency and documentation</strong></td>
+<td>Is there a clear explanation of how data was collected? Are raw data and methodologies publicly available?</td>
+</tr>
+<tr>
+<td><strong>Bias or manipulation</strong></td>
+<td>Could the data have been altered or misrepresented? Is there an agenda behind its collection or reporting?</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="13-evaluating-intelligent-systems">13. Evaluating Intelligent Systems</h2>
+<h3 id="13-1-how-expert-systems-contribute-to-efficiency">13.1 How Expert Systems Contribute to Efficiency</h3>
+<table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>Contribution</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Supercomputers</strong></td>
+<td>Process huge datasets very quickly. Combined with expert systems, enable <strong>real-time analysis and adjustment</strong> — critical in financial markets and emergency response. <em>The IBM Summit supercomputer uses AI-driven expert systems to optimise energy usage and support medical research</em></td>
+</tr>
+<tr>
+<td><strong>Digital assistants</strong></td>
+<td>Provide hands-free, natural-language access to information and control</td>
+</tr>
+<tr>
+<td><strong>Autonomous vehicles</strong></td>
+<td>Integrate sensor, map and traffic data to make continuous driving decisions</td>
+</tr>
+<tr>
+<td><strong>Streaming services</strong></td>
+<td>Recommendation engines matching content to inferred preference</td>
+</tr>
+</tbody></table>
+<p><strong>The efficiency arguments:</strong></p>
+<ul>
+<li>Analyse complex data in fields like climate science and genetics <strong>faster than traditional methods</strong></li>
+<li>Store specialised knowledge accessibly, allowing <strong>many scenarios to be evaluated in real time</strong></li>
+<li><strong>Automate complex decision-making</strong> that would otherwise require substantial human expertise, reducing human involvement in supply chain management and predictive maintenance</li>
+<li><strong>Adjust recommendations continuously</strong> as new data arrives</li>
+</ul>
+<h3 id="13-2-assessing-dss-output">13.2 Assessing DSS Output</h3>
+<blockquote>
+<p><strong>Graph and compare proposed vs actual outputs.</strong> The gap between what the system predicted and what actually happened is the measure of its effectiveness.</p>
+</blockquote>
+<hr>
+<h2 id="14-confusing-terms-quick-reference">14. Confusing Terms — Quick Reference</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+<th>Don&#39;t confuse with</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Structured decision</strong></td>
+<td>Clear rules, system decides alone</td>
+<td><strong>Semi-structured</strong> — system recommends, human decides</td>
+</tr>
+<tr>
+<td><strong>Unstructured decision</strong></td>
+<td>No procedure, judgement and negotiation</td>
+<td><strong>Semi-structured</strong> — partly automatable</td>
+</tr>
+<tr>
+<td><strong>Knowledge base</strong></td>
+<td>Stores <strong>facts</strong></td>
+<td><strong>Inference engine</strong> — applies the <strong>rules</strong></td>
+</tr>
+<tr>
+<td><strong>Forward chaining</strong></td>
+<td>Data-driven, starts with facts</td>
+<td><strong>Backward chaining</strong> — goal-driven, starts with a hypothesis</td>
+</tr>
+<tr>
+<td><strong>Factual knowledge</strong></td>
+<td>Agreed, from textbooks</td>
+<td><strong>Heuristic knowledge</strong> — from experience</td>
+</tr>
+<tr>
+<td><strong>Heuristic knowledge</strong></td>
+<td>Rule of thumb from experience</td>
+<td><strong>Fuzzy logic</strong> — imprecise <strong>values</strong></td>
+</tr>
+<tr>
+<td><strong>Simplistic agent</strong></td>
+<td>Fixed rules, reactive, no learning</td>
+<td><strong>Complex agent</strong> — adaptive, probabilistic</td>
+</tr>
+<tr>
+<td><strong>Expert system</strong></td>
+<td>Deterministic, fixed rules</td>
+<td><strong>Intelligent system</strong> — learns and adapts</td>
+</tr>
+<tr>
+<td><strong>Sensors</strong></td>
+<td>Input — detect and measure</td>
+<td><strong>Actuators</strong> — output, create motion</td>
+</tr>
+<tr>
+<td><strong>Microcontroller</strong></td>
+<td>The control centre</td>
+<td>Sensors and actuators — the periphery</td>
+</tr>
+<tr>
+<td><strong>Flowchart</strong></td>
+<td>Shows <strong>decision logic</strong></td>
+<td><strong>DFD</strong> — shows <strong>data movement</strong></td>
+</tr>
+<tr>
+<td><strong>Level 0 DFD</strong></td>
+<td>Whole system as one process</td>
+<td><strong>Level 1</strong> — broken into sub-processes</td>
+</tr>
+<tr>
+<td><strong>Social issue</strong></td>
+<td>Who is affected and how</td>
+<td><strong>Ethical issue</strong> — whether it is right</td>
+</tr>
+<tr>
+<td><strong>Relevant data</strong></td>
+<td>Needed for the decision</td>
+<td><strong>Surplus data</strong> — wastes storage, causes lag</td>
+</tr>
+<tr>
+<td><strong>IoT</strong></td>
+<td>Internet of Things — networked devices</td>
+<td><strong>IoMe</strong> — Internet of Me, personalised services</td>
+</tr>
+<tr>
+<td><strong>Decomposition</strong></td>
+<td>Break into parts</td>
+<td><strong>Abstraction</strong> — remove irrelevant detail</td>
+</tr>
+</tbody></table>
+<hr>
+<blockquote>
+<p><strong>See also:</strong> <a href="Terminology.html">Terminology</a> | <a href="Data_Science.html">Data Science</a> | <a href="Data_Visualisation.html">Data Visualisation</a> | <a href="Enterprise_Project.html">Enterprise Project</a> | <a href="MOC.html">MOC</a></p>
+</blockquote>
+</article></main></div><nav class="rail" aria-label="On this page"><div class="rail-title">On this page</div><ul><li><a href="#1-decision-support-systems" data-target="1-decision-support-systems">1. Decision Support Systems</a><ul class="sub"><li><a href="#1-1-the-three-categories-of-decision-making" data-target="1-1-the-three-categories-of-decision-making" data-parent="1-decision-support-systems">1.1 The Three Categories of Decision-Making</a></li><li><a href="#1-2-worked-classification" data-target="1-2-worked-classification" data-parent="1-decision-support-systems">1.2 Worked Classification</a></li><li><a href="#1-3-risks-of-relying-on-a-dss" data-target="1-3-risks-of-relying-on-a-dss" data-parent="1-decision-support-systems">1.3 Risks of Relying on a DSS</a></li></ul></li><li><a href="#2-expert-systems" data-target="2-expert-systems">2. Expert Systems</a><ul class="sub"><li><a href="#2-1-applications" data-target="2-1-applications" data-parent="2-expert-systems">2.1 Applications</a></li><li><a href="#2-2-the-three-key-features" data-target="2-2-the-three-key-features" data-parent="2-expert-systems">2.2 The Three Key Features</a></li><li><a href="#2-3-two-kinds-of-knowledge" data-target="2-3-two-kinds-of-knowledge" data-parent="2-expert-systems">2.3 Two Kinds of Knowledge</a></li><li><a href="#2-4-rules-and-boolean-operators" data-target="2-4-rules-and-boolean-operators" data-parent="2-expert-systems">2.4 Rules and Boolean Operators</a></li><li><a href="#2-5-forward-vs-backward-chaining" data-target="2-5-forward-vs-backward-chaining" data-parent="2-expert-systems">2.5 Forward vs Backward Chaining</a></li></ul></li><li><a href="#3-evolution-of-expert-systems" data-target="3-evolution-of-expert-systems">3. Evolution of Expert Systems</a><ul class="sub"><li><a href="#3-1-factors-that-advanced-rule-based-systems-into-probabilistic-ones" data-target="3-1-factors-that-advanced-rule-based-systems-into-probabilistic-ones" data-parent="3-evolution-of-expert-systems">3.1 Factors That Advanced Rule-Based Systems into Probabilistic Ones</a></li><li><a href="#3-2-changing-needs-driving-proliferation" data-target="3-2-changing-needs-driving-proliferation" data-parent="3-evolution-of-expert-systems">3.2 Changing Needs Driving Proliferation</a></li><li><a href="#3-3-the-progression" data-target="3-3-the-progression" data-parent="3-evolution-of-expert-systems">3.3 The Progression</a></li><li><a href="#3-4-expert-systems-vs-intelligent-systems" data-target="3-4-expert-systems-vs-intelligent-systems" data-parent="3-evolution-of-expert-systems">3.4 Expert Systems vs Intelligent Systems</a></li></ul></li><li><a href="#4-intelligent-agents" data-target="4-intelligent-agents">4. Intelligent Agents</a><ul class="sub"><li><a href="#4-1-simplistic-vs-complex" data-target="4-1-simplistic-vs-complex" data-parent="4-intelligent-agents">4.1 Simplistic vs Complex</a></li><li><a href="#4-2-search-engine-agents" data-target="4-2-search-engine-agents" data-parent="4-intelligent-agents">4.2 Search Engine Agents</a></li></ul></li><li><a href="#5-inference-engine-techniques" data-target="5-inference-engine-techniques">5. Inference Engine Techniques</a></li><li><a href="#6-hardware-for-intelligent-systems" data-target="6-hardware-for-intelligent-systems">6. Hardware for Intelligent Systems</a><ul class="sub"><li><a href="#6-1-worked-scenario-mapping" data-target="6-1-worked-scenario-mapping" data-parent="6-hardware-for-intelligent-systems">6.1 Worked Scenario Mapping</a></li></ul></li><li><a href="#7-computational-thinking-in-system-design" data-target="7-computational-thinking-in-system-design">7. Computational Thinking in System Design</a></li><li><a href="#8-communicating-system-processes" data-target="8-communicating-system-processes">8. Communicating System Processes</a><ul class="sub"><li><a href="#8-1-dfd-components" data-target="8-1-dfd-components" data-parent="8-communicating-system-processes">8.1 DFD Components</a></li><li><a href="#8-2-dfd-levels" data-target="8-2-dfd-levels" data-parent="8-communicating-system-processes">8.2 DFD Levels</a></li></ul></li><li><a href="#9-disruptive-effects" data-target="9-disruptive-effects">9. Disruptive Effects</a><ul class="sub"><li><a href="#9-1-social-vs-ethical-issues" data-target="9-1-social-vs-ethical-issues" data-parent="9-disruptive-effects">9.1 Social vs Ethical Issues</a></li></ul></li><li><a href="#10-intelligent-networks-and-iot" data-target="10-intelligent-networks-and-iot">10. Intelligent Networks and IoT</a><ul class="sub"><li><a href="#10-1-infrastructure-requirements" data-target="10-1-infrastructure-requirements" data-parent="10-intelligent-networks-and-iot">10.1 Infrastructure Requirements</a></li><li><a href="#10-2-data-in-iot-systems" data-target="10-2-data-in-iot-systems" data-parent="10-intelligent-networks-and-iot">10.2 Data in IoT Systems</a></li><li><a href="#10-3-data-processing-stages" data-target="10-3-data-processing-stages" data-parent="10-intelligent-networks-and-iot">10.3 Data Processing Stages</a></li><li><a href="#10-4-transmission" data-target="10-4-transmission" data-parent="10-intelligent-networks-and-iot">10.4 Transmission</a></li></ul></li><li><a href="#11-simulation-data-modelling-and-surveillance" data-target="11-simulation-data-modelling-and-surveillance">11. Simulation, Data Modelling and Surveillance</a><ul class="sub"><li><a href="#11-1-applications-in-enterprise" data-target="11-1-applications-in-enterprise" data-parent="11-simulation-data-modelling-and-surveillance">11.1 Applications in Enterprise</a></li><li><a href="#11-2-intelligent-systems-in-surveillance" data-target="11-2-intelligent-systems-in-surveillance" data-parent="11-simulation-data-modelling-and-surveillance">11.2 Intelligent Systems in Surveillance</a></li></ul></li><li><a href="#12-building-expert-systems" data-target="12-building-expert-systems">12. Building Expert Systems</a><ul class="sub"><li><a href="#12-1-rules-facts-and-decision-trees" data-target="12-1-rules-facts-and-decision-trees" data-parent="12-building-expert-systems">12.1 Rules, Facts and Decision Trees</a></li><li><a href="#12-2-verifying-data-sources" data-target="12-2-verifying-data-sources" data-parent="12-building-expert-systems">12.2 Verifying Data Sources</a></li></ul></li><li><a href="#13-evaluating-intelligent-systems" data-target="13-evaluating-intelligent-systems">13. Evaluating Intelligent Systems</a><ul class="sub"><li><a href="#13-1-how-expert-systems-contribute-to-efficiency" data-target="13-1-how-expert-systems-contribute-to-efficiency" data-parent="13-evaluating-intelligent-systems">13.1 How Expert Systems Contribute to Efficiency</a></li><li><a href="#13-2-assessing-dss-output" data-target="13-2-assessing-dss-output" data-parent="13-evaluating-intelligent-systems">13.2 Assessing DSS Output</a></li></ul></li><li><a href="#14-confusing-terms-quick-reference" data-target="14-confusing-terms-quick-reference">14. Confusing Terms — Quick Reference</a></li></ul></nav><script>
+function toggleTheme(ev){
+var oldTheme=document.documentElement.getAttribute("data-theme")||"dark";
+var next=oldTheme==="light"?"dark":"light";
+function apply(){document.documentElement.setAttribute("data-theme",next);try{localStorage.setItem("vault-theme",next)}catch(e){}updateThemeIcons(next);}
+var reduced=false;try{reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
+if(reduced){apply();return;}
+if(window.__vaultThemeAnimating){return;}
+window.__vaultThemeAnimating=1;
+var newPaper=next==="light"?"#faf8f2":"#13151b";
+var W=window.innerWidth,H=window.innerHeight;
+var spacing=W<768?36:28;
+var maxR=spacing*0.78;
+var dpr=1;try{dpr=W<768?1:Math.min(window.devicePixelRatio||1,1.5);}catch(e){}
+var canvas=document.createElement("canvas");
+canvas.id="theme-wave";
+canvas.style.cssText="position:fixed;left:0;top:0;width:"+W+"px;height:"+H+"px;z-index:9999;pointer-events:none;";
+canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+var ctx=canvas.getContext("2d");
+try{ctx.setTransform(dpr,0,0,dpr,0,0);}catch(e){}
+ctx.fillStyle=newPaper;
+var dots=[];
+for(var y=spacing/2;y<H+spacing;y+=spacing){for(var x=spacing/2;x<W+spacing;x+=spacing){dots.push({x:x,y:y,delay:(x+y)/(W+H)*450,done:0});}}
+var waveMs=450,growMs=300;
+var start=Date.now();
+function easeOutCubic(p){return 1-Math.pow(1-p,3);}
+function step(){
+var elapsed=Date.now()-start;
+var allDone=true;
+var any=false;
+ctx.beginPath();
+for(var i=0;i<dots.length;i++){
+var d=dots[i];
+if(d.done){continue;}
+var p=(elapsed-d.delay)/growMs;
+if(p<0){allDone=false;continue;}
+if(p<1){allDone=false;}
+else{d.done=1;}
+var r=maxR*easeOutCubic(p<1?p:1);
+if(r>0){ctx.moveTo(d.x+r,d.y);ctx.arc(d.x,d.y,r,0,Math.PI*2);any=true;}
+}
+if(any){ctx.fill();}
+if(!allDone){requestAnimationFrame(step);return;}
+apply();
+canvas.style.transition="opacity 0.15s ease";
+canvas.style.opacity="0";
+setTimeout(function(){window.__vaultThemeAnimating=0;if(canvas.parentNode)canvas.parentNode.removeChild(canvas);},180);
+}
+document.body.appendChild(canvas);
+requestAnimationFrame(step);
+}
+function updateThemeIcons(theme){var icon=theme==="dark"?"☀":"☾";document.querySelectorAll(".theme-btn").forEach(function(b){b.textContent=icon;});}
+try{updateThemeIcons(document.documentElement.getAttribute("data-theme")||"dark");}catch(e){}
+function toggleMenu(force){document.body.classList.toggle("menu-open",force)}
+document.addEventListener("keydown",function(e){if(e.key==="/"&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();var s=document.querySelector(".side-search");if(s)s.focus()}});
+document.addEventListener("click",function(e){if(e.target.closest(".side a"))toggleMenu(false)});
+(function(){try{
+var links=Array.prototype.slice.call(document.querySelectorAll(".rail a"));
+if(!links.length||!window.IntersectionObserver)return;
+var map={};links.forEach(function(a){map[a.getAttribute("data-target")]=a});
+var obs=new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove("active");a.classList.remove("parent-active")});
+      var l=map[e.target.id];
+      if(l){l.classList.add("active");var p=l.getAttribute("data-parent");if(p&&map[p])map[p].classList.add("parent-active")}
+    }
+  });
+}, {rootMargin:"-20% 0px -70% 0px"});
+document.querySelectorAll(".prose h2[id], .prose h3[id]").forEach(function(h){obs.observe(h)});
+}catch(e){}})();
+(function(){try{
+var cv=document.getElementById("dotgrid");if(!cv)return;var ctx=cv.getContext("2d");if(!ctx)return;
+var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var W=0,H=0,dpr=1,cols=0,rows=0,SP=28,px=0,py=0,pt=0,hasP=false;
+function dotRGB(){try{return getComputedStyle(document.documentElement).getPropertyValue("--dot-rgb").trim()||"233,231,225"}catch(e){return "233,231,225"}}
+function resize(){dpr=Math.min(window.devicePixelRatio||1,window.innerWidth<700?1.5:2);SP=window.innerWidth<700?36:28;W=window.innerWidth;H=window.innerHeight;cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+"px";cv.style.height=H+"px";ctx.setTransform(dpr,0,0,dpr,0,0);cols=Math.ceil(W/SP)+1;rows=Math.ceil(H/SP)+1}
+var R=Math.random()*Math.PI*2;
+var FORCES=[
+ {ax:.42,ay:.15,tx:26,ty:31,px:R,py:R+1.3,circ:false},
+ {ax:.38,ay:.42,tx:37,ty:23,px:R+2.1,py:R+0.7,circ:false},
+ {ax:.30,ay:.30,tx:41,ty:41,px:R+4.0,py:R+4.0,circ:true}
+];
+function draw(now){var t=now/1000;var rgb=dotRGB();
+var activeForces=W>=1280?FORCES:FORCES.slice(0,1);
+var pFade=hasP?Math.max(0,1-(now-pt)/4000):0;
+ctx.clearRect(0,0,W,H);
+for(var y=0;y<rows;y++)for(var x=0;x<cols;x++){var ox=x*SP+10,oy=y*SP+10,a=0.14,dispX=0,dispY=0;
+for(var fi=0;fi<activeForces.length;fi++){var F=activeForces[fi];
+var fx=F.circ?W*(0.5+F.ax*Math.cos(t*2*Math.PI/F.tx+F.px)):W*(0.5+F.ax*Math.sin(t*2*Math.PI/F.tx+F.px));
+var fy=F.circ?H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py)):H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py));
+var ddx=ox-fx,ddy=oy-fy,d=Math.sqrt(ddx*ddx+ddy*ddy);
+if(d<170&&d>0.01){var f=1-d/170;f=f*f;dispX+=(ddx/d)*6*f;dispY+=(ddy/d)*6*f;a+=0.20*f}}
+var dm=Math.sqrt(dispX*dispX+dispY*dispY);if(dm>9){dispX*=9/dm;dispY*=9/dm}
+var dx=ox+dispX,dy=oy+dispY;if(a>0.38)a=0.38;
+if(pFade>0){var pdx=ox-px,pdy=oy-py,pd=Math.sqrt(pdx*pdx+pdy*pdy);
+if(pd<150&&pd>0.01){var pf=1-pd/150;pf=pf*pf*pFade;dx+=(pdx/pd)*5*pf;dy+=(pdy/pd)*5*pf;a=Math.min(0.38,a+0.18*pf)}}
+ctx.beginPath();ctx.arc(dx,dy,1.3,0,Math.PI*2);ctx.fillStyle="rgba("+rgb+","+a.toFixed(3)+")";ctx.fill()}}
+function loop(now){if(!window.__vaultThemeAnimating)draw(now);if(!reduced)requestAnimationFrame(loop)}
+window.addEventListener("resize",resize);resize();
+window.addEventListener("pointermove",function(e){px=e.clientX;py=e.clientY;pt=performance.now();hasP=true},{passive:true});
+requestAnimationFrame(loop);
+}catch(e){}})();
+</script></body></html>

@@ -1,0 +1,800 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Enterprise Project — HSC Enterprise Vault</title><style>
+:root{--paper:#faf8f2;--ink:#1e1b16;--muted:#6b655a;--line:#e3ddd0;--accent:#1d4ed8;--card:#fffdf8;--side:#f3efe6;--side-bg:rgba(243,239,230,.88);--active:#e8e0cd;--rail-tint:rgba(29,78,216,.14);--rail-tint-soft:rgba(29,78,216,.07);--code:#efe9db;--quote:#4a4438;--dot-rgb:30,27,22;--scheme:light}
+[data-theme="dark"]{--paper:#13151b;--ink:#e9e7e1;--muted:#9aa0ab;--line:#2b2f3a;--accent:#8ab4ff;--card:#1b1e27;--side:#101218;--side-bg:rgba(16,18,24,.88);--active:#262b38;--rail-tint:rgba(138,180,255,.18);--rail-tint-soft:rgba(138,180,255,.09);--code:#262a36;--quote:#c3c7cf;--dot-rgb:233,231,225;--scheme:dark}
+*{box-sizing:border-box}html{color-scheme:var(--scheme)}body{margin:0;background:var(--paper);color:var(--ink);font:16.5px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none;transition:color .18s ease}a:hover{text-decoration:underline}
+#dotgrid{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;padding:22px 18px;border-right:1px solid var(--line);background:var(--side-bg)}
+.side h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:22px 0 6px}
+.side ul{list-style:none;margin:0;padding:0}.side li{margin:3px 0}
+.side a{display:block;padding:7px 10px;border-radius:8px;color:var(--ink);transition:background .18s ease,transform .18s ease}
+.side a.active{background:var(--active);font-weight:600}
+.side a:hover{background:var(--active);text-decoration:none;transform:translateX(3px)}
+.side-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.theme-btn{flex:none;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--ink);font-size:18px;cursor:pointer;transition:background .18s ease}
+.theme-btn:hover{background:var(--active)}
+.home-link{font-weight:700;font-size:18px}.side-search{width:100%;margin:14px 0 4px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-size:16px}
+.side-note{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:24px}
+.topbar{display:none}.backdrop{display:none}
+main{padding:36px 44px;max-width:860px}.prose h1{font-size:32px;line-height:1.2;letter-spacing:-.02em;margin:0 0 6px}
+.prose h2{font-size:23px;margin:34px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
+.prose h3{font-size:18px;margin:26px 0 6px}.prose p{margin:10px 0}
+.prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.prose th,.prose td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--side)}.prose blockquote{border-left:3px solid var(--line);margin:14px 0;padding:2px 14px;color:var(--quote);background:var(--card)}
+.prose code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:14px}.prose pre{background:#0d0f14;color:#f5f1e6;padding:14px;border-radius:8px;overflow:auto}
+.prose pre code{background:none;color:inherit;padding:0}.prose hr{border:none;border-top:1px solid var(--line);margin:24px 0}
+.meta{color:var(--muted);font-size:14px;margin-bottom:20px}.toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:18px 0}
+.toc b{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.toc ul{margin:8px 0 0;padding-left:18px}.toc li{margin:3px 0}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.card h3{margin:0 0 4px}.card p{margin:0;color:var(--muted);font-size:14.5px}
+#search{width:100%;padding:13px 14px;font-size:17px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.result{border-bottom:1px solid var(--line);padding:14px 6px;border-radius:8px;transition:background .18s ease,transform .18s ease}
+.result:hover{background:var(--card);transform:translateX(3px)}
+.result h3{margin:0}.result p{margin:4px 0;color:var(--quote)}.result .path{font-size:13px;color:var(--muted)}
+mark{background:#fde68a;color:#1e1b16;padding:0 1px}
+html{scroll-behavior:smooth}
+.rail{display:none}
+@media(min-width:1280px){
+main{max-width:min(860px,calc(100vw - 692px))}
+.rail{display:block;position:fixed;right:24px;top:50%;transform:translateY(-50%);width:340px;max-height:76vh;overflow:auto;z-index:15;background:none;border:none;box-shadow:none;padding:18px 14px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%)}
+.rail-title{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:2px 0 12px 12px}
+.rail ul{list-style:none;margin:0;padding:0}
+.rail li{margin:3px 0}
+.rail a{display:block;padding:11px 14px;border-radius:10px;color:var(--ink);font-size:17px;line-height:1.4;transition:transform .2s ease,background .2s ease}
+.rail a:hover,.rail a:focus-visible{background:var(--rail-tint-soft);transform:translateX(-4px) scale(1.02);text-decoration:none}
+.rail a.active{background:var(--rail-tint);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-weight:600;transform:translateX(-12px);width:calc(100% + 12px)}
+.rail a.parent-active{background:var(--rail-tint-soft)}
+.rail ul.sub{margin:3px 0 3px 14px;padding-left:14px;border-left:1px solid var(--line)}
+.rail ul.sub a{padding:9px 12px;font-size:15px;color:var(--muted)}
+.rail ul.sub a:hover{color:var(--ink)}
+.rail ul.sub a.active{color:var(--ink);transform:translateX(-8px);width:calc(100% + 8px)}
+}
+@media(max-width:900px){
+.topbar{display:flex;position:sticky;top:0;z-index:20;align-items:center;gap:10px;padding:12px 14px;background:var(--side);border-bottom:1px solid var(--line)}
+.topbar b{flex:1;font-size:17px}.menu-btn,.topbar .theme-btn{width:44px;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:19px;cursor:pointer}
+.wrap{grid-template-columns:1fr}
+.wrap{z-index:auto}
+.side{background:var(--side)}
+.side a{padding:11px 12px}
+body.menu-open{overflow:hidden}
+.side{position:fixed;inset:0 auto 0 0;width:300px;max-width:86vw;height:100dvh;z-index:30;transform:translateX(-105%);transition:transform .25s ease;box-shadow:0 0 40px rgba(0,0,0,.4)}
+body.menu-open .side{transform:translateX(0)}
+.backdrop{display:none}body.menu-open .backdrop{display:block;position:fixed;inset:0;z-index:25;background:rgba(0,0,0,.45)}
+main{padding:22px 16px}.prose h1{font-size:26px}.prose h2{font-size:21px}.cards{grid-template-columns:1fr}
+.prose table{font-size:14px}.prose pre{font-size:13.5px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style><script>(function(){try{var t=localStorage.getItem("vault-theme")||"dark";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark")}})()</script></head><body><canvas id="dotgrid" aria-hidden="true"></canvas><header class="topbar"><button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Open notes menu">☰</button><b>Enterprise Vault</b><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></header><div class="backdrop" onclick="toggleMenu(false)"></div><div class="wrap"><nav class="side" id="side"><div class="side-head"><a class="home-link" href="index.html">⌂ Vault home</a><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></div><input class="side-search" type="search" placeholder="Search notes…  ( / )" onkeydown="if(event.key==='Enter'){location.href='index.html?q='+encodeURIComponent(this.value)}"><h3>Enterprise Computing</h3><ul><li><a class="" href="MOC.html">MOC</a></li><li><a class="" href="Data_Science.html">Data Science</a></li><li><a class="" href="Data_Visualisation.html">Data Visualisation</a></li><li><a class="active" href="Enterprise_Project.html">Enterprise Project</a></li><li><a class="" href="Intelligent_Systems.html">Intelligent Systems</a></li><li><a class="" href="Principles_of_Cybersecurity.html">Principles of Cybersecurity</a></li><li><a class="" href="Terminology.html">Terminology</a></li></ul><p class="side-note">Source: TheSashi HSC Enterprise Computing Notes. Cloned 25 Oct 2026. Content unchanged.</p></nav><main><article class="prose"><h1>Enterprise Project</h1><p class="meta">Enterprise Computing · Enterprise_Project.md</p><div class="toc"><b>On this page</b><ul><li><a href="#1-the-four-project-phases">1. The Four Project Phases</a></li><li><a href="#2-identifying-and-defining">2. Identifying and Defining</a></li><li><a href="#3-researching-and-planning">3. Researching and Planning</a></li><li><a href="#4-producing-and-implementing">4. Producing and Implementing</a></li><li><a href="#5-testing-and-evaluating">5. Testing and Evaluating</a></li><li><a href="#6-exam-question-bank">6. Exam Question Bank</a></li><li><a href="#7-confusing-terms-quick-reference">7. Confusing Terms — Quick Reference</a></li></ul></div><h1>Enterprise Project — HSC Final Notes</h1>
+<blockquote>
+<p>✅ <strong>Named topic in the Trial (Task 4).</strong> The smallest unit, but it carries the <strong>implementation and testing</strong> content that appears in every scenario question.
+Outcomes: <strong>EC-12-08, EC-12-10, EC-12-11</strong>
+Terminology: <a href="Terminology.html">Terminology</a> · Index: <a href="MOC.html">MOC</a></p>
+</blockquote>
+<hr>
+<h2 id="1-the-four-project-phases">1. The Four Project Phases</h2>
+<pre><code>1. IDENTIFYING AND DEFINING
+2. RESEARCHING AND PLANNING
+3. PRODUCING AND IMPLEMENTING
+4. TESTING AND EVALUATING
+</code></pre>
+<hr>
+<h2 id="2-identifying-and-defining">2. Identifying and Defining</h2>
+<h3 id="2-1-tools-and-processes-for-managing-and-documenting-development">2.1 Tools and Processes for Managing and Documenting Development</h3>
+<table>
+<thead>
+<tr>
+<th>Tool / process</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Problem definition</strong></td>
+<td>States clearly what the system must solve, before any solution is designed</td>
+</tr>
+<tr>
+<td><strong>Time and resource management, incl. Gantt charts</strong></td>
+<td>Schedules <strong>tasks, milestones and deadlines</strong>, showing which activities run concurrently</td>
+</tr>
+<tr>
+<td><strong>An iterative approach</strong></td>
+<td>Building in repeated cycles, refining with each pass rather than completing everything once</td>
+</tr>
+<tr>
+<td><strong>Production process and technical skills</strong></td>
+<td>The methods and capabilities required to actually build the system</td>
+</tr>
+<tr>
+<td><strong>Testing and evaluation</strong></td>
+<td>Verifying the system works and judging whether it met its purpose</td>
+</tr>
+</tbody></table>
+<h3 id="2-2-the-changing-nature-of-enterprise">2.2 The Changing Nature of Enterprise</h3>
+<table>
+<thead>
+<tr>
+<th>Change</th>
+<th>Effect on project development</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Offshore development</strong></td>
+<td>Work contracted to teams overseas — lower cost, but time-zone, communication and quality-control challenges</td>
+</tr>
+<tr>
+<td><strong>Working remotely</strong></td>
+<td>Teams distributed rather than co-located — requires online collaboration tools and clear documentation</td>
+</tr>
+<tr>
+<td><strong>Freelance work</strong></td>
+<td>Specialist skills engaged per-project rather than employed — flexible and cost-effective, but less continuity</td>
+</tr>
+<tr>
+<td><strong>Enabling the growth of start-ups</strong></td>
+<td>Low-cost cloud infrastructure and remote talent let small enterprises build systems that once required large capital</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="3-researching-and-planning">3. Researching and Planning</h2>
+<h3 id="3-1-tools-supporting-design-and-development">3.1 Tools Supporting Design and Development</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Online collaboration</strong></td>
+<td>Shared documents, version control and communication across a distributed team</td>
+</tr>
+<tr>
+<td><strong>Time / task action plans</strong></td>
+<td>Break the project into scheduled tasks with owners and deadlines</td>
+</tr>
+<tr>
+<td><strong>Process diary, incl. ongoing evaluation</strong></td>
+<td>Running record of decisions, problems and changes — evidence of the <strong>iterative</strong> process</td>
+</tr>
+<tr>
+<td><strong>Budget</strong></td>
+<td>Costs the resources, licences, hardware and labour required</td>
+</tr>
+<tr>
+<td><strong>System flowcharts</strong></td>
+<td>Show the <strong>logical steps</strong> the system performs</td>
+</tr>
+<tr>
+<td><strong>Data flow diagrams</strong></td>
+<td>Show <strong>how data moves</strong> between entities, processes and stores</td>
+</tr>
+<tr>
+<td><strong>Decision trees</strong></td>
+<td>Represent <strong>logical decision-making</strong> as branching conditions and outcomes</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing pair — System flowchart vs Data flow diagram</strong>
+A <strong>flowchart</strong> shows the <strong>sequence of logic</strong> — what happens, in order, with decisions.
+A <strong>DFD</strong> shows <strong>where data goes</strong> — sources, processes, stores and destinations.
+Flowchart = <em>how it thinks</em>. DFD = <em>where information travels</em>.</p>
+</blockquote>
+<h3 id="3-2-thinking-skills">3.2 Thinking Skills</h3>
+<table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>Applied to</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Computational thinking</strong></td>
+<td>Decomposition, pattern recognition, abstraction, algorithms — see <a href="Intelligent_Systems.html">Intelligent Systems</a> §7</td>
+</tr>
+<tr>
+<td><strong>Design thinking</strong></td>
+<td>Understanding users and iterating solutions — see §4.3 below</td>
+</tr>
+<tr>
+<td><strong>Systems thinking</strong></td>
+<td>Seeing how components interact as a whole rather than in isolation</td>
+</tr>
+</tbody></table>
+<h3 id="3-3-collaborating-and-managing-criteria">3.3 Collaborating and Managing Criteria</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Designing for ease of operation and maintenance</strong></td>
+<td>Building so that non-experts can run it and future developers can modify it</td>
+</tr>
+<tr>
+<td><strong>Clarifying each of the relevant informatics within the new system</strong></td>
+<td>Identifying what information the system handles and how it transforms it</td>
+</tr>
+<tr>
+<td><strong>Outlining the role of participants, data and components</strong></td>
+<td>Who does what, what data flows where, which components are responsible</td>
+</tr>
+<tr>
+<td><strong>Negotiating user/client needs and wants</strong></td>
+<td>Distinguishing what the client <strong>needs</strong> from what they <strong>want</strong>, within budget and time</td>
+</tr>
+<tr>
+<td><strong>Working collaboratively</strong></td>
+<td>Shared responsibility, clear communication, agreed processes</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="4-producing-and-implementing">4. Producing and Implementing</h2>
+<h3 id="4-1-tools-to-inform-requirements-and-limitations">4.1 Tools to Inform Requirements and Limitations</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Strength</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Interviews</strong></td>
+<td>Deep, qualitative understanding of individual user needs</td>
+</tr>
+<tr>
+<td><strong>Surveys</strong></td>
+<td>Broad, quantitative data from many users quickly</td>
+</tr>
+<tr>
+<td><strong>Analytical reports</strong></td>
+<td>Existing documented evidence about the problem domain</td>
+</tr>
+<tr>
+<td><strong>Prototypes</strong></td>
+<td>A working model users can react to — surfaces requirements they couldn&#39;t articulate</td>
+</tr>
+<tr>
+<td><strong>Presentations of research results</strong></td>
+<td>Communicates findings to stakeholders and secures agreement</td>
+</tr>
+</tbody></table>
+<h3 id="4-2-development-approaches">4.2 Development Approaches</h3>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>How it works</th>
+<th>Best for</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Waterfall (structured)</strong></td>
+<td><strong>Linear and sequential</strong> — each phase completes before the next begins</td>
+<td>Well-defined, stable requirements; safety-critical work</td>
+</tr>
+<tr>
+<td><strong>Agile</strong></td>
+<td><strong>Iterative and incremental</strong> — repeated short cycles with continuous client involvement</td>
+<td>Evolving requirements; fast-moving projects</td>
+</tr>
+<tr>
+<td><strong>Prototyping</strong></td>
+<td>Build a <strong>working model</strong> early, refine it based on feedback</td>
+<td>When requirements are unclear and users need something to react to</td>
+</tr>
+<tr>
+<td><strong>End-user</strong></td>
+<td>The <strong>users themselves</strong> develop the system, typically with spreadsheets or low-code tools</td>
+<td>Small, local solutions where users know the problem best</td>
+</tr>
+<tr>
+<td><strong>Outsourcing</strong></td>
+<td>Development contracted to an <strong>external provider</strong></td>
+<td>When the skills don&#39;t exist in-house, or cost favours it</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing pair — Waterfall vs Agile</strong>
+<strong>Waterfall</strong> fixes requirements at the start; working software appears only at the <strong>end</strong>; changing late is very costly.
+<strong>Agile</strong> expects requirements to change; working software appears <strong>every iteration</strong>; total cost and time are harder to predict.</p>
+</blockquote>
+<h3 id="4-3-design-thinking">4.3 Design Thinking</h3>
+<pre><code>1. EMPATHISE   understand the needs and challenges of end-users
+2. DEFINE      state the problem clearly
+3. IDEATE      generate possible solutions
+4. PROTOTYPE   build a testable model of the solution
+5. TEST        evaluate with real users and iterate
+</code></pre>
+<blockquote>
+<p><strong>A prototype&#39;s purpose</strong> is to test ideas and gather feedback <strong>before</strong> committing to full development, reducing the risk of building the wrong thing.</p>
+</blockquote>
+<h3 id="4-4-risk-analysis">4.4 Risk Analysis</h3>
+<blockquote>
+<p><strong>Risk analysis</strong> identifies what could go wrong during a project so those risks can be <strong>prevented or mitigated</strong> before they occur, rather than reacted to afterwards.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Risk type</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Security risks</strong></td>
+<td>Data breach, unauthorised access, malware</td>
+</tr>
+<tr>
+<td><strong>Technical risks</strong></td>
+<td>Hardware failure, integration incompatibility, data loss</td>
+</tr>
+<tr>
+<td><strong>Financial risks</strong></td>
+<td>Budget overrun, unexpected licensing costs</td>
+</tr>
+<tr>
+<td><strong>Time / scheduling risks</strong></td>
+<td>Missed deadlines, dependency delays, scope creep</td>
+</tr>
+<tr>
+<td><strong>Human risks</strong></td>
+<td>Staff turnover, insufficient training, user resistance</td>
+</tr>
+</tbody></table>
+<p><strong>Reducing security risk:</strong> encryption, access control and authentication, regular backups, staff training, security audits.</p>
+<h3 id="4-5-hardware-and-software-integration">4.5 Hardware and Software Integration</h3>
+<p><strong>Why it matters:</strong> new components must work with the <strong>existing</strong> enterprise environment, or the system fails at deployment regardless of how well it was built.</p>
+<p><strong>What to consider:</strong></p>
+<ul>
+<li><strong>Compatibility</strong> with existing hardware, operating systems and software</li>
+<li><strong>Data migration</strong> — can existing data be transferred without loss?</li>
+<li><strong>Interoperability</strong> — will the new system exchange data with current systems?</li>
+<li><strong>Capacity</strong> — can existing infrastructure handle the additional load?</li>
+<li><strong>Cost</strong> of any required upgrades</li>
+</ul>
+<h3 id="4-6-training">4.6 Training</h3>
+<blockquote>
+<p><strong>Why train before implementation:</strong> users who don&#39;t understand the system make errors, resist the change, and undermine the return on the investment. Training reduces errors, increases adoption and shortens the productivity dip after go-live.</p>
+</blockquote>
+<p><strong>Methods:</strong> face-to-face workshops · online modules and tutorials · user manuals and documentation · mentoring by a super-user · help desk support.</p>
+<h3 id="4-7-system-implementation-methods">4.7 System Implementation Methods</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>How it works</th>
+<th>Risk</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Direct</strong></td>
+<td>Old system switched <strong>off</strong>, new one switched <strong>on</strong> — a straight swap across the whole organisation at once</td>
+<td><strong>Highest risk</strong> — no fallback. Cheapest and fastest</td>
+</tr>
+<tr>
+<td><strong>Parallel</strong></td>
+<td>Old and new systems run <strong>together</strong> for a period</td>
+<td><strong>Lowest risk</strong> — the old system is a fallback. <strong>Most expensive</strong>, duplicated effort</td>
+</tr>
+<tr>
+<td><strong>Pilot</strong></td>
+<td>New system trialled with a <strong>small group</strong> first, then rolled out</td>
+<td>Low risk, limited disruption if it fails</td>
+</tr>
+<tr>
+<td><strong>Phased</strong></td>
+<td>Introduced <strong>one module or department at a time</strong></td>
+<td>Moderate risk, slower, integration complexity during transition</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>The recommendation questions they ask:</strong>
+<strong>Hospital management system</strong> → <strong>parallel</strong>. Patient safety means you cannot afford a gap; the cost of duplication is justified by the consequence of failure.
+<strong>Banking system</strong> → <strong>parallel</strong> over direct, for the same reason — financial records cannot be lost or corrupted, and a fallback is essential.</p>
+</blockquote>
+<h3 id="4-8-testing-methodologies">4.8 Testing Methodologies</h3>
+<table>
+<thead>
+<tr>
+<th>Methodology</th>
+<th>What it checks</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Functional testing</strong></td>
+<td>That <strong>every function</strong> of the system performs correctly against its specification</td>
+</tr>
+<tr>
+<td><strong>Live data</strong></td>
+<td>The system using <strong>real operational data</strong> to validate behaviour</td>
+</tr>
+<tr>
+<td><strong>Simulated data</strong></td>
+<td><strong>Artificially created</strong> data, including edge cases that rarely occur naturally</td>
+</tr>
+<tr>
+<td><strong>Beta testing</strong></td>
+<td><strong>Real users</strong> evaluate the system before full release</td>
+</tr>
+<tr>
+<td><strong>Volume testing</strong></td>
+<td>Whether the system handles <strong>very large amounts of data</strong> without performance loss</td>
+</tr>
+<tr>
+<td><strong>Acceptance testing</strong></td>
+<td>The <strong>client confirms</strong> the system meets their requirements</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Why use multiple methodologies rather than one:</strong> each detects a different class of fault. Functional testing finds logic errors but not performance problems. Volume testing finds scaling problems but not usability problems. Beta testing finds usability problems but not edge cases. <strong>Relying on one leaves whole categories of defect undetected.</strong></p>
+</blockquote>
+<hr>
+<h2 id="5-testing-and-evaluating">5. Testing and Evaluating</h2>
+<h3 id="5-1-verification-vs-validation">5.1 Verification vs Validation</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Question it answers</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Verification</strong></td>
+<td><em>Are we building the system <strong>right</strong>?</em></td>
+<td>Does it meet the <strong>specifications</strong>? Is it free of defects?</td>
+</tr>
+<tr>
+<td><strong>Validation</strong></td>
+<td><em>Are we building the <strong>right</strong> system?</em></td>
+<td>Does it meet the <strong>user&#39;s actual needs</strong> and solve the real problem?</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>A system can be perfectly <strong>verified</strong> — flawlessly built to spec — and completely fail <strong>validation</strong>, because the spec described the wrong thing.</p>
+</blockquote>
+<h3 id="5-2-the-five-evaluation-activities">5.2 The Five Evaluation Activities</h3>
+<table>
+<thead>
+<tr>
+<th>Activity</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Evaluating test data</strong></td>
+<td>Confirms the system produces correct output across normal, boundary and invalid inputs <strong>before</strong> deployment</td>
+</tr>
+<tr>
+<td><strong>Trialling operation and maintenance documentation</strong></td>
+<td>Ensures the documentation actually works for the people who will run and maintain the system — supports <strong>long-term success</strong> after the developers leave</td>
+</tr>
+<tr>
+<td><strong>Reviewing the impact of implementation</strong></td>
+<td>Assessing effects across the organisation — see §5.3</td>
+</tr>
+<tr>
+<td><strong>Modifying designs to improve functionality</strong></td>
+<td>Using <strong>user feedback</strong> to identify shortcomings and refine the system</td>
+</tr>
+<tr>
+<td><strong>Testing, evaluating and maintaining</strong></td>
+<td>Ongoing after deployment, not a one-off event</td>
+</tr>
+</tbody></table>
+<h3 id="5-3-reviewing-organisational-impact">5.3 Reviewing Organisational Impact</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>How it may be affected</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Employees</strong></td>
+<td>New skills required, changed roles, resistance, possible displacement</td>
+</tr>
+<tr>
+<td><strong>Processes and workflows</strong></td>
+<td>Tasks performed differently, some eliminated, new steps introduced</td>
+</tr>
+<tr>
+<td><strong>Customers and clients</strong></td>
+<td>Service speed, accuracy and experience change</td>
+</tr>
+<tr>
+<td><strong>Finances</strong></td>
+<td>Implementation and training costs against efficiency gains</td>
+</tr>
+<tr>
+<td><strong>Data and information</strong></td>
+<td>New data collected, new storage and security obligations</td>
+</tr>
+<tr>
+<td><strong>The environment</strong></td>
+<td>Energy consumption, hardware disposal, reduced paper use</td>
+</tr>
+</tbody></table>
+<h3 id="5-4-test-data-categories">5.4 Test Data Categories</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Definition</th>
+<th>Example (age must be 0–120)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Normal / valid</strong></td>
+<td>Typical expected values</td>
+<td>25</td>
+</tr>
+<tr>
+<td><strong>Boundary</strong></td>
+<td>Values at the <strong>edges</strong> of the valid range</td>
+<td>0, 120</td>
+</tr>
+<tr>
+<td><strong>Extreme / invalid</strong></td>
+<td>Values <strong>outside</strong> the range, or the wrong type</td>
+<td>−5, 200, &quot;abc&quot;</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Why each matters:</strong> normal data proves the system works in ordinary use. Boundary data catches <strong>off-by-one</strong> errors, the most common logic fault. Invalid data proves the system <strong>rejects bad input gracefully</strong> rather than crashing.</p>
+</blockquote>
+<h3 id="5-5-why-continuous-testing-after-deployment">5.5 Why Continuous Testing After Deployment</h3>
+<ul>
+<li><strong>Requirements change</strong> as the enterprise changes</li>
+<li><strong>The operating environment changes</strong> — new hardware, operating systems, integrations</li>
+<li><strong>New defects surface</strong> only under real-world load and unusual conditions</li>
+<li><strong>Security threats evolve</strong>, so what was secure at launch may not remain so</li>
+<li><strong>User feedback</strong> reveals usability problems invisible during development</li>
+</ul>
+<hr>
+<h2 id="6-exam-question-bank">6. Exam Question Bank</h2>
+<blockquote>
+<p>Straight from the unit deck. These are the shapes the questions take.</p>
+</blockquote>
+<p><strong>Design thinking</strong></p>
+<ol>
+<li>Which stage focuses on understanding the needs and challenges of end-users?</li>
+<li>Which stage involves generating possible solutions?</li>
+<li>What is the purpose of creating a prototype?</li>
+</ol>
+<p><strong>Thinking and design tools</strong></p>
+<ol start="4">
+<li>Which tool visualises how users interact with a system?</li>
+<li>Which project management tool schedules tasks, milestones and deadlines?</li>
+<li>Which thinking tool represents logical decision-making processes?</li>
+</ol>
+<p><strong>Risk analysis</strong></p>
+<ol start="7">
+<li>What is the purpose of conducting a risk analysis?</li>
+<li>Identify four common types of risk.</li>
+<li>Name one strategy to reduce security risks.</li>
+</ol>
+<p><strong>Integration and training</strong></p>
+<ol start="10">
+<li>Why is hardware and software integration important?</li>
+<li>What should be considered when integrating new software with existing systems?</li>
+<li>Why should end-users receive training before implementation?</li>
+<li>Suggest two training methods.</li>
+</ol>
+<p><strong>Implementation methods</strong></p>
+<ol start="14">
+<li>Which method introduces the system to the <strong>entire organisation at once</strong>? → <strong>Direct</strong></li>
+<li>Which allows <strong>old and new to operate together</strong>? → <strong>Parallel</strong></li>
+<li>Which introduces it to a <strong>small group</strong> first? → <strong>Pilot</strong></li>
+<li>Which introduces it <strong>one module or department at a time</strong>? → <strong>Phased</strong></li>
+</ol>
+<p><strong>Testing methodologies</strong></p>
+<ol start="18">
+<li>Which checks <strong>every function</strong> performs correctly? → <strong>Functional</strong></li>
+<li>Which uses <strong>real operational data</strong>? → <strong>Live data</strong></li>
+<li>Which uses <strong>artificially created</strong> data? → <strong>Simulated data</strong></li>
+<li>Which allows <strong>real users to evaluate</strong> before release? → <strong>Beta</strong></li>
+<li>Which determines whether the system handles <strong>very large data volumes</strong>? → <strong>Volume</strong></li>
+</ol>
+<p><strong>Extension — higher order</strong></p>
+<ol start="23">
+<li>Which implementation method for a <strong>hospital management system</strong>? Justify.</li>
+<li>Why is risk analysis important in an implementation plan?</li>
+<li>How does design thinking contribute to successful development?</li>
+<li>Why is user training essential?</li>
+<li>Compare <strong>parallel and direct</strong> implementation. Which for a <strong>banking system</strong>, and why?</li>
+<li>Why include multiple testing methodologies rather than one?</li>
+</ol>
+<p><strong>Testing and evaluating</strong></p>
+<ul>
+<li>What is the difference between <strong>verification and validation</strong>?</li>
+<li>Why evaluate test data before deployment?</li>
+<li>Identify <strong>four types of test data</strong> and explain why each matters.</li>
+<li>How does trialling <strong>maintenance documentation</strong> support long-term success?</li>
+<li>What aspects of the organisation should be evaluated after implementation?</li>
+<li>How can <strong>user feedback</strong> modify design and improve functionality?</li>
+<li>Why do systems require <strong>continuous</strong> testing, evaluation and maintenance?</li>
+</ul>
+<hr>
+<h2 id="7-confusing-terms-quick-reference">7. Confusing Terms — Quick Reference</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+<th>Don&#39;t confuse with</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Verification</strong></td>
+<td>Built <strong>right</strong> — meets the spec</td>
+<td><strong>Validation</strong> — the <strong>right</strong> system, meets user needs</td>
+</tr>
+<tr>
+<td><strong>Direct implementation</strong></td>
+<td>Whole organisation at once, no fallback</td>
+<td><strong>Parallel</strong> — both run together</td>
+</tr>
+<tr>
+<td><strong>Pilot</strong></td>
+<td>Small <strong>group</strong> of users first</td>
+<td><strong>Phased</strong> — one <strong>module or department</strong> at a time</td>
+</tr>
+<tr>
+<td><strong>Waterfall</strong></td>
+<td>Linear, sequential, fixed requirements</td>
+<td><strong>Agile</strong> — iterative, expects change</td>
+</tr>
+<tr>
+<td><strong>Prototyping</strong></td>
+<td>Build a model to clarify requirements</td>
+<td><strong>Agile</strong> — a whole development methodology</td>
+</tr>
+<tr>
+<td><strong>Functional testing</strong></td>
+<td>Every function against spec</td>
+<td><strong>Acceptance testing</strong> — the <strong>client</strong> confirms</td>
+</tr>
+<tr>
+<td><strong>Live data</strong></td>
+<td>Real operational data</td>
+<td><strong>Simulated data</strong> — artificially generated</td>
+</tr>
+<tr>
+<td><strong>Boundary data</strong></td>
+<td>At the <strong>edges</strong> of valid range</td>
+<td><strong>Invalid data</strong> — <strong>outside</strong> the range</td>
+</tr>
+<tr>
+<td><strong>System flowchart</strong></td>
+<td>Sequence of logic</td>
+<td><strong>DFD</strong> — movement of data</td>
+</tr>
+<tr>
+<td><strong>Gantt chart</strong></td>
+<td>Tasks, milestones, deadlines over time</td>
+<td><strong>Decision tree</strong> — branching logic</td>
+</tr>
+<tr>
+<td><strong>Needs</strong></td>
+<td>What the client must have</td>
+<td><strong>Wants</strong> — what they would like</td>
+</tr>
+<tr>
+<td><strong>Offshore development</strong></td>
+<td>Work sent overseas</td>
+<td><strong>Outsourcing</strong> — contracted externally, may be local</td>
+</tr>
+</tbody></table>
+<hr>
+<blockquote>
+<p><strong>See also:</strong> <a href="Terminology.html">Terminology</a> | <a href="Data_Science.html">Data Science</a> | <a href="Intelligent_Systems.html">Intelligent Systems</a> | <a href="Data_Visualisation.html">Data Visualisation</a> | <a href="MOC.html">MOC</a></p>
+</blockquote>
+</article></main></div><nav class="rail" aria-label="On this page"><div class="rail-title">On this page</div><ul><li><a href="#1-the-four-project-phases" data-target="1-the-four-project-phases">1. The Four Project Phases</a></li><li><a href="#2-identifying-and-defining" data-target="2-identifying-and-defining">2. Identifying and Defining</a><ul class="sub"><li><a href="#2-1-tools-and-processes-for-managing-and-documenting-development" data-target="2-1-tools-and-processes-for-managing-and-documenting-development" data-parent="2-identifying-and-defining">2.1 Tools and Processes for Managing and Documenting Development</a></li><li><a href="#2-2-the-changing-nature-of-enterprise" data-target="2-2-the-changing-nature-of-enterprise" data-parent="2-identifying-and-defining">2.2 The Changing Nature of Enterprise</a></li></ul></li><li><a href="#3-researching-and-planning" data-target="3-researching-and-planning">3. Researching and Planning</a><ul class="sub"><li><a href="#3-1-tools-supporting-design-and-development" data-target="3-1-tools-supporting-design-and-development" data-parent="3-researching-and-planning">3.1 Tools Supporting Design and Development</a></li><li><a href="#3-2-thinking-skills" data-target="3-2-thinking-skills" data-parent="3-researching-and-planning">3.2 Thinking Skills</a></li><li><a href="#3-3-collaborating-and-managing-criteria" data-target="3-3-collaborating-and-managing-criteria" data-parent="3-researching-and-planning">3.3 Collaborating and Managing Criteria</a></li></ul></li><li><a href="#4-producing-and-implementing" data-target="4-producing-and-implementing">4. Producing and Implementing</a><ul class="sub"><li><a href="#4-1-tools-to-inform-requirements-and-limitations" data-target="4-1-tools-to-inform-requirements-and-limitations" data-parent="4-producing-and-implementing">4.1 Tools to Inform Requirements and Limitations</a></li><li><a href="#4-2-development-approaches" data-target="4-2-development-approaches" data-parent="4-producing-and-implementing">4.2 Development Approaches</a></li><li><a href="#4-3-design-thinking" data-target="4-3-design-thinking" data-parent="4-producing-and-implementing">4.3 Design Thinking</a></li><li><a href="#4-4-risk-analysis" data-target="4-4-risk-analysis" data-parent="4-producing-and-implementing">4.4 Risk Analysis</a></li><li><a href="#4-5-hardware-and-software-integration" data-target="4-5-hardware-and-software-integration" data-parent="4-producing-and-implementing">4.5 Hardware and Software Integration</a></li><li><a href="#4-6-training" data-target="4-6-training" data-parent="4-producing-and-implementing">4.6 Training</a></li><li><a href="#4-7-system-implementation-methods" data-target="4-7-system-implementation-methods" data-parent="4-producing-and-implementing">4.7 System Implementation Methods</a></li><li><a href="#4-8-testing-methodologies" data-target="4-8-testing-methodologies" data-parent="4-producing-and-implementing">4.8 Testing Methodologies</a></li></ul></li><li><a href="#5-testing-and-evaluating" data-target="5-testing-and-evaluating">5. Testing and Evaluating</a><ul class="sub"><li><a href="#5-1-verification-vs-validation" data-target="5-1-verification-vs-validation" data-parent="5-testing-and-evaluating">5.1 Verification vs Validation</a></li><li><a href="#5-2-the-five-evaluation-activities" data-target="5-2-the-five-evaluation-activities" data-parent="5-testing-and-evaluating">5.2 The Five Evaluation Activities</a></li><li><a href="#5-3-reviewing-organisational-impact" data-target="5-3-reviewing-organisational-impact" data-parent="5-testing-and-evaluating">5.3 Reviewing Organisational Impact</a></li><li><a href="#5-4-test-data-categories" data-target="5-4-test-data-categories" data-parent="5-testing-and-evaluating">5.4 Test Data Categories</a></li><li><a href="#5-5-why-continuous-testing-after-deployment" data-target="5-5-why-continuous-testing-after-deployment" data-parent="5-testing-and-evaluating">5.5 Why Continuous Testing After Deployment</a></li></ul></li><li><a href="#6-exam-question-bank" data-target="6-exam-question-bank">6. Exam Question Bank</a></li><li><a href="#7-confusing-terms-quick-reference" data-target="7-confusing-terms-quick-reference">7. Confusing Terms — Quick Reference</a></li></ul></nav><script>
+function toggleTheme(ev){
+var oldTheme=document.documentElement.getAttribute("data-theme")||"dark";
+var next=oldTheme==="light"?"dark":"light";
+function apply(){document.documentElement.setAttribute("data-theme",next);try{localStorage.setItem("vault-theme",next)}catch(e){}updateThemeIcons(next);}
+var reduced=false;try{reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
+if(reduced){apply();return;}
+if(window.__vaultThemeAnimating){return;}
+window.__vaultThemeAnimating=1;
+var newPaper=next==="light"?"#faf8f2":"#13151b";
+var W=window.innerWidth,H=window.innerHeight;
+var spacing=W<768?36:28;
+var maxR=spacing*0.78;
+var dpr=1;try{dpr=W<768?1:Math.min(window.devicePixelRatio||1,1.5);}catch(e){}
+var canvas=document.createElement("canvas");
+canvas.id="theme-wave";
+canvas.style.cssText="position:fixed;left:0;top:0;width:"+W+"px;height:"+H+"px;z-index:9999;pointer-events:none;";
+canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+var ctx=canvas.getContext("2d");
+try{ctx.setTransform(dpr,0,0,dpr,0,0);}catch(e){}
+ctx.fillStyle=newPaper;
+var dots=[];
+for(var y=spacing/2;y<H+spacing;y+=spacing){for(var x=spacing/2;x<W+spacing;x+=spacing){dots.push({x:x,y:y,delay:(x+y)/(W+H)*450,done:0});}}
+var waveMs=450,growMs=300;
+var start=Date.now();
+function easeOutCubic(p){return 1-Math.pow(1-p,3);}
+function step(){
+var elapsed=Date.now()-start;
+var allDone=true;
+var any=false;
+ctx.beginPath();
+for(var i=0;i<dots.length;i++){
+var d=dots[i];
+if(d.done){continue;}
+var p=(elapsed-d.delay)/growMs;
+if(p<0){allDone=false;continue;}
+if(p<1){allDone=false;}
+else{d.done=1;}
+var r=maxR*easeOutCubic(p<1?p:1);
+if(r>0){ctx.moveTo(d.x+r,d.y);ctx.arc(d.x,d.y,r,0,Math.PI*2);any=true;}
+}
+if(any){ctx.fill();}
+if(!allDone){requestAnimationFrame(step);return;}
+apply();
+canvas.style.transition="opacity 0.15s ease";
+canvas.style.opacity="0";
+setTimeout(function(){window.__vaultThemeAnimating=0;if(canvas.parentNode)canvas.parentNode.removeChild(canvas);},180);
+}
+document.body.appendChild(canvas);
+requestAnimationFrame(step);
+}
+function updateThemeIcons(theme){var icon=theme==="dark"?"☀":"☾";document.querySelectorAll(".theme-btn").forEach(function(b){b.textContent=icon;});}
+try{updateThemeIcons(document.documentElement.getAttribute("data-theme")||"dark");}catch(e){}
+function toggleMenu(force){document.body.classList.toggle("menu-open",force)}
+document.addEventListener("keydown",function(e){if(e.key==="/"&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();var s=document.querySelector(".side-search");if(s)s.focus()}});
+document.addEventListener("click",function(e){if(e.target.closest(".side a"))toggleMenu(false)});
+(function(){try{
+var links=Array.prototype.slice.call(document.querySelectorAll(".rail a"));
+if(!links.length||!window.IntersectionObserver)return;
+var map={};links.forEach(function(a){map[a.getAttribute("data-target")]=a});
+var obs=new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove("active");a.classList.remove("parent-active")});
+      var l=map[e.target.id];
+      if(l){l.classList.add("active");var p=l.getAttribute("data-parent");if(p&&map[p])map[p].classList.add("parent-active")}
+    }
+  });
+}, {rootMargin:"-20% 0px -70% 0px"});
+document.querySelectorAll(".prose h2[id], .prose h3[id]").forEach(function(h){obs.observe(h)});
+}catch(e){}})();
+(function(){try{
+var cv=document.getElementById("dotgrid");if(!cv)return;var ctx=cv.getContext("2d");if(!ctx)return;
+var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var W=0,H=0,dpr=1,cols=0,rows=0,SP=28,px=0,py=0,pt=0,hasP=false;
+function dotRGB(){try{return getComputedStyle(document.documentElement).getPropertyValue("--dot-rgb").trim()||"233,231,225"}catch(e){return "233,231,225"}}
+function resize(){dpr=Math.min(window.devicePixelRatio||1,window.innerWidth<700?1.5:2);SP=window.innerWidth<700?36:28;W=window.innerWidth;H=window.innerHeight;cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+"px";cv.style.height=H+"px";ctx.setTransform(dpr,0,0,dpr,0,0);cols=Math.ceil(W/SP)+1;rows=Math.ceil(H/SP)+1}
+var R=Math.random()*Math.PI*2;
+var FORCES=[
+ {ax:.42,ay:.15,tx:26,ty:31,px:R,py:R+1.3,circ:false},
+ {ax:.38,ay:.42,tx:37,ty:23,px:R+2.1,py:R+0.7,circ:false},
+ {ax:.30,ay:.30,tx:41,ty:41,px:R+4.0,py:R+4.0,circ:true}
+];
+function draw(now){var t=now/1000;var rgb=dotRGB();
+var activeForces=W>=1280?FORCES:FORCES.slice(0,1);
+var pFade=hasP?Math.max(0,1-(now-pt)/4000):0;
+ctx.clearRect(0,0,W,H);
+for(var y=0;y<rows;y++)for(var x=0;x<cols;x++){var ox=x*SP+10,oy=y*SP+10,a=0.14,dispX=0,dispY=0;
+for(var fi=0;fi<activeForces.length;fi++){var F=activeForces[fi];
+var fx=F.circ?W*(0.5+F.ax*Math.cos(t*2*Math.PI/F.tx+F.px)):W*(0.5+F.ax*Math.sin(t*2*Math.PI/F.tx+F.px));
+var fy=F.circ?H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py)):H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py));
+var ddx=ox-fx,ddy=oy-fy,d=Math.sqrt(ddx*ddx+ddy*ddy);
+if(d<170&&d>0.01){var f=1-d/170;f=f*f;dispX+=(ddx/d)*6*f;dispY+=(ddy/d)*6*f;a+=0.20*f}}
+var dm=Math.sqrt(dispX*dispX+dispY*dispY);if(dm>9){dispX*=9/dm;dispY*=9/dm}
+var dx=ox+dispX,dy=oy+dispY;if(a>0.38)a=0.38;
+if(pFade>0){var pdx=ox-px,pdy=oy-py,pd=Math.sqrt(pdx*pdx+pdy*pdy);
+if(pd<150&&pd>0.01){var pf=1-pd/150;pf=pf*pf*pFade;dx+=(pdx/pd)*5*pf;dy+=(pdy/pd)*5*pf;a=Math.min(0.38,a+0.18*pf)}}
+ctx.beginPath();ctx.arc(dx,dy,1.3,0,Math.PI*2);ctx.fillStyle="rgba("+rgb+","+a.toFixed(3)+")";ctx.fill()}}
+function loop(now){if(!window.__vaultThemeAnimating)draw(now);if(!reduced)requestAnimationFrame(loop)}
+window.addEventListener("resize",resize);resize();
+window.addEventListener("pointermove",function(e){px=e.clientX;py=e.clientY;pt=performance.now();hasP=true},{passive:true});
+requestAnimationFrame(loop);
+}catch(e){}})();
+</script></body></html>

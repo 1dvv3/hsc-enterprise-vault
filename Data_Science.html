@@ -1,0 +1,1302 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Data Science — HSC Enterprise Vault</title><style>
+:root{--paper:#faf8f2;--ink:#1e1b16;--muted:#6b655a;--line:#e3ddd0;--accent:#1d4ed8;--card:#fffdf8;--side:#f3efe6;--side-bg:rgba(243,239,230,.88);--active:#e8e0cd;--rail-tint:rgba(29,78,216,.14);--rail-tint-soft:rgba(29,78,216,.07);--code:#efe9db;--quote:#4a4438;--dot-rgb:30,27,22;--scheme:light}
+[data-theme="dark"]{--paper:#13151b;--ink:#e9e7e1;--muted:#9aa0ab;--line:#2b2f3a;--accent:#8ab4ff;--card:#1b1e27;--side:#101218;--side-bg:rgba(16,18,24,.88);--active:#262b38;--rail-tint:rgba(138,180,255,.18);--rail-tint-soft:rgba(138,180,255,.09);--code:#262a36;--quote:#c3c7cf;--dot-rgb:233,231,225;--scheme:dark}
+*{box-sizing:border-box}html{color-scheme:var(--scheme)}body{margin:0;background:var(--paper);color:var(--ink);font:16.5px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none;transition:color .18s ease}a:hover{text-decoration:underline}
+#dotgrid{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;padding:22px 18px;border-right:1px solid var(--line);background:var(--side-bg)}
+.side h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:22px 0 6px}
+.side ul{list-style:none;margin:0;padding:0}.side li{margin:3px 0}
+.side a{display:block;padding:7px 10px;border-radius:8px;color:var(--ink);transition:background .18s ease,transform .18s ease}
+.side a.active{background:var(--active);font-weight:600}
+.side a:hover{background:var(--active);text-decoration:none;transform:translateX(3px)}
+.side-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.theme-btn{flex:none;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--ink);font-size:18px;cursor:pointer;transition:background .18s ease}
+.theme-btn:hover{background:var(--active)}
+.home-link{font-weight:700;font-size:18px}.side-search{width:100%;margin:14px 0 4px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-size:16px}
+.side-note{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:24px}
+.topbar{display:none}.backdrop{display:none}
+main{padding:36px 44px;max-width:860px}.prose h1{font-size:32px;line-height:1.2;letter-spacing:-.02em;margin:0 0 6px}
+.prose h2{font-size:23px;margin:34px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
+.prose h3{font-size:18px;margin:26px 0 6px}.prose p{margin:10px 0}
+.prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.prose th,.prose td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--side)}.prose blockquote{border-left:3px solid var(--line);margin:14px 0;padding:2px 14px;color:var(--quote);background:var(--card)}
+.prose code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:14px}.prose pre{background:#0d0f14;color:#f5f1e6;padding:14px;border-radius:8px;overflow:auto}
+.prose pre code{background:none;color:inherit;padding:0}.prose hr{border:none;border-top:1px solid var(--line);margin:24px 0}
+.meta{color:var(--muted);font-size:14px;margin-bottom:20px}.toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:18px 0}
+.toc b{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.toc ul{margin:8px 0 0;padding-left:18px}.toc li{margin:3px 0}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.card h3{margin:0 0 4px}.card p{margin:0;color:var(--muted);font-size:14.5px}
+#search{width:100%;padding:13px 14px;font-size:17px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.result{border-bottom:1px solid var(--line);padding:14px 6px;border-radius:8px;transition:background .18s ease,transform .18s ease}
+.result:hover{background:var(--card);transform:translateX(3px)}
+.result h3{margin:0}.result p{margin:4px 0;color:var(--quote)}.result .path{font-size:13px;color:var(--muted)}
+mark{background:#fde68a;color:#1e1b16;padding:0 1px}
+html{scroll-behavior:smooth}
+.rail{display:none}
+@media(min-width:1280px){
+main{max-width:min(860px,calc(100vw - 692px))}
+.rail{display:block;position:fixed;right:24px;top:50%;transform:translateY(-50%);width:340px;max-height:76vh;overflow:auto;z-index:15;background:none;border:none;box-shadow:none;padding:18px 14px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%)}
+.rail-title{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:2px 0 12px 12px}
+.rail ul{list-style:none;margin:0;padding:0}
+.rail li{margin:3px 0}
+.rail a{display:block;padding:11px 14px;border-radius:10px;color:var(--ink);font-size:17px;line-height:1.4;transition:transform .2s ease,background .2s ease}
+.rail a:hover,.rail a:focus-visible{background:var(--rail-tint-soft);transform:translateX(-4px) scale(1.02);text-decoration:none}
+.rail a.active{background:var(--rail-tint);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-weight:600;transform:translateX(-12px);width:calc(100% + 12px)}
+.rail a.parent-active{background:var(--rail-tint-soft)}
+.rail ul.sub{margin:3px 0 3px 14px;padding-left:14px;border-left:1px solid var(--line)}
+.rail ul.sub a{padding:9px 12px;font-size:15px;color:var(--muted)}
+.rail ul.sub a:hover{color:var(--ink)}
+.rail ul.sub a.active{color:var(--ink);transform:translateX(-8px);width:calc(100% + 8px)}
+}
+@media(max-width:900px){
+.topbar{display:flex;position:sticky;top:0;z-index:20;align-items:center;gap:10px;padding:12px 14px;background:var(--side);border-bottom:1px solid var(--line)}
+.topbar b{flex:1;font-size:17px}.menu-btn,.topbar .theme-btn{width:44px;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:19px;cursor:pointer}
+.wrap{grid-template-columns:1fr}
+.wrap{z-index:auto}
+.side{background:var(--side)}
+.side a{padding:11px 12px}
+body.menu-open{overflow:hidden}
+.side{position:fixed;inset:0 auto 0 0;width:300px;max-width:86vw;height:100dvh;z-index:30;transform:translateX(-105%);transition:transform .25s ease;box-shadow:0 0 40px rgba(0,0,0,.4)}
+body.menu-open .side{transform:translateX(0)}
+.backdrop{display:none}body.menu-open .backdrop{display:block;position:fixed;inset:0;z-index:25;background:rgba(0,0,0,.45)}
+main{padding:22px 16px}.prose h1{font-size:26px}.prose h2{font-size:21px}.cards{grid-template-columns:1fr}
+.prose table{font-size:14px}.prose pre{font-size:13.5px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style><script>(function(){try{var t=localStorage.getItem("vault-theme")||"dark";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark")}})()</script></head><body><canvas id="dotgrid" aria-hidden="true"></canvas><header class="topbar"><button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Open notes menu">☰</button><b>Enterprise Vault</b><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></header><div class="backdrop" onclick="toggleMenu(false)"></div><div class="wrap"><nav class="side" id="side"><div class="side-head"><a class="home-link" href="index.html">⌂ Vault home</a><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></div><input class="side-search" type="search" placeholder="Search notes…  ( / )" onkeydown="if(event.key==='Enter'){location.href='index.html?q='+encodeURIComponent(this.value)}"><h3>Enterprise Computing</h3><ul><li><a class="" href="MOC.html">MOC</a></li><li><a class="active" href="Data_Science.html">Data Science</a></li><li><a class="" href="Data_Visualisation.html">Data Visualisation</a></li><li><a class="" href="Enterprise_Project.html">Enterprise Project</a></li><li><a class="" href="Intelligent_Systems.html">Intelligent Systems</a></li><li><a class="" href="Principles_of_Cybersecurity.html">Principles of Cybersecurity</a></li><li><a class="" href="Terminology.html">Terminology</a></li></ul><p class="side-note">Source: TheSashi HSC Enterprise Computing Notes. Cloned 25 Oct 2026. Content unchanged.</p></nav><main><article class="prose"><h1>Data Science</h1><p class="meta">Enterprise Computing · Data_Science.md</p><div class="toc"><b>On this page</b><ul><li><a href="#1-ethical-issues-in-data-use">1. Ethical Issues in Data Use</a></li><li><a href="#2-legal-issues-in-data-use">2. Legal Issues in Data Use</a></li><li><a href="#3-social-issues-curated-and-communicated-data">3. Social Issues — Curated and Communicated Data</a></li><li><a href="#4-data-types-and-levels-of-measurement">4. Data Types and Levels of Measurement</a></li><li><a href="#5-databases-and-sql">5. Databases and SQL</a></li><li><a href="#6-spreadsheets-and-dashboards">6. Spreadsheets and Dashboards</a></li><li><a href="#7-data-scale-and-big-data">7. Data Scale and Big Data</a></li><li><a href="#8-data-sampling-and-storage">8. Data Sampling and Storage</a></li><li><a href="#9-errors-uncertainty-and-data-quality">9. Errors, Uncertainty and Data Quality</a></li><li><a href="#10-blockchain">10. Blockchain</a></li><li><a href="#11-data-mining-machine-learning-and-statistical-modelling">11. Data Mining, Machine Learning and Statistical Modelling</a></li><li><a href="#12-confusing-terms-quick-reference">12. Confusing Terms — Quick Reference</a></li></ul></div><h1>Data Science — HSC Final Notes</h1>
+<blockquote>
+<p>✅ <strong>Named topic in the Trial (Task 4).</strong> 80 marks · 30% · 2½ hrs incl. 10 min reading · <strong>online</strong>, practical <strong>and</strong> theoretical.
+Outcomes: <strong>EC-12-02, EC-12-03, EC-12-04, EC-12-05, EC-12-07</strong>
+Terminology: <a href="Terminology.html">Terminology</a> · Index: <a href="MOC.html">MOC</a></p>
+</blockquote>
+<hr>
+<h2 id="1-ethical-issues-in-data-use">1. Ethical Issues in Data Use</h2>
+<p><strong>The ethical use of data</strong> means ensuring fairness, accuracy, and respect for privacy and ownership.</p>
+<h3 id="1-1-the-seven-ethical-principles">1.1 The Seven Ethical Principles</h3>
+<table>
+<thead>
+<tr>
+<th>Principle</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Consent</strong></td>
+<td>Participants are informed about the purpose of the research, the data collected and how it will be used, and give <strong>informed consent</strong></td>
+</tr>
+<tr>
+<td><strong>Confidentiality</strong></td>
+<td>Researchers maintain the confidentiality of participants and their data unless otherwise agreed or required by law</td>
+</tr>
+<tr>
+<td><strong>Privacy</strong></td>
+<td>Collection, storage and use of personal data respects individuals&#39; privacy and complies with data protection laws</td>
+</tr>
+<tr>
+<td><strong>Data accuracy</strong></td>
+<td>Data collected is accurate and reliable, minimising potential harm to participants</td>
+</tr>
+<tr>
+<td><strong>Data security</strong></td>
+<td>Collected data is stored securely and protected against unauthorised access, loss or theft</td>
+</tr>
+<tr>
+<td><strong>Transparency</strong></td>
+<td>Researchers are open about their methods, results and any potential biases</td>
+</tr>
+<tr>
+<td><strong>Responsibility</strong></td>
+<td>Researchers take responsibility for the consequences of their research</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing pair — Confidentiality vs Privacy</strong>
+<strong>Privacy</strong> is the individual&#39;s <strong>right</strong> to control their personal information.
+<strong>Confidentiality</strong> is the researcher&#39;s <strong>obligation</strong> not to disclose it.
+Privacy belongs to the person. Confidentiality is a duty owed to them.</p>
+</blockquote>
+<h3 id="1-2-the-seven-ethical-issues">1.2 The Seven Ethical Issues</h3>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Bias</strong></td>
+<td>Systematic unfairness arising from how data is collected, processed or interpreted. Leads to discrimination. Addressed through <strong>diverse and representative datasets</strong> and awareness of prejudice in algorithms</td>
+</tr>
+<tr>
+<td><strong>Accuracy of collected data</strong></td>
+<td>Inaccurate data produces incorrect conclusions. Addressed through regular <strong>validation, cleaning and cross-referencing</strong> with reliable sources</td>
+</tr>
+<tr>
+<td><strong>Metadata</strong></td>
+<td>Data <strong>about</strong> other data — how, when and by whom it was collected. Proper management ensures transparency and improves data governance</td>
+</tr>
+<tr>
+<td><strong>Copyright and acknowledgement of source data</strong></td>
+<td>Citing sources accurately and adhering to licensing agreements to avoid legal issues and credit original providers</td>
+</tr>
+<tr>
+<td><strong>Intellectual property and ICIP</strong></td>
+<td>IP laws protect data creators. <strong>Indigenous Cultural and Intellectual Property</strong> recognises the right of Indigenous communities to control cultural heritage and traditional knowledge. Requires <strong>obtaining consent and acknowledging ownership</strong></td>
+</tr>
+<tr>
+<td><strong>Permissions, rights and privacy of individuals</strong></td>
+<td>Including <strong>cultural responsibility</strong> — handling data in ways that respect cultural protocols</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>Protecting data from unauthorised access, breaches and cyber attack</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing term — Metadata</strong>: data that describes other data. A photo&#39;s metadata includes the date, camera model and GPS location. Metadata is an <strong>ethical issue</strong> because it can identify people even when the underlying data is anonymised.</p>
+</blockquote>
+<h3 id="1-3-software-features-affecting-privacy-and-security">1.3 Software Features Affecting Privacy and Security</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Risks</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Autofill</strong></td>
+<td><strong>Data leakage</strong> if a device is lost or stolen · exploited by <strong>phishing</strong> to capture credentials on fake sites · <strong>unwanted sharing</strong> on shared or public devices · saves a record of everything entered</td>
+<td>Disable on public and shared browsers, review and delete saved data, use a password manager with encryption and two-factor authentication</td>
+</tr>
+<tr>
+<td><strong>Public or private connections</strong></td>
+<td><strong>Public Wi-Fi</strong> (airports, cafés, hotels) is generally <strong>unsecured</strong> — data can be intercepted. <strong>Private networks</strong> are more secure but can still be hacked or infected with malware</td>
+<td><strong>Encryption</strong> via a <strong>VPN</strong> before transmission · <strong>firewalls</strong> to block unauthorised access · <strong>awareness</strong> of the risks of each connection type</td>
+</tr>
+<tr>
+<td><strong>Checkbox</strong></td>
+<td>Users may <strong>inadvertently consent</strong> to data collection or third-party sharing without understanding the implications</td>
+<td>Read before ticking; understand what each box authorises</td>
+</tr>
+<tr>
+<td><strong>Terms of agreement (TOA)</strong></td>
+<td>Specify what data is <strong>collected</strong>, how it is <strong>shared</strong> with partners, affiliates and advertisers, and <strong>retention and deletion</strong> policies. Users who don&#39;t read them may unknowingly consent</td>
+<td>Read and understand before accepting. In some cases users can <strong>negotiate</strong> terms or seek alternative agreements</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="2-legal-issues-in-data-use">2. Legal Issues in Data Use</h2>
+<h3 id="2-1-legislation">2.1 Legislation</h3>
+<p><strong>Privacy Act 1988 (Cth)</strong> — the primary Australian law governing how personal information is collected, used, stored and disclosed.</p>
+<p><strong>Australian Privacy Principles (APPs)</strong> — <strong>13 principles</strong> governing:</p>
+<pre><code>1. The collection, use and disclosure of personal information
+2. An organisation or agency&#39;s governance and accountability
+3. Integrity and correction of personal information
+4. The rights of individuals to access their personal information
+</code></pre>
+<p><strong>Notifiable Data Breaches (NDB) scheme</strong> — requires entities to notify <strong>affected individuals</strong> and the <strong>OAIC</strong> about data breaches likely to result in <strong>serious harm</strong>.</p>
+<h3 id="2-2-authorities-responsible-for-data-protection">2.2 Authorities Responsible for Data Protection</h3>
+<table>
+<thead>
+<tr>
+<th>Authority</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Office of the Australian Information Commissioner (OAIC)</strong></td>
+<td>The key authority. <strong>Enforces the Privacy Act</strong>, investigates complaints, and issues guidelines and resources for compliance</td>
+</tr>
+</tbody></table>
+<h3 id="2-3-data-sovereignty-of-aboriginal-and-torres-strait-islander-peoples">2.3 Data Sovereignty of Aboriginal and Torres Strait Islander Peoples</h3>
+<p><strong>Indigenous data sovereignty</strong> is the right of Aboriginal and Torres Strait Islander Peoples to control the <strong>collection, ownership and application</strong> of data about their communities.</p>
+<table>
+<thead>
+<tr>
+<th>Consideration</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Informed consent</strong></td>
+<td>Data collection conducted with the <strong>community&#39;s</strong> informed consent, not just an individual&#39;s</td>
+</tr>
+<tr>
+<td><strong>Cultural respect</strong></td>
+<td>Data handled in ways that respect cultural protocols and values</td>
+</tr>
+<tr>
+<td><strong>Control and ownership</strong></td>
+<td>Communities empowered to manage and decide how their data is used and accessed</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing pair — ICIP vs Data sovereignty</strong>
+<strong>ICIP</strong> protects Indigenous <strong>cultural knowledge and heritage</strong> as intellectual property.
+<strong>Data sovereignty</strong> is the broader right to <strong>control data about the community itself</strong> — who collects it, who owns it, how it&#39;s used.
+ICIP is about the content. Sovereignty is about the control.</p>
+</blockquote>
+<hr>
+<h2 id="3-social-issues-curated-and-communicated-data">3. Social Issues — Curated and Communicated Data</h2>
+<h3 id="3-1-the-core-distinction">3.1 The Core Distinction</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Definition</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Curated data</strong></td>
+<td>Data that has been <strong>selected</strong>, with context removed and the message simplified for impact</td>
+<td>Persuasive. Creates strong signals, encourages conformity</td>
+</tr>
+<tr>
+<td><strong>Communicated data</strong></td>
+<td>Data presented <strong>with context and explanation</strong> — sample size, timeframe, limitations</td>
+<td>Informative. Meaning is clearer and less misleading</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Curated data is not fake — it is selective.</strong> That distinction is examinable.</p>
+</blockquote>
+<p><strong>Worked example.</strong> A post reads: <em>&quot;80% of students say AI tools make learning easier.&quot;</em></p>
+<pre><code>CURATED (what was shared)      &quot;80% of students say AI tools make learning easier&quot;
+
+COMMUNICATED (what was hidden)  Sample size: 50 students
+                                Year conducted: 2 years ago
+                                Limitations of the poll
+</code></pre>
+<p>The curated version moves data from <strong>informative to persuasive</strong>.</p>
+<h3 id="3-2-the-five-social-factors">3.2 The Five Social Factors</h3>
+<table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Data literacy</strong></td>
+<td>Determines whether data <strong>informs or influences</strong>. Data-literate users question the source, notice missing context and recognise signal manipulation. Less literate users accept the signal at face value and change behaviour without questioning</td>
+</tr>
+<tr>
+<td><strong>Timeframes</strong></td>
+<td><strong>When</strong> data is shared changes how people react. Shared too late, people can&#39;t act. Outdated data exaggerates relevance, misguides decisions and creates false confidence</td>
+</tr>
+<tr>
+<td><strong>Signals impacting behaviour</strong></td>
+<td>A figure like &quot;80%&quot; acts as a <strong>social signal</strong> suggesting what is normal, popular or acceptable. <strong>Signals influence behaviour even when data quality is weak</strong></td>
+</tr>
+<tr>
+<td><strong>Data swamps</strong></td>
+<td>Too much unorganised, undocumented or irrelevant data, making useful information hard to find. Systems trained on a data swamp <strong>repeat outdated assumptions, amplify weak signals and make poor recommendations</strong></td>
+</tr>
+<tr>
+<td><strong>Educating users</strong></td>
+<td>Teaching people how data works and how to interpret it helps them make smarter choices and protect their privacy</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Confusing pair — Data warehouse vs Data swamp</strong>
+A <strong>data warehouse</strong> is a <strong>structured, documented</strong> central repository built for analysis.
+A <strong>data swamp</strong> is an <strong>unmanaged accumulation</strong> — no documentation, no clarity of purpose.
+Same volume, opposite governance.</p>
+</blockquote>
+<hr>
+<h2 id="4-data-types-and-levels-of-measurement">4. Data Types and Levels of Measurement</h2>
+<h3 id="4-1-quantitative-vs-qualitative">4.1 Quantitative vs Qualitative</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Definition</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Quantitative</strong></td>
+<td>Numerical — can be counted or measured</td>
+<td>Scores, counts, dates, prices, temperatures</td>
+</tr>
+<tr>
+<td><strong>Qualitative</strong></td>
+<td>Descriptive — categories, text, observations</td>
+<td>Comments, feedback, colours, categories, opinions</td>
+</tr>
+</tbody></table>
+<h3 id="4-2-the-four-levels-of-measurement">4.2 The Four Levels of Measurement</h3>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Definition</th>
+<th>Can you…</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Nominal</strong></td>
+<td>Named categories with <strong>no order</strong></td>
+<td>Count only</td>
+<td>Eye colour, house, gender, suburb</td>
+</tr>
+<tr>
+<td><strong>Ordinal</strong></td>
+<td>Categories with a <strong>meaningful order</strong>, but unequal gaps</td>
+<td>Rank</td>
+<td>Satisfaction (poor/fair/good), year level, medal placing</td>
+</tr>
+<tr>
+<td><strong>Interval</strong></td>
+<td>Ordered, <strong>equal gaps</strong>, but <strong>no true zero</strong></td>
+<td>Add and subtract</td>
+<td>Temperature in °C, calendar years, IQ</td>
+</tr>
+<tr>
+<td><strong>Ratio</strong></td>
+<td>Ordered, equal gaps, <strong>true zero</strong></td>
+<td>Add, subtract, multiply, divide</td>
+<td>Height, weight, price, age, count</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>The test for interval vs ratio:</strong> does zero mean &quot;none of it&quot;? 0 kg means no mass → <strong>ratio</strong>. 0 °C does not mean no temperature → <strong>interval</strong>.
+You cannot say &quot;20 °C is twice as hot as 10 °C&quot;, but you <strong>can</strong> say &quot;20 kg is twice 10 kg&quot;.</p>
+</blockquote>
+<h3 id="4-3-structured-unstructured-and-alternative-data">4.3 Structured, Unstructured and Alternative Data</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Definition</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Structured</strong></td>
+<td>Organised in a fixed format — rows, columns, fields</td>
+<td>Databases, spreadsheets, tables</td>
+</tr>
+<tr>
+<td><strong>Unstructured</strong></td>
+<td>No fixed format, variable length</td>
+<td>Text, comments, images, video, memes</td>
+</tr>
+<tr>
+<td><strong>Alternative</strong></td>
+<td>Non-traditional feedback signals from a different format or source</td>
+<td><strong>Likes, emoticons, memes</strong>, click counts, sentiment labels</td>
+</tr>
+</tbody></table>
+<p><strong>Alternative data as feedback:</strong></p>
+<ul>
+<li><strong>Likes</strong> — indicate approval or support. The count gauges <strong>popularity</strong> and public response</li>
+<li><strong>Emoticons</strong> — pictorial representations of emotion. Provide insight into users&#39; <strong>emotional responses</strong>, opinions and attitudes</li>
+<li><strong>Memes</strong> — images, video or text spread virally, often satirical. Popularity measures <strong>public interest</strong> and reveals opinion and attitudes</li>
+</ul>
+<h3 id="4-4-informatics">4.4 Informatics</h3>
+<blockquote>
+<p><strong>Informatics</strong> is the study of the <strong>processing and management of information</strong>. It provides tools and techniques supporting the collection, organisation, analysis and interpretation of data.</p>
+</blockquote>
+<p><strong>Why it matters:</strong> without informatics, different data types remain <strong>disconnected and meaningless</strong>. Informatics enables a system to integrate, analyse and interpret diverse sources to produce informed outcomes.</p>
+<table>
+<thead>
+<tr>
+<th>On structured data</th>
+<th>On unstructured data</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Organise into <strong>entities, attributes and keys</strong></td>
+<td><strong>Categorise or tag</strong> data</td>
+</tr>
+<tr>
+<td>Apply <strong>queries</strong> — filtering, sorting, aggregation</td>
+<td><strong>Convert</strong> into semi-structured or structured form</td>
+</tr>
+<tr>
+<td>Support <strong>rule-based decisions</strong> (IF–THEN)</td>
+<td><strong>Link user feedback</strong> to system rules or outcomes</td>
+</tr>
+<tr>
+<td><em>Example:</em> visitor counts, timestamps and locations analysed to identify peak times and trigger automated decisions</td>
+<td><em>Example:</em> likes, emojis and comments interpreted as positive, neutral or negative and stored as <strong>sentiment values</strong> the system can reason with</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="5-databases-and-sql">5. Databases and SQL</h2>
+<h3 id="5-1-flat-file-vs-relational">5.1 Flat-file vs Relational</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Flat-file</th>
+<th>Relational (RDBMS)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Structure</strong></td>
+<td>A <strong>single table or file</strong> — plain text, CSV, JSON</td>
+<td><strong>Multiple linked tables</strong></td>
+</tr>
+<tr>
+<td><strong>Relationships</strong></td>
+<td>None</td>
+<td>Tables linked by <strong>keys</strong></td>
+</tr>
+<tr>
+<td><strong>Duplication</strong></td>
+<td>High</td>
+<td><strong>Reduced</strong></td>
+</tr>
+<tr>
+<td><strong>Indexing</strong></td>
+<td>None</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Small, simple datasets, prototypes</td>
+<td>Enterprise-scale data, accuracy and organisation</td>
+</tr>
+</tbody></table>
+<h3 id="5-2-keys">5.2 Keys</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Rules</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Primary key</strong></td>
+<td>Uniquely identifies each row · <strong>cannot be NULL</strong> · <strong>cannot be duplicated</strong></td>
+<td>Ensures each record is unique; maintains <strong>data integrity</strong></td>
+</tr>
+<tr>
+<td><strong>Foreign key</strong></td>
+<td>Refers to a <strong>primary key in another table</strong></td>
+<td><strong>Links related data</strong>; creates the relationship between tables</td>
+</tr>
+<tr>
+<td><strong>Composite key</strong></td>
+<td>Two or more fields together forming the primary key</td>
+<td>Used in <strong>join tables</strong> resolving many-to-many relationships</td>
+</tr>
+</tbody></table>
+<p><em>Example:</em> <code>Results.StudentID</code> (foreign key) → <code>Students.StudentID</code> (primary key).</p>
+<h3 id="5-3-relationships-and-normalisation">5.3 Relationships and Normalisation</h3>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Handling</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>One to many (1:∞)</strong></td>
+<td>The most common. Each record in the primary key&#39;s table can have <strong>many</strong> matching records in the foreign key&#39;s table</td>
+</tr>
+<tr>
+<td><strong>One to one (1:1)</strong></td>
+<td>Always possible — and usually preferable — to <strong>combine both tables into one</strong></td>
+</tr>
+<tr>
+<td><strong>Many to many (∞:∞)</strong></td>
+<td><strong>Cannot be implemented directly.</strong> Must be resolved by creating a <strong>join table</strong> with two 1:∞ relationships, containing foreign keys to both original primary keys. Together these form a <strong>composite primary key</strong></td>
+</tr>
+</tbody></table>
+<p><strong>Normalisation</strong> improves a database&#39;s efficiency, consistency and accuracy, and makes it adaptable to changing enterprise needs.</p>
+<p><strong>Why redundancy is a problem:</strong> repeated data unnecessarily increases database size, and causes <strong>inconsistency during insert, delete and update operations</strong>.</p>
+<p><strong>Worked normalisation:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Identical rows — can&#39;t tell orders apart</td>
+<td>Add an <strong>OrderID</strong> to uniquely identify each order</td>
+</tr>
+<tr>
+<td>An <code>Order</code> column contains <strong>multiple values</strong> (non-atomic)</td>
+<td>Move the order items to a <strong>separate table</strong></td>
+</tr>
+<tr>
+<td><code>Customer Name</code> is a composite value</td>
+<td>Break into <strong>First Name</strong> and <strong>Last Name</strong> columns</td>
+</tr>
+<tr>
+<td>Repeated values for the same customer</td>
+<td>Move customer details to their own table, link by key</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Data dictionary</strong> — documents the structure of the database: <strong>field names, data types, data format</strong> and other attributes. Serves as a reference ensuring consistency and shared understanding of the design.</p>
+</blockquote>
+<h3 id="5-4-sql-libreoffice-base">5.4 SQL — LibreOffice Base</h3>
+<blockquote>
+<p>⚠️ <strong>Mixed-case names and names with spaces must be in double quotes:</strong> <code>&quot;YearLevel&quot;</code>, <code>&quot;Student Name&quot;</code>. <strong>Text values use single quotes:</strong> <code>&#39;Blue&#39;</code>.</p>
+</blockquote>
+<p><strong>Basic SELECT</strong></p>
+<pre><code class="language-sql">SELECT * FROM &quot;Students&quot;;
+
+SELECT &quot;FirstName&quot;, &quot;LastName&quot;, &quot;YearLevel&quot;
+FROM &quot;Students&quot;;
+</code></pre>
+<p><strong>WHERE — filtering</strong></p>
+<pre><code class="language-sql">SELECT * FROM &quot;Students&quot;
+WHERE &quot;YearLevel&quot; = 12;
+
+SELECT &quot;FirstName&quot;, &quot;LastName&quot; FROM &quot;Students&quot;
+WHERE &quot;YearLevel&quot; = 12 AND &quot;House&quot; = &#39;Blue&#39;;
+
+WHERE &quot;LastName&quot; LIKE &#39;Sm%&#39;;        -- text matching, % is the wildcard
+</code></pre>
+<p><strong>ORDER BY, DISTINCT, LIMIT</strong></p>
+<pre><code class="language-sql">SELECT &quot;StudentID&quot;, &quot;Score&quot; FROM &quot;Results&quot;
+ORDER BY &quot;Score&quot; DESC;
+
+SELECT DISTINCT &quot;House&quot; FROM &quot;Students&quot;;
+
+ORDER BY &quot;Score&quot; DESC LIMIT 5;                    -- may not work on all drivers
+SELECT &quot;StudentID&quot;, &quot;Score&quot; FETCH FIRST 5 ROWS ONLY;   -- fallback
+</code></pre>
+<p><strong>Aggregates and GROUP BY</strong></p>
+<pre><code class="language-sql">SELECT &quot;Task&quot;, AVG(&quot;Score&quot;) AS &quot;AvgScore&quot;
+FROM &quot;Results&quot;
+GROUP BY &quot;Task&quot;;
+
+SELECT &quot;YearLevel&quot;, COUNT(*) AS &quot;NumStudents&quot;
+FROM &quot;Students&quot;
+GROUP BY &quot;YearLevel&quot;;
+</code></pre>
+<p><strong>HAVING — filtering groups</strong></p>
+<pre><code class="language-sql">SELECT &quot;Task&quot;, AVG(&quot;Score&quot;) AS &quot;AvgScore&quot;
+FROM &quot;Results&quot;
+GROUP BY &quot;Task&quot;
+HAVING AVG(&quot;Score&quot;) &gt;= 70;
+</code></pre>
+<blockquote>
+<p><strong>Confusing pair — WHERE vs HAVING</strong>
+<strong>WHERE</strong> filters <strong>individual rows</strong>, before grouping.
+<strong>HAVING</strong> filters <strong>groups</strong>, after <code>GROUP BY</code> has aggregated them.
+You cannot use an aggregate function in <code>WHERE</code>.</p>
+</blockquote>
+<p><strong>JOINs</strong></p>
+<pre><code class="language-sql">-- INNER JOIN: only rows with matches in BOTH tables
+SELECT s.&quot;FirstName&quot;, s.&quot;LastName&quot;, r.&quot;Task&quot;, r.&quot;Score&quot;
+FROM &quot;Students&quot; s
+INNER JOIN &quot;Results&quot; r ON s.&quot;StudentID&quot; = r.&quot;StudentID&quot;;
+
+-- LEFT JOIN: ALL students, even those with no results
+SELECT s.&quot;FirstName&quot;, s.&quot;LastName&quot;, r.&quot;Task&quot;, r.&quot;Score&quot;
+FROM &quot;Students&quot; s
+LEFT JOIN &quot;Results&quot; r ON s.&quot;StudentID&quot; = r.&quot;StudentID&quot;;
+</code></pre>
+<p><strong>JOIN + WHERE + ORDER BY</strong> — the common report query</p>
+<pre><code class="language-sql">SELECT s.&quot;FirstName&quot;, s.&quot;LastName&quot;, r.&quot;Task&quot;, r.&quot;Score&quot;
+FROM &quot;Students&quot; s
+INNER JOIN &quot;Results&quot; r ON s.&quot;StudentID&quot; = r.&quot;StudentID&quot;
+WHERE s.&quot;YearLevel&quot; = 12
+ORDER BY r.&quot;Score&quot; DESC;
+</code></pre>
+<p><strong>JOIN + GROUP BY</strong> — averages per student</p>
+<pre><code class="language-sql">SELECT s.&quot;StudentID&quot;, s.&quot;FirstName&quot;, s.&quot;LastName&quot;,
+       AVG(r.&quot;Score&quot;) AS &quot;AvgScore&quot;
+FROM &quot;Students&quot; s
+INNER JOIN &quot;Results&quot; r ON s.&quot;StudentID&quot; = r.&quot;StudentID&quot;
+GROUP BY s.&quot;StudentID&quot;, s.&quot;FirstName&quot;, s.&quot;LastName&quot;;
+</code></pre>
+<p><strong>Three-table JOIN</strong></p>
+<pre><code class="language-sql">SELECT s.&quot;FirstName&quot;, s.&quot;LastName&quot;, c.&quot;ClassName&quot;, r.&quot;Task&quot;, r.&quot;Score&quot;
+FROM &quot;Students&quot; s
+INNER JOIN &quot;Classes&quot; c ON s.&quot;ClassID&quot; = c.&quot;ClassID&quot;
+INNER JOIN &quot;Results&quot; r ON s.&quot;StudentID&quot; = r.&quot;StudentID&quot;
+ORDER BY c.&quot;ClassName&quot;, s.&quot;LastName&quot;;
+</code></pre>
+<p><strong>INSERT, UPDATE, DELETE</strong></p>
+<pre><code class="language-sql">INSERT INTO &quot;MOVIE&quot; (&quot;MovieID&quot;, &quot;Title&quot;, &quot;Genre&quot;, &quot;Rating&quot;)
+VALUES (1, &#39;Inception&#39;, &#39;Sci-Fi&#39;, &#39;M&#39;);
+
+UPDATE &quot;MOVIE&quot; SET &quot;Rating&quot; = &#39;MA15+&#39; WHERE &quot;MovieID&quot; = 1;
+
+DELETE FROM &quot;MOVIE&quot; WHERE &quot;MovieID&quot; = 1;
+</code></pre>
+<blockquote>
+<p><strong>LibreOffice Base gotchas:</strong> query errors are usually <strong>quotes</strong> — use <code>&quot;FieldName&quot;</code> for mixed case or spaces. &quot;Table not found&quot; means the exact name doesn&#39;t match the Tables list. <code>LIMIT</code> may fail on some drivers, so use <code>FETCH FIRST</code>.</p>
+</blockquote>
+<hr>
+<h2 id="6-spreadsheets-and-dashboards">6. Spreadsheets and Dashboards</h2>
+<h3 id="6-1-the-key-rule">6.1 The Key Rule</h3>
+<blockquote>
+<p><strong>One sheet = one table = one purpose.</strong> Even though spreadsheets are flat-file systems, multiple sheets let you separate data types, reduce repetition, improve clarity and support decision logic.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Data type</th>
+<th>How to store it</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Structured</strong> — numeric or categorical, consistent format</td>
+<td>Directly in tables</td>
+</tr>
+<tr>
+<td><strong>Unstructured</strong> — text-based, descriptive, variable length</td>
+<td>As <strong>text fields, not mixed with numbers</strong></td>
+</tr>
+<tr>
+<td><strong>Alternative</strong> — click counts, frequency totals, sentiment labels</td>
+<td>Often <strong>generated or summarised</strong> from other data</td>
+</tr>
+</tbody></table>
+<h3 id="6-2-linking-sheets-without-sql">6.2 Linking Sheets Without SQL</h3>
+<p>Spreadsheets use <strong>logical links</strong>, not joins:</p>
+<pre><code>Matching IDs (e.g. RecordID)
+VLOOKUP / XLOOKUP
+FILTER
+COUNTIF, AVERAGEIF
+</code></pre>
+<h3 id="6-3-summary-statistics">6.3 Summary Statistics</h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SUM</code></td>
+<td>Total of values</td>
+</tr>
+<tr>
+<td><code>COUNT</code></td>
+<td>Number of data points</td>
+</tr>
+<tr>
+<td><code>AVERAGE</code></td>
+<td>The mean — typical value</td>
+</tr>
+<tr>
+<td><code>MIN</code> / <code>MAX</code></td>
+<td>The range</td>
+</tr>
+</tbody></table>
+<h3 id="6-4-analysis-features">6.4 Analysis Features</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Charts</strong></td>
+<td>Transform numerical data into visual form so patterns, comparisons and trends are easier to see</td>
+</tr>
+<tr>
+<td><strong>Pivot tables</strong></td>
+<td>Interactive summarising of large datasets <strong>without formulas</strong>. Drag-and-drop fields to build instant, filterable reports (e.g. total sales by region)</td>
+</tr>
+<tr>
+<td><strong>Slicers</strong></td>
+<td>Interactive filter buttons for a pivot table or dashboard</td>
+</tr>
+<tr>
+<td><strong>Conditional formatting</strong></td>
+<td>Automatically highlight cells meeting a condition</td>
+</tr>
+<tr>
+<td><strong>What-if modelling</strong></td>
+<td>Change inputs to see the effect on outputs — scenario testing</td>
+</tr>
+<tr>
+<td><strong>Forms and reports</strong></td>
+<td>Present data clearly for entry and for output</td>
+</tr>
+</tbody></table>
+<p><strong>Chart selection:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Chart</th>
+<th>Shows</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Scatter chart</strong></td>
+<td>Relationships, trends and patterns between variables</td>
+</tr>
+<tr>
+<td><strong>Histogram</strong></td>
+<td>Data <strong>distribution</strong> — detects skewness and outliers</td>
+</tr>
+<tr>
+<td><strong>Line graph</strong></td>
+<td>Change <strong>over time</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Filtering displays only specific parts of a dataset.</strong> It can lead to <strong>biased conclusions if too much data is excluded</strong> — that limitation is examinable.</p>
+</blockquote>
+<hr>
+<h2 id="7-data-scale-and-big-data">7. Data Scale and Big Data</h2>
+<h3 id="7-1-the-impact-of-data-scale">7.1 The Impact of Data Scale</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>The issue</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Volume of raw data</strong></td>
+<td>More records improve accuracy, but extreme size degrades system performance and increases cost</td>
+</tr>
+<tr>
+<td><strong>Storage</strong></td>
+<td>Insufficient storage limits decision-making; storage choice affects speed and scalability; loss or corruption is catastrophic</td>
+</tr>
+<tr>
+<td><strong>Real-time and continuous streaming</strong></td>
+<td>Delayed data can be useless. Data that never stops arriving creates technical challenges and drives system design</td>
+</tr>
+<tr>
+<td><strong>Opportunities for machine learning</strong></td>
+<td>ML <strong>requires large datasets</strong>. Poor-quality data produces poor predictions</td>
+</tr>
+<tr>
+<td><strong>Changes in human behaviour</strong></td>
+<td>Behaviour change increases volume and velocity, and modern data is increasingly <strong>unstructured</strong></td>
+</tr>
+<tr>
+<td><strong>Ethical implications, incl. digital footprints</strong></td>
+<td>Scale increases privacy risk and makes bias harder to detect</td>
+</tr>
+</tbody></table>
+<h3 id="7-2-big-data-the-three-vs">7.2 Big Data — The Three Vs</h3>
+<pre><code>VOLUME    the amount of data
+VARIETY   the range of types and sources
+VELOCITY  the speed at which it arrives and must be processed
+</code></pre>
+<p><strong>Data warehouse</strong> — a <strong>central repository</strong> storing large volumes of <strong>historical and current</strong> data from multiple sources.</p>
+<table>
+<thead>
+<tr>
+<th>Advantages</th>
+<th>Limitations</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Supports complex queries · enables trend analysis · improves decision accuracy</td>
+<td>Complex to implement · requires skilled design · higher cost</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="8-data-sampling-and-storage">8. Data Sampling and Storage</h2>
+<h3 id="8-1-sampling">8.1 Sampling</h3>
+<blockquote>
+<p><strong>Data sampling</strong> is selecting a <strong>subset</strong> of data from a larger dataset so decisions can be made efficiently without analysing everything.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Active collection</th>
+<th>Passive collection</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Definition</strong></td>
+<td>Collected <strong>intentionally from users</strong></td>
+<td>Collected <strong>automatically</strong>, without direct user input</td>
+</tr>
+<tr>
+<td><strong>Examples</strong></td>
+<td>Surveys, forms, questionnaires, user input fields</td>
+<td>System logs, sensor data, clickstream data, usage analytics</td>
+</tr>
+<tr>
+<td><strong>Strengths</strong></td>
+<td>More control</td>
+<td>Large volume, real-time</td>
+</tr>
+<tr>
+<td><strong>Weaknesses</strong></td>
+<td>Can introduce <strong>bias</strong>; depends on user participation</td>
+<td><strong>Privacy concerns</strong>; less user awareness</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+<th>Limitation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Manual</strong></td>
+<td>A human selects and records data</td>
+<td>Time-consuming, error-prone</td>
+</tr>
+<tr>
+<td><strong>Computerised</strong></td>
+<td>Software collects and samples automatically</td>
+<td><strong>Bias if poorly designed</strong></td>
+</tr>
+</tbody></table>
+<p><strong>Poor sampling produces</strong> incorrect recommendations, biased outcomes and unreliable system behaviour. <strong>Effective sampling ensures</strong> decisions are representative, processing is efficient and the system scales.</p>
+<h3 id="8-2-storage-methods">8.2 Storage Methods</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Advantages</th>
+<th>Limitations</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Local storage</strong></td>
+<td>Fast access · full control · no internet required</td>
+<td>Limited scalability · risk of data loss · unsuitable for large datasets or collaboration</td>
+</tr>
+<tr>
+<td><strong>Cloud storage</strong></td>
+<td>Scalable · accessible anywhere · supports collaboration and backups</td>
+<td>Internet dependency · ongoing cost · privacy and compliance concerns</td>
+</tr>
+<tr>
+<td><strong>Portable storage media</strong></td>
+<td>Portable · offline access · simple</td>
+<td><strong>High risk of loss or theft</strong> · limited capacity · unsuitable for real-time systems</td>
+</tr>
+<tr>
+<td><strong>Data warehouses</strong></td>
+<td>Supports complex queries · enables trend analysis · improves decision accuracy</td>
+<td>Complex · requires skilled design · higher cost</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>The judgements to make:</strong> local storage suits small-scale prototypes but limits scalability. <strong>Portable storage is generally unsuitable</strong> for a decision support system due to security and scalability risk. Cloud supports enterprise-scale systems. Data warehouses enable high-quality, enterprise-level decision support.</p>
+</blockquote>
+<hr>
+<h2 id="9-errors-uncertainty-and-data-quality">9. Errors, Uncertainty and Data Quality</h2>
+<h3 id="9-1-the-three-problems">9.1 The Three Problems</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Errors</strong></td>
+<td><strong>Mistakes</strong> made in data collection, entry or processing — from minor typos to significant inaccuracies</td>
+</tr>
+<tr>
+<td><strong>Uncertainty</strong></td>
+<td><strong>Lack of precision or ambiguity</strong>, arising from the measurement process, the nature of the data, or the analysis method</td>
+</tr>
+<tr>
+<td><strong>Limitations</strong></td>
+<td><strong>Inherent constraints</strong> — sample size, coverage, representativeness, or the scope and reliability of the sources</td>
+</tr>
+</tbody></table>
+<h3 id="9-2-causes">9.2 Causes</h3>
+<table>
+<thead>
+<tr>
+<th>Cause</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Data collection methods</strong></td>
+<td>Self-reported data is subject to bias; observed data is subject to observer error</td>
+</tr>
+<tr>
+<td><strong>Sample size</strong></td>
+<td>Small samples may not represent the population, producing high uncertainty</td>
+</tr>
+<tr>
+<td><strong>Data quality</strong></td>
+<td>Poor accuracy or completeness produces errors and limitations</td>
+</tr>
+<tr>
+<td><strong>Data timeliness</strong></td>
+<td>Outdated data doesn&#39;t reflect current trends, impacting validity</td>
+</tr>
+</tbody></table>
+<h3 id="9-3-raw-vs-processed-data">9.3 Raw vs Processed Data</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Definition</th>
+<th>Risk</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Raw data</strong></td>
+<td>Not processed or analysed in any way</td>
+<td>More susceptible to collection and entry errors; often not in an analysable format</td>
+</tr>
+<tr>
+<td><strong>Processed data</strong></td>
+<td>Cleaned, transformed or manipulated for analysis</td>
+<td>Processing <strong>reduces</strong> errors — but can <strong>introduce new</strong> uncertainty if methods are inappropriate or the data is manipulated unrepresentatively</td>
+</tr>
+</tbody></table>
+<p><strong>Data bias</strong> — systematic errors arising from selective sampling, underrepresentation of groups, or measurement error. Affects the validity of conclusions and <strong>may perpetuate or amplify existing inequalities</strong>.</p>
+<h3 id="9-4-the-four-quality-criteria">9.4 The Four Quality Criteria</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>The question</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Relevance</strong></td>
+<td>Is the data relevant to the purpose?</td>
+</tr>
+<tr>
+<td><strong>Accuracy</strong></td>
+<td>Is it correct and error-free?</td>
+</tr>
+<tr>
+<td><strong>Validity</strong></td>
+<td>Does it measure <strong>what it&#39;s supposed to</strong>?</td>
+</tr>
+<tr>
+<td><strong>Reliability</strong></td>
+<td>Would you get the <strong>same results</strong> collecting it again?</td>
+</tr>
+</tbody></table>
+<h3 id="9-5-primary-vs-secondary-data">9.5 Primary vs Secondary Data</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Primary</th>
+<th>Secondary</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Definition</strong></td>
+<td>Collected <strong>directly by you</strong> for a specific purpose</td>
+<td>Collected by <strong>someone else</strong>, used by you</td>
+</tr>
+<tr>
+<td><strong>Examples</strong></td>
+<td>Surveys, experiments, observations, interviews</td>
+<td>Books, journal articles, reports, government statistics</td>
+</tr>
+<tr>
+<td><strong>Relevance</strong></td>
+<td>Designed to address your question directly — highly relevant</td>
+<td>May not match your question, but gives useful background</td>
+</tr>
+<tr>
+<td><strong>Accuracy</strong></td>
+<td>Depends on careful collection; poor design produces poor data</td>
+<td>Harder to assess — you must trust the source</td>
+</tr>
+<tr>
+<td><strong>Validity</strong></td>
+<td>Ensured by designing collection to measure what you want</td>
+<td>May not be valid, as it wasn&#39;t collected with your question in mind</td>
+</tr>
+<tr>
+<td><strong>Reliability</strong></td>
+<td>Reliable if the method is well-structured and repeatable</td>
+<td>Reliable from credible sources using standardised, repeatable methods (e.g. <strong>ABS</strong>)</td>
+</tr>
+</tbody></table>
+<h3 id="9-6-the-data-quality-chain">9.6 The Data Quality Chain</h3>
+<pre><code>Data Collection (from different sources)
+        ↓
+Raw Data (unfiltered, uncleaned, incomplete)
+        ↓
+Data Processing (cleaning, sorting, filtering, summarising)
+        ↓
+Possible issues: errors · uncertainty · limitations · data bias
+        ↓
+Impact on quality: relevance · accuracy · validity · reliability
+        ↓
+Risk to decisions (incorrect or biased outputs)
+        ↓
+Need for data trust and verification  →  BLOCKCHAIN
+</code></pre>
+<hr>
+<h2 id="10-blockchain">10. Blockchain</h2>
+<blockquote>
+<p><strong>Blockchain</strong> is a <strong>distributed ledger</strong> that manages and verifies data in a secure, transparent and <strong>decentralised</strong> manner. Instead of a central server, it works <strong>peer-to-peer</strong>, with nodes communicating directly across the network.</p>
+</blockquote>
+<p><strong>How it works:</strong></p>
+<ol>
+<li>Transactions are <strong>verified</strong> and recorded as <strong>blocks</strong></li>
+<li>Blocks are <strong>linked</strong> to form a chain</li>
+<li>Each block contains the <strong>hash of the previous block</strong>, so a previous block <strong>cannot be modified without invalidating every subsequent block</strong></li>
+<li>Blocks are stored across <strong>multiple nodes</strong>, creating a decentralised ledger</li>
+<li>Transactions are confirmed by <strong>multiple participants</strong>, making falsification difficult</li>
+</ol>
+<h3 id="four-applications">Four Applications</h3>
+<table>
+<thead>
+<tr>
+<th>Application</th>
+<th>How blockchain is used</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Online voting</strong></td>
+<td>Creates a secure, transparent record of voting transactions, making voting <strong>tamper-proof</strong></td>
+</tr>
+<tr>
+<td><strong>Online identities</strong></td>
+<td>Digital identities stored as assets on the chain, authenticating individuals, organisations and devices. Offers greater <strong>security, privacy and control</strong> than traditional online identities</td>
+</tr>
+<tr>
+<td><strong>Tracking items of value</strong></td>
+<td>Assets represented by unique identifiers called <strong>tokens</strong>, verifying ownership and tracking transfers. Uses public ledgers and smart contracts</td>
+</tr>
+<tr>
+<td><strong>Recordkeeping</strong></td>
+<td>Maintaining and storing information in a secure, decentralised and <strong>tamper-proof</strong> manner</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="11-data-mining-machine-learning-and-statistical-modelling">11. Data Mining, Machine Learning and Statistical Modelling</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Data mining</strong></td>
+<td>Discovering patterns, relationships and anomalies in large datasets</td>
+</tr>
+<tr>
+<td><strong>Machine learning</strong></td>
+<td>Uses <strong>algorithms</strong> to identify patterns and relationships in large datasets, improving with more data</td>
+</tr>
+<tr>
+<td><strong>Statistical modelling</strong></td>
+<td>Uses <strong>mathematical and statistical techniques</strong> to build models that make predictions</td>
+</tr>
+</tbody></table>
+<p>Used together to analyse and predict from large datasets — customer behaviour, market trends, sales data. The resulting models help organisations identify trends and make data-driven decisions.</p>
+<blockquote>
+<p><strong>Always state the limitation.</strong> Consider the <strong>biases that may exist in the data</strong> and the <strong>potential for errors in predictions</strong>. A model is only as good as the data behind it.</p>
+</blockquote>
+<hr>
+<h2 id="12-confusing-terms-quick-reference">12. Confusing Terms — Quick Reference</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+<th>Don&#39;t confuse with</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Curated data</strong></td>
+<td>Selected, context removed</td>
+<td><strong>Communicated data</strong> — context included</td>
+</tr>
+<tr>
+<td><strong>Data warehouse</strong></td>
+<td>Structured, documented repository</td>
+<td><strong>Data swamp</strong> — unmanaged accumulation</td>
+</tr>
+<tr>
+<td><strong>Privacy</strong></td>
+<td>The individual&#39;s right</td>
+<td><strong>Confidentiality</strong> — the researcher&#39;s duty</td>
+</tr>
+<tr>
+<td><strong>ICIP</strong></td>
+<td>Indigenous cultural knowledge as IP</td>
+<td><strong>Data sovereignty</strong> — the right to control the data itself</td>
+</tr>
+<tr>
+<td><strong>Primary key</strong></td>
+<td>Unique, not null, in this table</td>
+<td><strong>Foreign key</strong> — refers to another table&#39;s primary key</td>
+</tr>
+<tr>
+<td><strong>WHERE</strong></td>
+<td>Filters rows, before grouping</td>
+<td><strong>HAVING</strong> — filters groups, after</td>
+</tr>
+<tr>
+<td><strong>INNER JOIN</strong></td>
+<td>Only matching rows in both tables</td>
+<td><strong>LEFT JOIN</strong> — all rows from the left table</td>
+</tr>
+<tr>
+<td><strong>Interval</strong></td>
+<td>Equal gaps, no true zero</td>
+<td><strong>Ratio</strong> — has a true zero</td>
+</tr>
+<tr>
+<td><strong>Nominal</strong></td>
+<td>Categories, no order</td>
+<td><strong>Ordinal</strong> — categories with order</td>
+</tr>
+<tr>
+<td><strong>Active collection</strong></td>
+<td>User intentionally supplies it</td>
+<td><strong>Passive</strong> — collected automatically</td>
+</tr>
+<tr>
+<td><strong>Raw data</strong></td>
+<td>Unprocessed</td>
+<td><strong>Processed</strong> — cleaned and transformed</td>
+</tr>
+<tr>
+<td><strong>Errors</strong></td>
+<td>Mistakes</td>
+<td><strong>Uncertainty</strong> — imprecision · <strong>Limitations</strong> — inherent constraints</td>
+</tr>
+<tr>
+<td><strong>Validity</strong></td>
+<td>Measures what it should</td>
+<td><strong>Reliability</strong> — repeatable results</td>
+</tr>
+<tr>
+<td><strong>Flat-file</strong></td>
+<td>One table, no relationships</td>
+<td><strong>Relational</strong> — multiple linked tables</td>
+</tr>
+<tr>
+<td><strong>Structured data</strong></td>
+<td>Fixed format</td>
+<td><strong>Unstructured</strong> — no format · <strong>Alternative</strong> — different source</td>
+</tr>
+</tbody></table>
+<hr>
+<blockquote>
+<p><strong>See also:</strong> <a href="Terminology.html">Terminology</a> | <a href="Intelligent_Systems.html">Intelligent Systems</a> | <a href="Data_Visualisation.html">Data Visualisation</a> | <a href="Enterprise_Project.html">Enterprise Project</a> | <a href="MOC.html">MOC</a></p>
+</blockquote>
+</article></main></div><nav class="rail" aria-label="On this page"><div class="rail-title">On this page</div><ul><li><a href="#1-ethical-issues-in-data-use" data-target="1-ethical-issues-in-data-use">1. Ethical Issues in Data Use</a><ul class="sub"><li><a href="#1-1-the-seven-ethical-principles" data-target="1-1-the-seven-ethical-principles" data-parent="1-ethical-issues-in-data-use">1.1 The Seven Ethical Principles</a></li><li><a href="#1-2-the-seven-ethical-issues" data-target="1-2-the-seven-ethical-issues" data-parent="1-ethical-issues-in-data-use">1.2 The Seven Ethical Issues</a></li><li><a href="#1-3-software-features-affecting-privacy-and-security" data-target="1-3-software-features-affecting-privacy-and-security" data-parent="1-ethical-issues-in-data-use">1.3 Software Features Affecting Privacy and Security</a></li></ul></li><li><a href="#2-legal-issues-in-data-use" data-target="2-legal-issues-in-data-use">2. Legal Issues in Data Use</a><ul class="sub"><li><a href="#2-1-legislation" data-target="2-1-legislation" data-parent="2-legal-issues-in-data-use">2.1 Legislation</a></li><li><a href="#2-2-authorities-responsible-for-data-protection" data-target="2-2-authorities-responsible-for-data-protection" data-parent="2-legal-issues-in-data-use">2.2 Authorities Responsible for Data Protection</a></li><li><a href="#2-3-data-sovereignty-of-aboriginal-and-torres-strait-islander-peoples" data-target="2-3-data-sovereignty-of-aboriginal-and-torres-strait-islander-peoples" data-parent="2-legal-issues-in-data-use">2.3 Data Sovereignty of Aboriginal and Torres Strait Islander Peoples</a></li></ul></li><li><a href="#3-social-issues-curated-and-communicated-data" data-target="3-social-issues-curated-and-communicated-data">3. Social Issues — Curated and Communicated Data</a><ul class="sub"><li><a href="#3-1-the-core-distinction" data-target="3-1-the-core-distinction" data-parent="3-social-issues-curated-and-communicated-data">3.1 The Core Distinction</a></li><li><a href="#3-2-the-five-social-factors" data-target="3-2-the-five-social-factors" data-parent="3-social-issues-curated-and-communicated-data">3.2 The Five Social Factors</a></li></ul></li><li><a href="#4-data-types-and-levels-of-measurement" data-target="4-data-types-and-levels-of-measurement">4. Data Types and Levels of Measurement</a><ul class="sub"><li><a href="#4-1-quantitative-vs-qualitative" data-target="4-1-quantitative-vs-qualitative" data-parent="4-data-types-and-levels-of-measurement">4.1 Quantitative vs Qualitative</a></li><li><a href="#4-2-the-four-levels-of-measurement" data-target="4-2-the-four-levels-of-measurement" data-parent="4-data-types-and-levels-of-measurement">4.2 The Four Levels of Measurement</a></li><li><a href="#4-3-structured-unstructured-and-alternative-data" data-target="4-3-structured-unstructured-and-alternative-data" data-parent="4-data-types-and-levels-of-measurement">4.3 Structured, Unstructured and Alternative Data</a></li><li><a href="#4-4-informatics" data-target="4-4-informatics" data-parent="4-data-types-and-levels-of-measurement">4.4 Informatics</a></li></ul></li><li><a href="#5-databases-and-sql" data-target="5-databases-and-sql">5. Databases and SQL</a><ul class="sub"><li><a href="#5-1-flat-file-vs-relational" data-target="5-1-flat-file-vs-relational" data-parent="5-databases-and-sql">5.1 Flat-file vs Relational</a></li><li><a href="#5-2-keys" data-target="5-2-keys" data-parent="5-databases-and-sql">5.2 Keys</a></li><li><a href="#5-3-relationships-and-normalisation" data-target="5-3-relationships-and-normalisation" data-parent="5-databases-and-sql">5.3 Relationships and Normalisation</a></li><li><a href="#5-4-sql-libreoffice-base" data-target="5-4-sql-libreoffice-base" data-parent="5-databases-and-sql">5.4 SQL — LibreOffice Base</a></li></ul></li><li><a href="#6-spreadsheets-and-dashboards" data-target="6-spreadsheets-and-dashboards">6. Spreadsheets and Dashboards</a><ul class="sub"><li><a href="#6-1-the-key-rule" data-target="6-1-the-key-rule" data-parent="6-spreadsheets-and-dashboards">6.1 The Key Rule</a></li><li><a href="#6-2-linking-sheets-without-sql" data-target="6-2-linking-sheets-without-sql" data-parent="6-spreadsheets-and-dashboards">6.2 Linking Sheets Without SQL</a></li><li><a href="#6-3-summary-statistics" data-target="6-3-summary-statistics" data-parent="6-spreadsheets-and-dashboards">6.3 Summary Statistics</a></li><li><a href="#6-4-analysis-features" data-target="6-4-analysis-features" data-parent="6-spreadsheets-and-dashboards">6.4 Analysis Features</a></li></ul></li><li><a href="#7-data-scale-and-big-data" data-target="7-data-scale-and-big-data">7. Data Scale and Big Data</a><ul class="sub"><li><a href="#7-1-the-impact-of-data-scale" data-target="7-1-the-impact-of-data-scale" data-parent="7-data-scale-and-big-data">7.1 The Impact of Data Scale</a></li><li><a href="#7-2-big-data-the-three-vs" data-target="7-2-big-data-the-three-vs" data-parent="7-data-scale-and-big-data">7.2 Big Data — The Three Vs</a></li></ul></li><li><a href="#8-data-sampling-and-storage" data-target="8-data-sampling-and-storage">8. Data Sampling and Storage</a><ul class="sub"><li><a href="#8-1-sampling" data-target="8-1-sampling" data-parent="8-data-sampling-and-storage">8.1 Sampling</a></li><li><a href="#8-2-storage-methods" data-target="8-2-storage-methods" data-parent="8-data-sampling-and-storage">8.2 Storage Methods</a></li></ul></li><li><a href="#9-errors-uncertainty-and-data-quality" data-target="9-errors-uncertainty-and-data-quality">9. Errors, Uncertainty and Data Quality</a><ul class="sub"><li><a href="#9-1-the-three-problems" data-target="9-1-the-three-problems" data-parent="9-errors-uncertainty-and-data-quality">9.1 The Three Problems</a></li><li><a href="#9-2-causes" data-target="9-2-causes" data-parent="9-errors-uncertainty-and-data-quality">9.2 Causes</a></li><li><a href="#9-3-raw-vs-processed-data" data-target="9-3-raw-vs-processed-data" data-parent="9-errors-uncertainty-and-data-quality">9.3 Raw vs Processed Data</a></li><li><a href="#9-4-the-four-quality-criteria" data-target="9-4-the-four-quality-criteria" data-parent="9-errors-uncertainty-and-data-quality">9.4 The Four Quality Criteria</a></li><li><a href="#9-5-primary-vs-secondary-data" data-target="9-5-primary-vs-secondary-data" data-parent="9-errors-uncertainty-and-data-quality">9.5 Primary vs Secondary Data</a></li><li><a href="#9-6-the-data-quality-chain" data-target="9-6-the-data-quality-chain" data-parent="9-errors-uncertainty-and-data-quality">9.6 The Data Quality Chain</a></li></ul></li><li><a href="#10-blockchain" data-target="10-blockchain">10. Blockchain</a><ul class="sub"><li><a href="#four-applications" data-target="four-applications" data-parent="10-blockchain">Four Applications</a></li></ul></li><li><a href="#11-data-mining-machine-learning-and-statistical-modelling" data-target="11-data-mining-machine-learning-and-statistical-modelling">11. Data Mining, Machine Learning and Statistical Modelling</a></li><li><a href="#12-confusing-terms-quick-reference" data-target="12-confusing-terms-quick-reference">12. Confusing Terms — Quick Reference</a></li></ul></nav><script>
+function toggleTheme(ev){
+var oldTheme=document.documentElement.getAttribute("data-theme")||"dark";
+var next=oldTheme==="light"?"dark":"light";
+function apply(){document.documentElement.setAttribute("data-theme",next);try{localStorage.setItem("vault-theme",next)}catch(e){}updateThemeIcons(next);}
+var reduced=false;try{reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
+if(reduced){apply();return;}
+if(window.__vaultThemeAnimating){return;}
+window.__vaultThemeAnimating=1;
+var newPaper=next==="light"?"#faf8f2":"#13151b";
+var W=window.innerWidth,H=window.innerHeight;
+var spacing=W<768?36:28;
+var maxR=spacing*0.78;
+var dpr=1;try{dpr=W<768?1:Math.min(window.devicePixelRatio||1,1.5);}catch(e){}
+var canvas=document.createElement("canvas");
+canvas.id="theme-wave";
+canvas.style.cssText="position:fixed;left:0;top:0;width:"+W+"px;height:"+H+"px;z-index:9999;pointer-events:none;";
+canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+var ctx=canvas.getContext("2d");
+try{ctx.setTransform(dpr,0,0,dpr,0,0);}catch(e){}
+ctx.fillStyle=newPaper;
+var dots=[];
+for(var y=spacing/2;y<H+spacing;y+=spacing){for(var x=spacing/2;x<W+spacing;x+=spacing){dots.push({x:x,y:y,delay:(x+y)/(W+H)*450,done:0});}}
+var waveMs=450,growMs=300;
+var start=Date.now();
+function easeOutCubic(p){return 1-Math.pow(1-p,3);}
+function step(){
+var elapsed=Date.now()-start;
+var allDone=true;
+var any=false;
+ctx.beginPath();
+for(var i=0;i<dots.length;i++){
+var d=dots[i];
+if(d.done){continue;}
+var p=(elapsed-d.delay)/growMs;
+if(p<0){allDone=false;continue;}
+if(p<1){allDone=false;}
+else{d.done=1;}
+var r=maxR*easeOutCubic(p<1?p:1);
+if(r>0){ctx.moveTo(d.x+r,d.y);ctx.arc(d.x,d.y,r,0,Math.PI*2);any=true;}
+}
+if(any){ctx.fill();}
+if(!allDone){requestAnimationFrame(step);return;}
+apply();
+canvas.style.transition="opacity 0.15s ease";
+canvas.style.opacity="0";
+setTimeout(function(){window.__vaultThemeAnimating=0;if(canvas.parentNode)canvas.parentNode.removeChild(canvas);},180);
+}
+document.body.appendChild(canvas);
+requestAnimationFrame(step);
+}
+function updateThemeIcons(theme){var icon=theme==="dark"?"☀":"☾";document.querySelectorAll(".theme-btn").forEach(function(b){b.textContent=icon;});}
+try{updateThemeIcons(document.documentElement.getAttribute("data-theme")||"dark");}catch(e){}
+function toggleMenu(force){document.body.classList.toggle("menu-open",force)}
+document.addEventListener("keydown",function(e){if(e.key==="/"&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();var s=document.querySelector(".side-search");if(s)s.focus()}});
+document.addEventListener("click",function(e){if(e.target.closest(".side a"))toggleMenu(false)});
+(function(){try{
+var links=Array.prototype.slice.call(document.querySelectorAll(".rail a"));
+if(!links.length||!window.IntersectionObserver)return;
+var map={};links.forEach(function(a){map[a.getAttribute("data-target")]=a});
+var obs=new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove("active");a.classList.remove("parent-active")});
+      var l=map[e.target.id];
+      if(l){l.classList.add("active");var p=l.getAttribute("data-parent");if(p&&map[p])map[p].classList.add("parent-active")}
+    }
+  });
+}, {rootMargin:"-20% 0px -70% 0px"});
+document.querySelectorAll(".prose h2[id], .prose h3[id]").forEach(function(h){obs.observe(h)});
+}catch(e){}})();
+(function(){try{
+var cv=document.getElementById("dotgrid");if(!cv)return;var ctx=cv.getContext("2d");if(!ctx)return;
+var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var W=0,H=0,dpr=1,cols=0,rows=0,SP=28,px=0,py=0,pt=0,hasP=false;
+function dotRGB(){try{return getComputedStyle(document.documentElement).getPropertyValue("--dot-rgb").trim()||"233,231,225"}catch(e){return "233,231,225"}}
+function resize(){dpr=Math.min(window.devicePixelRatio||1,window.innerWidth<700?1.5:2);SP=window.innerWidth<700?36:28;W=window.innerWidth;H=window.innerHeight;cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+"px";cv.style.height=H+"px";ctx.setTransform(dpr,0,0,dpr,0,0);cols=Math.ceil(W/SP)+1;rows=Math.ceil(H/SP)+1}
+var R=Math.random()*Math.PI*2;
+var FORCES=[
+ {ax:.42,ay:.15,tx:26,ty:31,px:R,py:R+1.3,circ:false},
+ {ax:.38,ay:.42,tx:37,ty:23,px:R+2.1,py:R+0.7,circ:false},
+ {ax:.30,ay:.30,tx:41,ty:41,px:R+4.0,py:R+4.0,circ:true}
+];
+function draw(now){var t=now/1000;var rgb=dotRGB();
+var activeForces=W>=1280?FORCES:FORCES.slice(0,1);
+var pFade=hasP?Math.max(0,1-(now-pt)/4000):0;
+ctx.clearRect(0,0,W,H);
+for(var y=0;y<rows;y++)for(var x=0;x<cols;x++){var ox=x*SP+10,oy=y*SP+10,a=0.14,dispX=0,dispY=0;
+for(var fi=0;fi<activeForces.length;fi++){var F=activeForces[fi];
+var fx=F.circ?W*(0.5+F.ax*Math.cos(t*2*Math.PI/F.tx+F.px)):W*(0.5+F.ax*Math.sin(t*2*Math.PI/F.tx+F.px));
+var fy=F.circ?H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py)):H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py));
+var ddx=ox-fx,ddy=oy-fy,d=Math.sqrt(ddx*ddx+ddy*ddy);
+if(d<170&&d>0.01){var f=1-d/170;f=f*f;dispX+=(ddx/d)*6*f;dispY+=(ddy/d)*6*f;a+=0.20*f}}
+var dm=Math.sqrt(dispX*dispX+dispY*dispY);if(dm>9){dispX*=9/dm;dispY*=9/dm}
+var dx=ox+dispX,dy=oy+dispY;if(a>0.38)a=0.38;
+if(pFade>0){var pdx=ox-px,pdy=oy-py,pd=Math.sqrt(pdx*pdx+pdy*pdy);
+if(pd<150&&pd>0.01){var pf=1-pd/150;pf=pf*pf*pFade;dx+=(pdx/pd)*5*pf;dy+=(pdy/pd)*5*pf;a=Math.min(0.38,a+0.18*pf)}}
+ctx.beginPath();ctx.arc(dx,dy,1.3,0,Math.PI*2);ctx.fillStyle="rgba("+rgb+","+a.toFixed(3)+")";ctx.fill()}}
+function loop(now){if(!window.__vaultThemeAnimating)draw(now);if(!reduced)requestAnimationFrame(loop)}
+window.addEventListener("resize",resize);resize();
+window.addEventListener("pointermove",function(e){px=e.clientX;py=e.clientY;pt=performance.now();hasP=true},{passive:true});
+requestAnimationFrame(loop);
+}catch(e){}})();
+</script></body></html>

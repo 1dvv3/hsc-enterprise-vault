@@ -1,0 +1,1035 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Terminology — Every Term, All Units — HSC Enterprise Vault</title><style>
+:root{--paper:#faf8f2;--ink:#1e1b16;--muted:#6b655a;--line:#e3ddd0;--accent:#1d4ed8;--card:#fffdf8;--side:#f3efe6;--side-bg:rgba(243,239,230,.88);--active:#e8e0cd;--rail-tint:rgba(29,78,216,.14);--rail-tint-soft:rgba(29,78,216,.07);--code:#efe9db;--quote:#4a4438;--dot-rgb:30,27,22;--scheme:light}
+[data-theme="dark"]{--paper:#13151b;--ink:#e9e7e1;--muted:#9aa0ab;--line:#2b2f3a;--accent:#8ab4ff;--card:#1b1e27;--side:#101218;--side-bg:rgba(16,18,24,.88);--active:#262b38;--rail-tint:rgba(138,180,255,.18);--rail-tint-soft:rgba(138,180,255,.09);--code:#262a36;--quote:#c3c7cf;--dot-rgb:233,231,225;--scheme:dark}
+*{box-sizing:border-box}html{color-scheme:var(--scheme)}body{margin:0;background:var(--paper);color:var(--ink);font:16.5px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none;transition:color .18s ease}a:hover{text-decoration:underline}
+#dotgrid{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;padding:22px 18px;border-right:1px solid var(--line);background:var(--side-bg)}
+.side h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:22px 0 6px}
+.side ul{list-style:none;margin:0;padding:0}.side li{margin:3px 0}
+.side a{display:block;padding:7px 10px;border-radius:8px;color:var(--ink);transition:background .18s ease,transform .18s ease}
+.side a.active{background:var(--active);font-weight:600}
+.side a:hover{background:var(--active);text-decoration:none;transform:translateX(3px)}
+.side-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.theme-btn{flex:none;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--ink);font-size:18px;cursor:pointer;transition:background .18s ease}
+.theme-btn:hover{background:var(--active)}
+.home-link{font-weight:700;font-size:18px}.side-search{width:100%;margin:14px 0 4px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-size:16px}
+.side-note{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:24px}
+.topbar{display:none}.backdrop{display:none}
+main{padding:36px 44px;max-width:860px}.prose h1{font-size:32px;line-height:1.2;letter-spacing:-.02em;margin:0 0 6px}
+.prose h2{font-size:23px;margin:34px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
+.prose h3{font-size:18px;margin:26px 0 6px}.prose p{margin:10px 0}
+.prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.prose th,.prose td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--side)}.prose blockquote{border-left:3px solid var(--line);margin:14px 0;padding:2px 14px;color:var(--quote);background:var(--card)}
+.prose code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:14px}.prose pre{background:#0d0f14;color:#f5f1e6;padding:14px;border-radius:8px;overflow:auto}
+.prose pre code{background:none;color:inherit;padding:0}.prose hr{border:none;border-top:1px solid var(--line);margin:24px 0}
+.meta{color:var(--muted);font-size:14px;margin-bottom:20px}.toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:18px 0}
+.toc b{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.toc ul{margin:8px 0 0;padding-left:18px}.toc li{margin:3px 0}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.card h3{margin:0 0 4px}.card p{margin:0;color:var(--muted);font-size:14.5px}
+#search{width:100%;padding:13px 14px;font-size:17px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.result{border-bottom:1px solid var(--line);padding:14px 6px;border-radius:8px;transition:background .18s ease,transform .18s ease}
+.result:hover{background:var(--card);transform:translateX(3px)}
+.result h3{margin:0}.result p{margin:4px 0;color:var(--quote)}.result .path{font-size:13px;color:var(--muted)}
+mark{background:#fde68a;color:#1e1b16;padding:0 1px}
+html{scroll-behavior:smooth}
+.rail{display:none}
+@media(min-width:1280px){
+main{max-width:min(860px,calc(100vw - 692px))}
+.rail{display:block;position:fixed;right:24px;top:50%;transform:translateY(-50%);width:340px;max-height:76vh;overflow:auto;z-index:15;background:none;border:none;box-shadow:none;padding:18px 14px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%)}
+.rail-title{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:2px 0 12px 12px}
+.rail ul{list-style:none;margin:0;padding:0}
+.rail li{margin:3px 0}
+.rail a{display:block;padding:11px 14px;border-radius:10px;color:var(--ink);font-size:17px;line-height:1.4;transition:transform .2s ease,background .2s ease}
+.rail a:hover,.rail a:focus-visible{background:var(--rail-tint-soft);transform:translateX(-4px) scale(1.02);text-decoration:none}
+.rail a.active{background:var(--rail-tint);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-weight:600;transform:translateX(-12px);width:calc(100% + 12px)}
+.rail a.parent-active{background:var(--rail-tint-soft)}
+.rail ul.sub{margin:3px 0 3px 14px;padding-left:14px;border-left:1px solid var(--line)}
+.rail ul.sub a{padding:9px 12px;font-size:15px;color:var(--muted)}
+.rail ul.sub a:hover{color:var(--ink)}
+.rail ul.sub a.active{color:var(--ink);transform:translateX(-8px);width:calc(100% + 8px)}
+}
+@media(max-width:900px){
+.topbar{display:flex;position:sticky;top:0;z-index:20;align-items:center;gap:10px;padding:12px 14px;background:var(--side);border-bottom:1px solid var(--line)}
+.topbar b{flex:1;font-size:17px}.menu-btn,.topbar .theme-btn{width:44px;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:19px;cursor:pointer}
+.wrap{grid-template-columns:1fr}
+.wrap{z-index:auto}
+.side{background:var(--side)}
+.side a{padding:11px 12px}
+body.menu-open{overflow:hidden}
+.side{position:fixed;inset:0 auto 0 0;width:300px;max-width:86vw;height:100dvh;z-index:30;transform:translateX(-105%);transition:transform .25s ease;box-shadow:0 0 40px rgba(0,0,0,.4)}
+body.menu-open .side{transform:translateX(0)}
+.backdrop{display:none}body.menu-open .backdrop{display:block;position:fixed;inset:0;z-index:25;background:rgba(0,0,0,.45)}
+main{padding:22px 16px}.prose h1{font-size:26px}.prose h2{font-size:21px}.cards{grid-template-columns:1fr}
+.prose table{font-size:14px}.prose pre{font-size:13.5px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style><script>(function(){try{var t=localStorage.getItem("vault-theme")||"dark";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark")}})()</script></head><body><canvas id="dotgrid" aria-hidden="true"></canvas><header class="topbar"><button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Open notes menu">☰</button><b>Enterprise Vault</b><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></header><div class="backdrop" onclick="toggleMenu(false)"></div><div class="wrap"><nav class="side" id="side"><div class="side-head"><a class="home-link" href="index.html">⌂ Vault home</a><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></div><input class="side-search" type="search" placeholder="Search notes…  ( / )" onkeydown="if(event.key==='Enter'){location.href='index.html?q='+encodeURIComponent(this.value)}"><h3>Enterprise Computing</h3><ul><li><a class="" href="MOC.html">MOC</a></li><li><a class="" href="Data_Science.html">Data Science</a></li><li><a class="" href="Data_Visualisation.html">Data Visualisation</a></li><li><a class="" href="Enterprise_Project.html">Enterprise Project</a></li><li><a class="" href="Intelligent_Systems.html">Intelligent Systems</a></li><li><a class="" href="Principles_of_Cybersecurity.html">Principles of Cybersecurity</a></li><li><a class="active" href="Terminology.html">Terminology</a></li></ul><p class="side-note">Source: TheSashi HSC Enterprise Computing Notes. Cloned 25 Oct 2026. Content unchanged.</p></nav><main><article class="prose"><h1>Terminology — Every Term, All Units</h1><p class="meta">Enterprise Computing · Terminology.md</p><div class="toc"><b>On this page</b><ul><li><a href="#a">A</a></li><li><a href="#b">B</a></li><li><a href="#c">C</a></li><li><a href="#d">D</a></li><li><a href="#e">E</a></li><li><a href="#f">F</a></li><li><a href="#g">G</a></li><li><a href="#h">H</a></li><li><a href="#i">I</a></li><li><a href="#j-l">J–L</a></li><li><a href="#m">M</a></li><li><a href="#n-o">N–O</a></li><li><a href="#p">P</a></li><li><a href="#r">R</a></li><li><a href="#s">S</a></li><li><a href="#t-u">T–U</a></li><li><a href="#v-w">V–W</a></li><li><a href="#the-ten-most-confused-pairs">The Ten Most Confused Pairs</a></li></ul></div><h1>📖 Terminology — Enterprise Computing</h1>
+<blockquote>
+<p><strong>Definitions only.</strong> Nothing else in this file.
+✅ = named topic in the Trial · ⚠️ = Year 11 assumed knowledge
+Full notes: <a href="Data_Science.html">Data Science</a> · <a href="Intelligent_Systems.html">Intelligent Systems</a> · <a href="Data_Visualisation.html">Data Visualisation</a> · <a href="Enterprise_Project.html">Enterprise Project</a> · <a href="Principles_of_Cybersecurity.html">Principles of Cybersecurity</a></p>
+</blockquote>
+<hr>
+<h2 id="a">A</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Abstraction</strong></td>
+<td>Focusing on important details while ignoring irrelevant information, to reduce unnecessary complexity</td>
+</tr>
+<tr>
+<td><strong>Acceptance testing</strong></td>
+<td>Testing in which the <strong>client</strong> confirms the system meets their requirements</td>
+</tr>
+<tr>
+<td><strong>Active data collection</strong></td>
+<td>Data collected <strong>intentionally from users</strong> — surveys, forms, questionnaires, input fields</td>
+</tr>
+<tr>
+<td><strong>Actuator</strong></td>
+<td>A device converting electrical control signals into <strong>physical motion</strong>; includes servo, stepper and DC motors</td>
+</tr>
+<tr>
+<td><strong>Aggregation</strong></td>
+<td>Combining many data values into <strong>one summary value</strong> — sum, average, count, median</td>
+</tr>
+<tr>
+<td><strong>Agile</strong></td>
+<td>An <strong>iterative and incremental</strong> development approach expecting requirements to change, delivering working software each cycle</td>
+</tr>
+<tr>
+<td><strong>Algorithm</strong></td>
+<td>A step-by-step set of instructions for solving a problem or performing a task</td>
+</tr>
+<tr>
+<td><strong>Alternative data</strong></td>
+<td>Non-traditional feedback signals from a different format or source — likes, emoticons, memes, click counts, sentiment labels</td>
+</tr>
+<tr>
+<td><strong>Australian Privacy Principles (APPs)</strong></td>
+<td>The <strong>13 principles</strong> in the Privacy Act 1988 governing collection, use, disclosure, governance, accountability, integrity and correction of personal information, and individuals&#39; right of access</td>
+</tr>
+<tr>
+<td><strong>Availability</strong></td>
+<td>Ensuring authorised users can <strong>access</strong> information and services when needed</td>
+</tr>
+</tbody></table>
+<h2 id="b">B</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Backward chaining</strong></td>
+<td><strong>Goal-driven</strong> reasoning — starts with a hypothesis and works backward to check whether the facts support it</td>
+</tr>
+<tr>
+<td><strong>Beta testing</strong></td>
+<td>Release to a limited group of <strong>real users</strong> outside the development team, before full release</td>
+</tr>
+<tr>
+<td><strong>Bias</strong></td>
+<td>Systematic unfairness in data arising from how it is collected, processed or interpreted; leads to skewed results and discrimination</td>
+</tr>
+<tr>
+<td><strong>Big data</strong></td>
+<td>Datasets characterised by <strong>volume, velocity, variety, veracity and value</strong>, too large or complex for traditional systems</td>
+</tr>
+<tr>
+<td><strong>Biometrics</strong></td>
+<td>Technology measuring human <strong>physical or behavioural characteristics</strong> — fingerprint, face, voice — for identification and authentication</td>
+</tr>
+<tr>
+<td><strong>Blockchain</strong></td>
+<td>A <strong>distributed ledger</strong> managing and verifying data securely and <strong>decentrally</strong>, where each block contains the hash of the previous block</td>
+</tr>
+<tr>
+<td><strong>Bot</strong></td>
+<td>An automated program performing tasks without human intervention</td>
+</tr>
+<tr>
+<td><strong>Botnet</strong></td>
+<td>A <strong>network of compromised machines</strong> controlled remotely, used for DDoS attacks or spam</td>
+</tr>
+<tr>
+<td><strong>Boundary data</strong></td>
+<td>Test data at the <strong>edges</strong> of the valid range</td>
+</tr>
+</tbody></table>
+<h2 id="c">C</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Certainty factor</strong></td>
+<td>A confidence value attached to a rule or conclusion, letting a system express <strong>how sure</strong> it is rather than a flat yes/no</td>
+</tr>
+<tr>
+<td><strong>Cloud storage</strong></td>
+<td>Data stored on <strong>remote servers</strong> accessed over the internet — scalable and accessible, but internet-dependent</td>
+</tr>
+<tr>
+<td><strong>Communicated data</strong></td>
+<td>Data presented <strong>with context and explanation</strong> — sample size, timeframe, limitations. Informative rather than persuasive</td>
+</tr>
+<tr>
+<td><strong>Composite key</strong></td>
+<td>Two or more fields together forming a primary key, typically in a <strong>join table</strong></td>
+</tr>
+<tr>
+<td><strong>Computational thinking</strong></td>
+<td>Problem-solving through <strong>decomposition, pattern recognition, abstraction and algorithms</strong></td>
+</tr>
+<tr>
+<td><strong>Confidentiality</strong></td>
+<td>Protecting sensitive data from unauthorised access, exposure or theft</td>
+</tr>
+<tr>
+<td><strong>Consumer Data Right (CDR)</strong></td>
+<td>Australian framework mandating data handling with <strong>consumer consent</strong> in designated sectors such as banking and energy</td>
+</tr>
+<tr>
+<td><strong>Correlation</strong></td>
+<td>A relationship where two variables move together — <strong>does not prove causation</strong></td>
+</tr>
+<tr>
+<td><strong>Curated data</strong></td>
+<td>Data that has been <strong>selected</strong>, with context removed and the message simplified for impact. Persuasive rather than informative</td>
+</tr>
+</tbody></table>
+<h2 id="d">D</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Dashboard</strong></td>
+<td>A <strong>single screen</strong> bringing together a small set of metrics with enough context to support a decision</td>
+</tr>
+<tr>
+<td><strong>Data bias</strong></td>
+<td>Systematic errors from selective sampling, underrepresentation of groups or measurement error</td>
+</tr>
+<tr>
+<td><strong>Data cleaning</strong></td>
+<td>Removing duplicates, fixing missing values and correcting errors</td>
+</tr>
+<tr>
+<td><strong>Data dictionary</strong></td>
+<td>Documentation of a database&#39;s structure — field names, data types, formats and attributes</td>
+</tr>
+<tr>
+<td><strong>Data filtering</strong></td>
+<td>Selecting relevant data and discarding surplus or unnecessary data</td>
+</tr>
+<tr>
+<td><strong>Data flow diagram (DFD)</strong></td>
+<td>A diagram showing <strong>how data moves</strong> through a system, comprising external entities, processes, data stores and data flows</td>
+</tr>
+<tr>
+<td><strong>Data integrity</strong></td>
+<td>The accuracy, completeness and trustworthiness of data, assessed through ownership, source, validation, risk, scope and depth of insight</td>
+</tr>
+<tr>
+<td><strong>Data lake</strong></td>
+<td>A repository storing raw data in multiple formats using <strong>schema-on-read</strong></td>
+</tr>
+<tr>
+<td><strong>Data literacy</strong></td>
+<td>The ability to read, interpret and question data — determines whether data <strong>informs or merely influences</strong></td>
+</tr>
+<tr>
+<td><strong>Data mining</strong></td>
+<td>Discovering patterns, relationships and anomalies in large datasets</td>
+</tr>
+<tr>
+<td><strong>Data sampling</strong></td>
+<td>Selecting a <strong>subset</strong> of data from a larger dataset so decisions can be made efficiently</td>
+</tr>
+<tr>
+<td><strong>Data sovereignty</strong></td>
+<td>The right of a people — particularly <strong>Aboriginal and Torres Strait Islander Peoples</strong> — to control the collection, ownership and application of data about them</td>
+</tr>
+<tr>
+<td><strong>Data swamp</strong></td>
+<td>Too much <strong>unorganised, undocumented or irrelevant</strong> data, making useful information hard to find</td>
+</tr>
+<tr>
+<td><strong>Data validation</strong></td>
+<td>Checking data meets specific rules and standards</td>
+</tr>
+<tr>
+<td><strong>Data warehouse</strong></td>
+<td>A <strong>central repository</strong> storing large volumes of <strong>historical and current</strong> data from multiple sources, structured for analysis</td>
+</tr>
+<tr>
+<td><strong>Decision support system (DSS)</strong></td>
+<td>An interactive computer-based system helping people make decisions by analysing large datasets, combining data, analytical models and user-friendly software</td>
+</tr>
+<tr>
+<td><strong>Decision tree</strong></td>
+<td>A model breaking decisions into simple <strong>IF–THEN</strong> steps, where branches are conditions and leaves are outcomes</td>
+</tr>
+<tr>
+<td><strong>Decomposition</strong></td>
+<td>Breaking a complex problem into smaller, manageable parts</td>
+</tr>
+<tr>
+<td><strong>Design thinking</strong></td>
+<td>A human-centred process: <strong>empathise, define, ideate, prototype, test</strong></td>
+</tr>
+<tr>
+<td><strong>DDoS</strong></td>
+<td>Distributed denial of service — flooding a service with traffic to deny <strong>availability</strong></td>
+</tr>
+<tr>
+<td><strong>Dicing</strong></td>
+<td>An OLAP technique analysing a subset of data across <strong>multiple dimensions</strong></td>
+</tr>
+<tr>
+<td><strong>Direct implementation</strong></td>
+<td>The old system is switched off and the new one on across the whole organisation at once. <strong>Highest risk</strong>, cheapest</td>
+</tr>
+<tr>
+<td><strong>Drill-down</strong></td>
+<td>An OLAP technique breaking summary data into <strong>more detailed levels</strong></td>
+</tr>
+</tbody></table>
+<h2 id="e">E</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>End-user development</strong></td>
+<td>The users themselves develop the system, typically with spreadsheets or low-code tools</td>
+</tr>
+<tr>
+<td><strong>Enterprise data warehouse (EDW)</strong></td>
+<td>An organisation-wide data warehouse combining historical and real-time data</td>
+</tr>
+<tr>
+<td><strong>Errors</strong></td>
+<td>Mistakes made in data collection, entry or processing</td>
+</tr>
+<tr>
+<td><strong>Evil twin</strong></td>
+<td>A <strong>fake or impersonated account</strong> made to look like a real person or brand</td>
+</tr>
+<tr>
+<td><strong>Expert system</strong></td>
+<td>A system mimicking a human expert in a specific domain, comprising a <strong>knowledge base, inference engine and user interface</strong></td>
+</tr>
+<tr>
+<td><strong>Exploit</strong></td>
+<td>The act of illegally accessing systems, networks or data by taking advantage of a vulnerability</td>
+</tr>
+<tr>
+<td><strong>External entity</strong></td>
+<td>In a DFD, a <strong>source or sink</strong> of data — a user or sensor. Named with a <strong>noun</strong></td>
+</tr>
+</tbody></table>
+<h2 id="f">F</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Factual knowledge</strong></td>
+<td>Knowledge widely shared through textbooks and resources, <strong>agreed upon by experts</strong></td>
+</tr>
+<tr>
+<td><strong>Flat-file database</strong></td>
+<td>Data stored in a <strong>single table or file</strong> — plain text, CSV or JSON — without relationships or indexing</td>
+</tr>
+<tr>
+<td><strong>Flowchart</strong></td>
+<td>A diagram representing <strong>logic and decision-making</strong>, read top to bottom and left to right</td>
+</tr>
+<tr>
+<td><strong>Foreign key</strong></td>
+<td>A field referring to a <strong>primary key in another table</strong>, creating the relationship between them</td>
+</tr>
+<tr>
+<td><strong>Forward chaining</strong></td>
+<td><strong>Data-driven</strong> reasoning — starts with known facts and applies rules to derive conclusions</td>
+</tr>
+<tr>
+<td><strong>Functional testing</strong></td>
+<td>Verifying that <strong>every function</strong> performs according to its specification</td>
+</tr>
+<tr>
+<td><strong>Fuzzy logic</strong></td>
+<td>Reasoning that is <strong>approximate rather than precise</strong>, handling uncertainty and imprecision</td>
+</tr>
+</tbody></table>
+<h2 id="g">G</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Gantt chart</strong></td>
+<td>A project management tool scheduling <strong>tasks, milestones and deadlines</strong>, showing concurrent activities</td>
+</tr>
+<tr>
+<td><strong>GDPR</strong></td>
+<td>The EU&#39;s General Data Protection Regulation, built on <strong>7 fundamental principles</strong></td>
+</tr>
+</tbody></table>
+<h2 id="h">H</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Haptics</strong></td>
+<td>Technology using <strong>touch, vibration or motion feedback</strong> to simulate physical interaction</td>
+</tr>
+<tr>
+<td><strong>HAVING</strong></td>
+<td>An SQL clause filtering <strong>groups</strong> after <code>GROUP BY</code>, as distinct from filtering rows</td>
+</tr>
+<tr>
+<td><strong>Heuristic knowledge</strong></td>
+<td>Practical <strong>&quot;rules of thumb&quot;</strong> obtained through experience and reasoning rather than formal proof</td>
+</tr>
+<tr>
+<td><strong>Hypothetical reasoning</strong></td>
+<td>Exploring <strong>&quot;what-if&quot; scenarios</strong> by testing different hypotheses to determine possible outcomes</td>
+</tr>
+</tbody></table>
+<h2 id="i">I</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ICIP</strong></td>
+<td><strong>Indigenous Cultural and Intellectual Property</strong> — the right of Indigenous communities to control their cultural heritage, traditions and knowledge</td>
+</tr>
+<tr>
+<td><strong>Industry 4.0</strong></td>
+<td>The integration of automation, data exchange and intelligent systems into manufacturing and enterprise</td>
+</tr>
+<tr>
+<td><strong>Inference engine</strong></td>
+<td>The component of an expert system applying <strong>rules</strong> to the knowledge base and user input to reach a conclusion</td>
+</tr>
+<tr>
+<td><strong>Infographic</strong></td>
+<td>A visual simplifying complex processes for easy understanding; a <strong>static, single-point-in-time</strong> dashboard qualifies</td>
+</tr>
+<tr>
+<td><strong>Informatics</strong></td>
+<td>The study of the <strong>processing and management of information</strong>, transforming raw data into knowledge</td>
+</tr>
+<tr>
+<td><strong>INNER JOIN</strong></td>
+<td>An SQL join returning <strong>only rows with matches in both tables</strong></td>
+</tr>
+<tr>
+<td><strong>Integrity (of information)</strong></td>
+<td>Maintaining the <strong>accuracy, consistency and reliability</strong> of data</td>
+</tr>
+<tr>
+<td><strong>Intelligent agent</strong></td>
+<td>A system acting on behalf of a user; <strong>simplistic</strong> agents follow fixed rules, <strong>complex</strong> agents learn and adapt</td>
+</tr>
+<tr>
+<td><strong>Intelligent system</strong></td>
+<td>A system that <strong>learns, adapts and reasons under uncertainty</strong>, rather than following static rules</td>
+</tr>
+<tr>
+<td><strong>Interval</strong></td>
+<td>A level of measurement with ordered, <strong>equal gaps but no true zero</strong> — temperature in °C, calendar years</td>
+</tr>
+<tr>
+<td><strong>IoMe</strong></td>
+<td><strong>Internet of Me</strong> — personalised, individual-centred connected services and data</td>
+</tr>
+<tr>
+<td><strong>IoT</strong></td>
+<td><strong>Internet of Things</strong> — networked physical devices collecting and exchanging data</td>
+</tr>
+<tr>
+<td><strong>Iterative approach</strong></td>
+<td>Building in <strong>repeated cycles</strong>, refining with each pass rather than completing everything once</td>
+</tr>
+</tbody></table>
+<h2 id="j-l">J–L</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Join table</strong></td>
+<td>A table resolving a <strong>many-to-many</strong> relationship by holding foreign keys to both original tables</td>
+</tr>
+<tr>
+<td><strong>Knowledge base</strong></td>
+<td>The component of an expert system storing domain <strong>facts and rules</strong></td>
+</tr>
+<tr>
+<td><strong>LEFT JOIN</strong></td>
+<td>An SQL join returning <strong>all rows from the left table</strong>, whether or not they match</td>
+</tr>
+<tr>
+<td><strong>Level 0 DFD</strong></td>
+<td>A context diagram showing the <strong>whole system as one process</strong> with its inputs, outputs and external entities</td>
+</tr>
+<tr>
+<td><strong>Level 1 DFD</strong></td>
+<td>A DFD breaking the main process into <strong>sub-processes</strong></td>
+</tr>
+<tr>
+<td><strong>Limitations</strong></td>
+<td><strong>Inherent constraints</strong> of data — sample size, coverage, representativeness, or the scope of the sources</td>
+</tr>
+<tr>
+<td><strong>Live data testing</strong></td>
+<td>Testing with <strong>real, current operational data</strong></td>
+</tr>
+<tr>
+<td><strong>Local storage</strong></td>
+<td>Data stored on a single local machine — fast and controlled, but limited in scalability</td>
+</tr>
+</tbody></table>
+<h2 id="m">M</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Machine learning</strong></td>
+<td>Algorithms identifying patterns and relationships in large datasets, improving with more data</td>
+</tr>
+<tr>
+<td><strong>Metadata</strong></td>
+<td>Data <strong>about other data</strong> — how, when and by whom it was collected</td>
+</tr>
+<tr>
+<td><strong>Microcontroller</strong></td>
+<td>A compact integrated circuit containing CPU, memory and I/O ports, performing specific control tasks in an embedded system</td>
+</tr>
+<tr>
+<td><strong>Multi-factor authentication (MFA)</strong></td>
+<td>Requiring <strong>two or more</strong> independent factors to verify identity</td>
+</tr>
+</tbody></table>
+<h2 id="n-o">N–O</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Nominal</strong></td>
+<td>A level of measurement using <strong>named categories with no order</strong> — eye colour, suburb</td>
+</tr>
+<tr>
+<td><strong>Normalisation</strong></td>
+<td>Structuring a database to <strong>reduce redundancy</strong> and improve efficiency, consistency and accuracy</td>
+</tr>
+<tr>
+<td><strong>NoSQL</strong></td>
+<td>A flexible database type storing and integrating <strong>multiple data formats</strong> without a strict schema</td>
+</tr>
+<tr>
+<td><strong>Notifiable Data Breaches (NDB) scheme</strong></td>
+<td>Requires entities to notify affected individuals and the <strong>OAIC</strong> about breaches likely to result in <strong>serious harm</strong></td>
+</tr>
+<tr>
+<td><strong>OAIC</strong></td>
+<td>Office of the Australian Information Commissioner — the authority <strong>enforcing the Privacy Act</strong></td>
+</tr>
+<tr>
+<td><strong>OLAP</strong></td>
+<td><strong>Online analytical processing</strong> — software analysing large, <strong>multi-dimensional</strong> datasets organised in a cube structure</td>
+</tr>
+<tr>
+<td><strong>Ontology classification</strong></td>
+<td>Organising knowledge into <strong>categories and concepts</strong> and defining the relationships between them</td>
+</tr>
+<tr>
+<td><strong>Ordinal</strong></td>
+<td>A level of measurement using categories with a <strong>meaningful order but unequal gaps</strong> — satisfaction ratings, year level</td>
+</tr>
+<tr>
+<td><strong>Outlier</strong></td>
+<td>A data point <strong>very different from the rest</strong>; may indicate an error <strong>or</strong> a valid unusual event</td>
+</tr>
+<tr>
+<td><strong>Ownership (data integrity)</strong></td>
+<td>Who <strong>controls and maintains</strong> data, and therefore who is accountable for its accuracy</td>
+</tr>
+</tbody></table>
+<h2 id="p">P</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Parallel implementation</strong></td>
+<td>Old and new systems run <strong>together</strong> for a period. <strong>Lowest risk</strong>, most expensive</td>
+</tr>
+<tr>
+<td><strong>Passive data collection</strong></td>
+<td>Data collected <strong>automatically</strong>, without direct user input — logs, sensors, clickstream, analytics</td>
+</tr>
+<tr>
+<td><strong>Pattern recognition</strong></td>
+<td>Identifying recurring patterns or trends in data or processes</td>
+</tr>
+<tr>
+<td><strong>Phased implementation</strong></td>
+<td>The system introduced <strong>one module or department at a time</strong></td>
+</tr>
+<tr>
+<td><strong>Phishing</strong></td>
+<td>Deceptive messages or links tricking users into revealing private information. By SMS it is <strong>smishing</strong></td>
+</tr>
+<tr>
+<td><strong>Pilot implementation</strong></td>
+<td>The system trialled with a <strong>small group</strong> of users first</td>
+</tr>
+<tr>
+<td><strong>Pivot table</strong></td>
+<td>An interactive spreadsheet tool summarising and exploring large datasets <strong>without formulas</strong></td>
+</tr>
+<tr>
+<td><strong>Predictive analytics</strong></td>
+<td>Using models and machine learning to identify patterns and <strong>forecast future trends</strong></td>
+</tr>
+<tr>
+<td><strong>Primary data</strong></td>
+<td>Data collected <strong>directly by you</strong> for a specific purpose</td>
+</tr>
+<tr>
+<td><strong>Primary key</strong></td>
+<td>A field uniquely identifying each row; <strong>cannot be null or duplicated</strong></td>
+</tr>
+<tr>
+<td><strong>Privacy</strong></td>
+<td>The individual&#39;s <strong>right</strong> to control their personal information</td>
+</tr>
+<tr>
+<td><strong>Privacy Act 1988 (Cth)</strong></td>
+<td>The primary Australian law governing how personal information is collected, used, stored and disclosed</td>
+</tr>
+<tr>
+<td><strong>Processed data</strong></td>
+<td>Data cleaned, transformed or manipulated to make it easier to analyse</td>
+</tr>
+<tr>
+<td><strong>Prototyping</strong></td>
+<td>Building a <strong>working model</strong> early and refining it based on feedback</td>
+</tr>
+</tbody></table>
+<h2 id="r">R</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Ratio</strong></td>
+<td>A level of measurement with ordered, equal gaps and a <strong>true zero</strong> — height, weight, price</td>
+</tr>
+<tr>
+<td><strong>Raw data</strong></td>
+<td>Data that has <strong>not been processed or analysed</strong> in any way</td>
+</tr>
+<tr>
+<td><strong>RDBMS</strong></td>
+<td>Relational Database Management System — stores data in <strong>multiple linked tables</strong>, reducing duplication</td>
+</tr>
+<tr>
+<td><strong>Relevance</strong></td>
+<td>Whether data is appropriate to the purpose it is being used for</td>
+</tr>
+<tr>
+<td><strong>Reliability</strong></td>
+<td>Whether the <strong>same results</strong> would be obtained if the data were collected again</td>
+</tr>
+<tr>
+<td><strong>Risk</strong></td>
+<td>The <strong>potential for harm</strong> when a threat exploits a vulnerability</td>
+</tr>
+<tr>
+<td><strong>Risk analysis</strong></td>
+<td>Identifying what could go wrong in a project so risks can be prevented or mitigated</td>
+</tr>
+<tr>
+<td><strong>Roll-up</strong></td>
+<td>An OLAP technique combining detailed data into a <strong>higher-level summary</strong></td>
+</tr>
+</tbody></table>
+<h2 id="s">S</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Secondary data</strong></td>
+<td>Data <strong>collected by someone else</strong> and used by you for analysis</td>
+</tr>
+<tr>
+<td><strong>Semi-structured data</strong></td>
+<td>Data with some organisational properties but <strong>no strict schema</strong> — JSON, XML</td>
+</tr>
+<tr>
+<td><strong>Semi-structured decision</strong></td>
+<td>A decision where some elements can be automated but <strong>judgement is still required</strong>; the system recommends, a human decides</td>
+</tr>
+<tr>
+<td><strong>Sensor</strong></td>
+<td>A device detecting and measuring <strong>physical conditions</strong> and converting them into digital signals</td>
+</tr>
+<tr>
+<td><strong>Simulated data testing</strong></td>
+<td>Testing with <strong>artificially generated</strong> data, including edge cases</td>
+</tr>
+<tr>
+<td><strong>Slicing</strong></td>
+<td>An OLAP technique selecting a single layer of the cube by filtering <strong>one dimension</strong></td>
+</tr>
+<tr>
+<td><strong>Smishing</strong></td>
+<td>Phishing conducted via <strong>SMS</strong></td>
+</tr>
+<tr>
+<td><strong>Structured data</strong></td>
+<td>Data organised in a <strong>fixed format</strong> — rows, columns, fields</td>
+</tr>
+<tr>
+<td><strong>Structured decision</strong></td>
+<td>A routine, repetitive decision with <strong>clear rules</strong>; the system decides and acts without human involvement</td>
+</tr>
+<tr>
+<td><strong>Surplus data</strong></td>
+<td>Redundant or unnecessary data that <strong>wastes storage and causes lag</strong></td>
+</tr>
+</tbody></table>
+<h2 id="t-u">T–U</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Threat</strong></td>
+<td>An individual or group carrying out cyberattacks, or the potential source of harm</td>
+</tr>
+<tr>
+<td><strong>Truth maintenance system (TMS)</strong></td>
+<td>Tracks which facts are true in a dynamic environment and <strong>consistently updates related facts</strong> when information changes</td>
+</tr>
+<tr>
+<td><strong>Uncertainty</strong></td>
+<td><strong>Lack of precision or ambiguity</strong> in data, arising from measurement, the nature of the data, or the analysis method</td>
+</tr>
+<tr>
+<td><strong>Unstructured data</strong></td>
+<td>Data with <strong>no fixed format</strong> and variable length — text, images, video, memes</td>
+</tr>
+<tr>
+<td><strong>Unstructured decision</strong></td>
+<td>A novel, complex decision with <strong>no clear procedure</strong>, depending on experience, intuition and negotiation</td>
+</tr>
+<tr>
+<td><strong>User interface</strong></td>
+<td>The component allowing a user to enter data and receive output</td>
+</tr>
+</tbody></table>
+<h2 id="v-w">V–W</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Validity</strong></td>
+<td>Whether data <strong>measures what it is supposed to</strong> measure</td>
+</tr>
+<tr>
+<td><strong>Value</strong> (big data)</td>
+<td>The <strong>real-world benefit</strong> an organisation obtains from its data</td>
+</tr>
+<tr>
+<td><strong>Variety</strong> (big data)</td>
+<td>The <strong>many different formats</strong> data takes — structured, semi-structured and unstructured</td>
+</tr>
+<tr>
+<td><strong>Velocity</strong> (big data)</td>
+<td>The <strong>speed</strong> at which data flows into a system</td>
+</tr>
+<tr>
+<td><strong>Veracity</strong> (big data)</td>
+<td>The <strong>accuracy and reliability</strong> of data</td>
+</tr>
+<tr>
+<td><strong>Verification</strong></td>
+<td>Confirming the system is built <strong>right</strong> — that it meets its specifications</td>
+</tr>
+<tr>
+<td><strong>Validation</strong> (systems)</td>
+<td>Confirming the <strong>right system</strong> was built — that it meets the user&#39;s actual needs</td>
+</tr>
+<tr>
+<td><strong>Volume</strong> (big data)</td>
+<td>The <strong>massive amount</strong> of data generated and stored</td>
+</tr>
+<tr>
+<td><strong>Volume testing</strong></td>
+<td>Testing with <strong>large quantities</strong> of data to check performance under load</td>
+</tr>
+<tr>
+<td><strong>VPN</strong></td>
+<td>Virtual Private Network — encrypts data before transmission over an untrusted connection</td>
+</tr>
+<tr>
+<td><strong>Vulnerability</strong></td>
+<td>A <strong>weakness</strong> in a system or process that an attacker can take advantage of</td>
+</tr>
+<tr>
+<td><strong>Waterfall</strong></td>
+<td>A <strong>linear, sequential</strong> development approach where each phase completes before the next begins</td>
+</tr>
+<tr>
+<td><strong>Webometrics</strong></td>
+<td>The measurement and analysis of web data, used to keep systems updated with real-time information</td>
+</tr>
+<tr>
+<td><strong>WHERE</strong></td>
+<td>An SQL clause filtering <strong>individual rows</strong>, before grouping</td>
+</tr>
+<tr>
+<td><strong>What-if modelling</strong></td>
+<td>Changing inputs in a spreadsheet to observe the effect on outputs — scenario testing</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="the-ten-most-confused-pairs">The Ten Most Confused Pairs</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>vs</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Curated data</strong> — selected, context removed</td>
+<td>↔</td>
+<td><strong>Communicated data</strong> — context included</td>
+</tr>
+<tr>
+<td><strong>Data warehouse</strong> — structured, documented</td>
+<td>↔</td>
+<td><strong>Data swamp</strong> — unmanaged accumulation</td>
+</tr>
+<tr>
+<td><strong>Forward chaining</strong> — starts with facts</td>
+<td>↔</td>
+<td><strong>Backward chaining</strong> — starts with a goal</td>
+</tr>
+<tr>
+<td><strong>Knowledge base</strong> — holds <strong>facts</strong></td>
+<td>↔</td>
+<td><strong>Inference engine</strong> — applies <strong>rules</strong></td>
+</tr>
+<tr>
+<td><strong>Slicing</strong> — one dimension</td>
+<td>↔</td>
+<td><strong>Dicing</strong> — multiple dimensions</td>
+</tr>
+<tr>
+<td><strong>Drill-down</strong> — summary to detail</td>
+<td>↔</td>
+<td><strong>Roll-up</strong> — detail to summary</td>
+</tr>
+<tr>
+<td><strong>Verification</strong> — built right</td>
+<td>↔</td>
+<td><strong>Validation</strong> — the right system</td>
+</tr>
+<tr>
+<td><strong>Interval</strong> — no true zero</td>
+<td>↔</td>
+<td><strong>Ratio</strong> — has a true zero</td>
+</tr>
+<tr>
+<td><strong>Validity</strong> — measures what it should</td>
+<td>↔</td>
+<td><strong>Reliability</strong> — repeatable results</td>
+</tr>
+<tr>
+<td><strong>Pilot</strong> — small <strong>group</strong> first</td>
+<td>↔</td>
+<td><strong>Phased</strong> — one <strong>module</strong> at a time</td>
+</tr>
+</tbody></table>
+<hr>
+<blockquote>
+<p><strong>See also:</strong> <a href="MOC.html">MOC</a> | <a href="Data_Science.html">Data Science</a> | <a href="Intelligent_Systems.html">Intelligent Systems</a> | <a href="Data_Visualisation.html">Data Visualisation</a> | <a href="Enterprise_Project.html">Enterprise Project</a> | <a href="Principles_of_Cybersecurity.html">Principles of Cybersecurity</a></p>
+</blockquote>
+</article></main></div><nav class="rail" aria-label="On this page"><div class="rail-title">On this page</div><ul><li><a href="#a" data-target="a">A</a></li><li><a href="#b" data-target="b">B</a></li><li><a href="#c" data-target="c">C</a></li><li><a href="#d" data-target="d">D</a></li><li><a href="#e" data-target="e">E</a></li><li><a href="#f" data-target="f">F</a></li><li><a href="#g" data-target="g">G</a></li><li><a href="#h" data-target="h">H</a></li><li><a href="#i" data-target="i">I</a></li><li><a href="#j-l" data-target="j-l">J–L</a></li><li><a href="#m" data-target="m">M</a></li><li><a href="#n-o" data-target="n-o">N–O</a></li><li><a href="#p" data-target="p">P</a></li><li><a href="#r" data-target="r">R</a></li><li><a href="#s" data-target="s">S</a></li><li><a href="#t-u" data-target="t-u">T–U</a></li><li><a href="#v-w" data-target="v-w">V–W</a></li><li><a href="#the-ten-most-confused-pairs" data-target="the-ten-most-confused-pairs">The Ten Most Confused Pairs</a></li></ul></nav><script>
+function toggleTheme(ev){
+var oldTheme=document.documentElement.getAttribute("data-theme")||"dark";
+var next=oldTheme==="light"?"dark":"light";
+function apply(){document.documentElement.setAttribute("data-theme",next);try{localStorage.setItem("vault-theme",next)}catch(e){}updateThemeIcons(next);}
+var reduced=false;try{reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
+if(reduced){apply();return;}
+if(window.__vaultThemeAnimating){return;}
+window.__vaultThemeAnimating=1;
+var newPaper=next==="light"?"#faf8f2":"#13151b";
+var W=window.innerWidth,H=window.innerHeight;
+var spacing=W<768?36:28;
+var maxR=spacing*0.78;
+var dpr=1;try{dpr=W<768?1:Math.min(window.devicePixelRatio||1,1.5);}catch(e){}
+var canvas=document.createElement("canvas");
+canvas.id="theme-wave";
+canvas.style.cssText="position:fixed;left:0;top:0;width:"+W+"px;height:"+H+"px;z-index:9999;pointer-events:none;";
+canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+var ctx=canvas.getContext("2d");
+try{ctx.setTransform(dpr,0,0,dpr,0,0);}catch(e){}
+ctx.fillStyle=newPaper;
+var dots=[];
+for(var y=spacing/2;y<H+spacing;y+=spacing){for(var x=spacing/2;x<W+spacing;x+=spacing){dots.push({x:x,y:y,delay:(x+y)/(W+H)*450,done:0});}}
+var waveMs=450,growMs=300;
+var start=Date.now();
+function easeOutCubic(p){return 1-Math.pow(1-p,3);}
+function step(){
+var elapsed=Date.now()-start;
+var allDone=true;
+var any=false;
+ctx.beginPath();
+for(var i=0;i<dots.length;i++){
+var d=dots[i];
+if(d.done){continue;}
+var p=(elapsed-d.delay)/growMs;
+if(p<0){allDone=false;continue;}
+if(p<1){allDone=false;}
+else{d.done=1;}
+var r=maxR*easeOutCubic(p<1?p:1);
+if(r>0){ctx.moveTo(d.x+r,d.y);ctx.arc(d.x,d.y,r,0,Math.PI*2);any=true;}
+}
+if(any){ctx.fill();}
+if(!allDone){requestAnimationFrame(step);return;}
+apply();
+canvas.style.transition="opacity 0.15s ease";
+canvas.style.opacity="0";
+setTimeout(function(){window.__vaultThemeAnimating=0;if(canvas.parentNode)canvas.parentNode.removeChild(canvas);},180);
+}
+document.body.appendChild(canvas);
+requestAnimationFrame(step);
+}
+function updateThemeIcons(theme){var icon=theme==="dark"?"☀":"☾";document.querySelectorAll(".theme-btn").forEach(function(b){b.textContent=icon;});}
+try{updateThemeIcons(document.documentElement.getAttribute("data-theme")||"dark");}catch(e){}
+function toggleMenu(force){document.body.classList.toggle("menu-open",force)}
+document.addEventListener("keydown",function(e){if(e.key==="/"&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();var s=document.querySelector(".side-search");if(s)s.focus()}});
+document.addEventListener("click",function(e){if(e.target.closest(".side a"))toggleMenu(false)});
+(function(){try{
+var links=Array.prototype.slice.call(document.querySelectorAll(".rail a"));
+if(!links.length||!window.IntersectionObserver)return;
+var map={};links.forEach(function(a){map[a.getAttribute("data-target")]=a});
+var obs=new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove("active");a.classList.remove("parent-active")});
+      var l=map[e.target.id];
+      if(l){l.classList.add("active");var p=l.getAttribute("data-parent");if(p&&map[p])map[p].classList.add("parent-active")}
+    }
+  });
+}, {rootMargin:"-20% 0px -70% 0px"});
+document.querySelectorAll(".prose h2[id], .prose h3[id]").forEach(function(h){obs.observe(h)});
+}catch(e){}})();
+(function(){try{
+var cv=document.getElementById("dotgrid");if(!cv)return;var ctx=cv.getContext("2d");if(!ctx)return;
+var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var W=0,H=0,dpr=1,cols=0,rows=0,SP=28,px=0,py=0,pt=0,hasP=false;
+function dotRGB(){try{return getComputedStyle(document.documentElement).getPropertyValue("--dot-rgb").trim()||"233,231,225"}catch(e){return "233,231,225"}}
+function resize(){dpr=Math.min(window.devicePixelRatio||1,window.innerWidth<700?1.5:2);SP=window.innerWidth<700?36:28;W=window.innerWidth;H=window.innerHeight;cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+"px";cv.style.height=H+"px";ctx.setTransform(dpr,0,0,dpr,0,0);cols=Math.ceil(W/SP)+1;rows=Math.ceil(H/SP)+1}
+var R=Math.random()*Math.PI*2;
+var FORCES=[
+ {ax:.42,ay:.15,tx:26,ty:31,px:R,py:R+1.3,circ:false},
+ {ax:.38,ay:.42,tx:37,ty:23,px:R+2.1,py:R+0.7,circ:false},
+ {ax:.30,ay:.30,tx:41,ty:41,px:R+4.0,py:R+4.0,circ:true}
+];
+function draw(now){var t=now/1000;var rgb=dotRGB();
+var activeForces=W>=1280?FORCES:FORCES.slice(0,1);
+var pFade=hasP?Math.max(0,1-(now-pt)/4000):0;
+ctx.clearRect(0,0,W,H);
+for(var y=0;y<rows;y++)for(var x=0;x<cols;x++){var ox=x*SP+10,oy=y*SP+10,a=0.14,dispX=0,dispY=0;
+for(var fi=0;fi<activeForces.length;fi++){var F=activeForces[fi];
+var fx=F.circ?W*(0.5+F.ax*Math.cos(t*2*Math.PI/F.tx+F.px)):W*(0.5+F.ax*Math.sin(t*2*Math.PI/F.tx+F.px));
+var fy=F.circ?H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py)):H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py));
+var ddx=ox-fx,ddy=oy-fy,d=Math.sqrt(ddx*ddx+ddy*ddy);
+if(d<170&&d>0.01){var f=1-d/170;f=f*f;dispX+=(ddx/d)*6*f;dispY+=(ddy/d)*6*f;a+=0.20*f}}
+var dm=Math.sqrt(dispX*dispX+dispY*dispY);if(dm>9){dispX*=9/dm;dispY*=9/dm}
+var dx=ox+dispX,dy=oy+dispY;if(a>0.38)a=0.38;
+if(pFade>0){var pdx=ox-px,pdy=oy-py,pd=Math.sqrt(pdx*pdx+pdy*pdy);
+if(pd<150&&pd>0.01){var pf=1-pd/150;pf=pf*pf*pFade;dx+=(pdx/pd)*5*pf;dy+=(pdy/pd)*5*pf;a=Math.min(0.38,a+0.18*pf)}}
+ctx.beginPath();ctx.arc(dx,dy,1.3,0,Math.PI*2);ctx.fillStyle="rgba("+rgb+","+a.toFixed(3)+")";ctx.fill()}}
+function loop(now){if(!window.__vaultThemeAnimating)draw(now);if(!reduced)requestAnimationFrame(loop)}
+window.addEventListener("resize",resize);resize();
+window.addEventListener("pointermove",function(e){px=e.clientX;py=e.clientY;pt=performance.now();hasP=true},{passive:true});
+requestAnimationFrame(loop);
+}catch(e){}})();
+</script></body></html>

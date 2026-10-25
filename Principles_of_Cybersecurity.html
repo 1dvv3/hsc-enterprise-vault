@@ -1,0 +1,514 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Principles of Cybersecurity — HSC Enterprise Vault</title><style>
+:root{--paper:#faf8f2;--ink:#1e1b16;--muted:#6b655a;--line:#e3ddd0;--accent:#1d4ed8;--card:#fffdf8;--side:#f3efe6;--side-bg:rgba(243,239,230,.88);--active:#e8e0cd;--rail-tint:rgba(29,78,216,.14);--rail-tint-soft:rgba(29,78,216,.07);--code:#efe9db;--quote:#4a4438;--dot-rgb:30,27,22;--scheme:light}
+[data-theme="dark"]{--paper:#13151b;--ink:#e9e7e1;--muted:#9aa0ab;--line:#2b2f3a;--accent:#8ab4ff;--card:#1b1e27;--side:#101218;--side-bg:rgba(16,18,24,.88);--active:#262b38;--rail-tint:rgba(138,180,255,.18);--rail-tint-soft:rgba(138,180,255,.09);--code:#262a36;--quote:#c3c7cf;--dot-rgb:233,231,225;--scheme:dark}
+*{box-sizing:border-box}html{color-scheme:var(--scheme)}body{margin:0;background:var(--paper);color:var(--ink);font:16.5px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none;transition:color .18s ease}a:hover{text-decoration:underline}
+#dotgrid{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;padding:22px 18px;border-right:1px solid var(--line);background:var(--side-bg)}
+.side h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:22px 0 6px}
+.side ul{list-style:none;margin:0;padding:0}.side li{margin:3px 0}
+.side a{display:block;padding:7px 10px;border-radius:8px;color:var(--ink);transition:background .18s ease,transform .18s ease}
+.side a.active{background:var(--active);font-weight:600}
+.side a:hover{background:var(--active);text-decoration:none;transform:translateX(3px)}
+.side-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.theme-btn{flex:none;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--ink);font-size:18px;cursor:pointer;transition:background .18s ease}
+.theme-btn:hover{background:var(--active)}
+.home-link{font-weight:700;font-size:18px}.side-search{width:100%;margin:14px 0 4px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-size:16px}
+.side-note{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:24px}
+.topbar{display:none}.backdrop{display:none}
+main{padding:36px 44px;max-width:860px}.prose h1{font-size:32px;line-height:1.2;letter-spacing:-.02em;margin:0 0 6px}
+.prose h2{font-size:23px;margin:34px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
+.prose h3{font-size:18px;margin:26px 0 6px}.prose p{margin:10px 0}
+.prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.prose th,.prose td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+.prose th{background:var(--side)}.prose blockquote{border-left:3px solid var(--line);margin:14px 0;padding:2px 14px;color:var(--quote);background:var(--card)}
+.prose code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:14px}.prose pre{background:#0d0f14;color:#f5f1e6;padding:14px;border-radius:8px;overflow:auto}
+.prose pre code{background:none;color:inherit;padding:0}.prose hr{border:none;border-top:1px solid var(--line);margin:24px 0}
+.meta{color:var(--muted);font-size:14px;margin-bottom:20px}.toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:18px 0}
+.toc b{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.toc ul{margin:8px 0 0;padding-left:18px}.toc li{margin:3px 0}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.card h3{margin:0 0 4px}.card p{margin:0;color:var(--muted);font-size:14.5px}
+#search{width:100%;padding:13px 14px;font-size:17px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.result{border-bottom:1px solid var(--line);padding:14px 6px;border-radius:8px;transition:background .18s ease,transform .18s ease}
+.result:hover{background:var(--card);transform:translateX(3px)}
+.result h3{margin:0}.result p{margin:4px 0;color:var(--quote)}.result .path{font-size:13px;color:var(--muted)}
+mark{background:#fde68a;color:#1e1b16;padding:0 1px}
+html{scroll-behavior:smooth}
+.rail{display:none}
+@media(min-width:1280px){
+main{max-width:min(860px,calc(100vw - 692px))}
+.rail{display:block;position:fixed;right:24px;top:50%;transform:translateY(-50%);width:340px;max-height:76vh;overflow:auto;z-index:15;background:none;border:none;box-shadow:none;padding:18px 14px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%)}
+.rail-title{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:2px 0 12px 12px}
+.rail ul{list-style:none;margin:0;padding:0}
+.rail li{margin:3px 0}
+.rail a{display:block;padding:11px 14px;border-radius:10px;color:var(--ink);font-size:17px;line-height:1.4;transition:transform .2s ease,background .2s ease}
+.rail a:hover,.rail a:focus-visible{background:var(--rail-tint-soft);transform:translateX(-4px) scale(1.02);text-decoration:none}
+.rail a.active{background:var(--rail-tint);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-weight:600;transform:translateX(-12px);width:calc(100% + 12px)}
+.rail a.parent-active{background:var(--rail-tint-soft)}
+.rail ul.sub{margin:3px 0 3px 14px;padding-left:14px;border-left:1px solid var(--line)}
+.rail ul.sub a{padding:9px 12px;font-size:15px;color:var(--muted)}
+.rail ul.sub a:hover{color:var(--ink)}
+.rail ul.sub a.active{color:var(--ink);transform:translateX(-8px);width:calc(100% + 8px)}
+}
+@media(max-width:900px){
+.topbar{display:flex;position:sticky;top:0;z-index:20;align-items:center;gap:10px;padding:12px 14px;background:var(--side);border-bottom:1px solid var(--line)}
+.topbar b{flex:1;font-size:17px}.menu-btn,.topbar .theme-btn{width:44px;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:19px;cursor:pointer}
+.wrap{grid-template-columns:1fr}
+.wrap{z-index:auto}
+.side{background:var(--side)}
+.side a{padding:11px 12px}
+body.menu-open{overflow:hidden}
+.side{position:fixed;inset:0 auto 0 0;width:300px;max-width:86vw;height:100dvh;z-index:30;transform:translateX(-105%);transition:transform .25s ease;box-shadow:0 0 40px rgba(0,0,0,.4)}
+body.menu-open .side{transform:translateX(0)}
+.backdrop{display:none}body.menu-open .backdrop{display:block;position:fixed;inset:0;z-index:25;background:rgba(0,0,0,.45)}
+main{padding:22px 16px}.prose h1{font-size:26px}.prose h2{font-size:21px}.cards{grid-template-columns:1fr}
+.prose table{font-size:14px}.prose pre{font-size:13.5px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style><script>(function(){try{var t=localStorage.getItem("vault-theme")||"dark";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark")}})()</script></head><body><canvas id="dotgrid" aria-hidden="true"></canvas><header class="topbar"><button class="menu-btn" type="button" onclick="toggleMenu()" aria-label="Open notes menu">☰</button><b>Enterprise Vault</b><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></header><div class="backdrop" onclick="toggleMenu(false)"></div><div class="wrap"><nav class="side" id="side"><div class="side-head"><a class="home-link" href="index.html">⌂ Vault home</a><button class="theme-btn" type="button" onclick="toggleTheme(event)" aria-label="Toggle dark / light mode">◐</button></div><input class="side-search" type="search" placeholder="Search notes…  ( / )" onkeydown="if(event.key==='Enter'){location.href='index.html?q='+encodeURIComponent(this.value)}"><h3>Enterprise Computing</h3><ul><li><a class="" href="MOC.html">MOC</a></li><li><a class="" href="Data_Science.html">Data Science</a></li><li><a class="" href="Data_Visualisation.html">Data Visualisation</a></li><li><a class="" href="Enterprise_Project.html">Enterprise Project</a></li><li><a class="" href="Intelligent_Systems.html">Intelligent Systems</a></li><li><a class="active" href="Principles_of_Cybersecurity.html">Principles of Cybersecurity</a></li><li><a class="" href="Terminology.html">Terminology</a></li></ul><p class="side-note">Source: TheSashi HSC Enterprise Computing Notes. Cloned 25 Oct 2026. Content unchanged.</p></nav><main><article class="prose"><h1>Principles of Cybersecurity</h1><p class="meta">Enterprise Computing · Principles_of_Cybersecurity.md</p><div class="toc"><b>On this page</b><ul><li><a href="#1-the-core-vocabulary">1. The Core Vocabulary</a></li><li><a href="#2-social-networking-vulnerabilities">2. Social Networking Vulnerabilities</a></li><li><a href="#3-cybercrime-threats-to-an-enterprise">3. Cybercrime Threats to an Enterprise</a></li><li><a href="#4-the-four-breach-attributes">4. The Four Breach Attributes</a></li><li><a href="#5-legislation-and-frameworks">5. Legislation and Frameworks</a></li><li><a href="#6-individual-privacy-protection">6. Individual Privacy Protection</a></li><li><a href="#7-confusing-terms-quick-reference">7. Confusing Terms — Quick Reference</a></li></ul></div><h1>Principles of Cybersecurity — Final Notes</h1>
+<blockquote>
+<p>⚠️ <strong>NOT a named topic in the Trial (Task 4).</strong> The notification lists <strong>Intelligent Systems, Data Science, Data Visualisation and Enterprise Project</strong>.
+<strong>However:</strong> <em>&quot;The Year 11 course is assumed knowledge for the Year 12 course.&quot;</em> Security concepts surface inside Data Science (privacy and legal issues), Data Visualisation (data integrity and security) and Enterprise Project (risk analysis).
+<strong>Revision priority: LOW.</strong> Read §1, §4 and §5 only unless you have time to spare.
+Terminology: <a href="Terminology.html">Terminology</a> · Index: <a href="MOC.html">MOC</a></p>
+</blockquote>
+<hr>
+<h2 id="1-the-core-vocabulary">1. The Core Vocabulary</h2>
+<blockquote>
+<p>These four terms are constantly confused and are the foundation of everything else.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Threat</strong></td>
+<td>An individual or group responsible for carrying out cyberattacks — or the potential source of harm</td>
+</tr>
+<tr>
+<td><strong>Vulnerability</strong></td>
+<td>A <strong>weakness</strong> in a system or process that can be taken advantage of by an attacker</td>
+</tr>
+<tr>
+<td><strong>Risk</strong></td>
+<td>The <strong>potential for harm</strong> when a threat <strong>exploits</strong> a vulnerability</td>
+</tr>
+<tr>
+<td><strong>Exploit</strong></td>
+<td>The <strong>act</strong> of illegally accessing systems, networks or data</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>The relationship:</strong> a <strong>threat</strong> exploits a <strong>vulnerability</strong>, creating <strong>risk</strong>.
+No vulnerability, no risk — even with a threat present.</p>
+</blockquote>
+<hr>
+<h2 id="2-social-networking-vulnerabilities">2. Social Networking Vulnerabilities</h2>
+<table>
+<thead>
+<tr>
+<th>Vulnerability</th>
+<th>Definition</th>
+<th>Impact on the <strong>individual</strong></th>
+<th>Impact on the <strong>enterprise</strong></th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Account access</strong></td>
+<td>Unauthorised login using <strong>stolen or weak credentials</strong></td>
+<td>Identity theft, leaked personal photos, financial fraud</td>
+<td>Employee accounts compromised, corporate data exposed, network breach risk</td>
+<td>Strong unique passwords · <strong>two-factor authentication (2FA)</strong> · avoid password reuse</td>
+</tr>
+<tr>
+<td><strong>Account behaviour</strong></td>
+<td>Risky or careless <strong>posting or sharing</strong> that exposes sensitive information</td>
+<td>Privacy loss, stalking, <strong>targeted phishing</strong></td>
+<td>Leaked internal information, legal action, reputational damage</td>
+<td>Educate on safe sharing · use privacy settings · implement a clear <strong>social media policy</strong></td>
+</tr>
+<tr>
+<td><strong>Hosting platform security</strong></td>
+<td>The protection <strong>the platform itself</strong> provides — or fails to provide</td>
+<td>Personal information stolen, increased spam and scam attempts</td>
+<td>Brand accounts hacked, customer data compromised, loss of trust</td>
+<td>Choose reputable platforms · monitor breach notifications · limit data shared with platforms</td>
+</tr>
+<tr>
+<td><strong>Identity theft</strong></td>
+<td>Stealing someone&#39;s personal information to <strong>impersonate them</strong></td>
+<td>Financial loss, damaged credit, legal complications</td>
+<td>Fraudulent transactions in the business&#39;s name, supply chain compromise</td>
+<td>Limit publicly available personal data · monitor accounts · verify identity requests</td>
+</tr>
+<tr>
+<td><strong>Phishing</strong></td>
+<td><strong>Deceptive messages or links</strong> tricking users into giving up private information</td>
+<td>Credentials stolen, malware installed</td>
+<td>Network access gained, ransomware deployed, funds misdirected</td>
+<td>Staff training · email filtering · verify senders · never click unverified links</td>
+</tr>
+<tr>
+<td><strong>Evil twins</strong></td>
+<td><strong>Fake or impersonated accounts</strong> made to look like real people or brands</td>
+<td>Deceived into sharing information or money</td>
+<td>Brand impersonation, customer deception, reputational harm</td>
+<td>Account verification · report impersonation · monitor for fake brand accounts</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Smishing</strong> is phishing delivered by <strong>SMS</strong>. Named explicitly in the syllabus.</p>
+</blockquote>
+<hr>
+<h2 id="3-cybercrime-threats-to-an-enterprise">3. Cybercrime Threats to an Enterprise</h2>
+<table>
+<thead>
+<tr>
+<th>Threat</th>
+<th>How it operates</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Hacking</strong></td>
+<td>Unauthorised access to systems, networks or data, exploiting technical vulnerabilities</td>
+</tr>
+<tr>
+<td><strong>Phishing, including smishing</strong></td>
+<td>Deceptive email or SMS tricking users into revealing credentials or installing malware</td>
+</tr>
+<tr>
+<td><strong>Scamming</strong></td>
+<td>Deception to obtain money or information directly from victims</td>
+</tr>
+<tr>
+<td><strong>Bots and botnets</strong></td>
+<td>Automated programs; a <strong>botnet</strong> is a network of compromised machines controlled remotely, used for DDoS attacks or spam</td>
+</tr>
+<tr>
+<td><strong>Employee action causing a vulnerability</strong></td>
+<td>Insider threat — careless or malicious behaviour opening a weakness. Often the <strong>largest single risk</strong> because it bypasses perimeter defences</td>
+</tr>
+</tbody></table>
+<p><strong>Common enterprise vulnerabilities:</strong> weak passwords · phishing susceptibility · <strong>unpatched software</strong> · insider threats · <strong>misconfigured cloud storage</strong>.</p>
+<hr>
+<h2 id="4-the-four-breach-attributes">4. The Four Breach Attributes</h2>
+<blockquote>
+<p>A <strong>cybersecurity breach</strong> occurs when unauthorised access is gained to data, systems or networks, resulting in loss, damage or exposure of information.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Definition</th>
+<th>Examples of compromise</th>
+<th>Consequences</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Confidentiality</strong></td>
+<td>Protecting sensitive data from unauthorised <strong>access, exposure or theft</strong></td>
+<td>Personal records · financial data · trade secrets and IP</td>
+<td>Identity theft, fraud, corporate espionage · legal penalties · reputational damage</td>
+</tr>
+<tr>
+<td><strong>Integrity</strong></td>
+<td>Maintaining the <strong>accuracy, consistency and reliability</strong> of data</td>
+<td>Malware altering system data · unauthorised database edits · manipulation of financial or health records</td>
+<td>Incorrect business or government decisions · loss of trust in data systems · sector-wide disruption</td>
+</tr>
+<tr>
+<td><strong>Availability</strong></td>
+<td>Ensuring authorised users <strong>can access</strong> information and services when needed</td>
+<td><strong>DDoS attacks</strong> · <strong>ransomware encryption</strong> · system crashes causing downtime</td>
+<td>Business interruption and lost revenue · inconvenience · disruption of critical services</td>
+</tr>
+<tr>
+<td><strong>Privacy</strong></td>
+<td>Protecting individuals&#39; <strong>personal data</strong> from unauthorised exposure</td>
+<td>Leaked medical records · exposed financial records · disclosed personal identifiers</td>
+<td>Identity theft, scams, fraud · <strong>legal penalties under the Privacy Act 1988</strong> · erosion of customer trust</td>
+</tr>
+</tbody></table>
+<h3 id="4-1-worked-classification">4.1 Worked Classification</h3>
+<blockquote>
+<p>These scenarios come straight from the deck. Note that most breaches compromise <strong>more than one</strong> attribute.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Attributes compromised</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Email leak</strong> — employee sends a customer list to the wrong client</td>
+<td><strong>Confidentiality</strong> · <strong>Privacy</strong></td>
+</tr>
+<tr>
+<td><strong>Altered financial records</strong> — insider changes transaction records</td>
+<td><strong>Integrity</strong></td>
+</tr>
+<tr>
+<td><strong>Smart home device listening</strong> — voice recordings accessed by employees</td>
+<td><strong>Confidentiality</strong> · <strong>Privacy</strong></td>
+</tr>
+<tr>
+<td><strong>Ransomware on hospital systems</strong> — patient data locked, doctors cannot access records</td>
+<td><strong>Availability</strong> · (Confidentiality if exfiltrated)</td>
+</tr>
+<tr>
+<td><strong>Fitness app data sold to advertisers</strong> without consent</td>
+<td><strong>Privacy</strong> · <strong>Confidentiality</strong></td>
+</tr>
+<tr>
+<td><strong>DDoS attack on a bank</strong> — website unavailable for hours</td>
+<td><strong>Availability</strong></td>
+</tr>
+<tr>
+<td><strong>Website defacement</strong> — homepage changed to display false messages</td>
+<td><strong>Integrity</strong></td>
+</tr>
+<tr>
+<td><strong>Password database exposure</strong> — hashed passwords stolen</td>
+<td><strong>Confidentiality</strong> · <strong>Privacy</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>The tell for each:</strong> <em>Confidentiality</em> = someone <strong>saw</strong> it. <em>Integrity</em> = someone <strong>changed</strong> it. <em>Availability</em> = nobody can <strong>reach</strong> it. <em>Privacy</em> = it was <strong>personal</strong> data.</p>
+</blockquote>
+<hr>
+<h2 id="5-legislation-and-frameworks">5. Legislation and Frameworks</h2>
+<table>
+<thead>
+<tr>
+<th>Framework</th>
+<th>Coverage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Privacy Act 1988 (Cth)</strong></td>
+<td>Sets out how organisations must handle personal information. Applies to organisations with <strong>annual turnover over $3 million</strong> and some small business operators</td>
+</tr>
+<tr>
+<td><strong>Australian Privacy Principles (APPs)</strong></td>
+<td><strong>13 principles</strong> governing collection, use, disclosure, governance, accountability, integrity, correction, and individuals&#39; right of access. <strong>Technology neutral</strong>, so they adapt to changing technology. A breach is an <strong>&quot;interference with the privacy of an individual&quot;</strong> and can lead to regulatory action and penalties</td>
+</tr>
+<tr>
+<td><strong>Consumer Data Right (CDR)</strong></td>
+<td>In designated sectors such as <strong>banking and energy</strong>, mandates specific data handling with <strong>consumer consent</strong> and accreditation of data recipients</td>
+</tr>
+<tr>
+<td><strong>GDPR</strong> (EU)</td>
+<td>The EU framework, built on <strong>7 fundamental principles</strong> shaping collection, storage and processing of personal data</td>
+</tr>
+</tbody></table>
+<p><strong>Authorities:</strong> the <strong>OAIC</strong> (Office of the Australian Information Commissioner) enforces the Privacy Act. The <strong>ACSC</strong> (Australian Cyber Security Centre), part of <strong>ASD</strong>, provides business guidance.</p>
+<hr>
+<h2 id="6-individual-privacy-protection">6. Individual Privacy Protection</h2>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Password management</strong></td>
+<td>Strong, unique passwords per service; a password manager with encryption</td>
+</tr>
+<tr>
+<td><strong>Multi-factor authentication (MFA / 2FA)</strong></td>
+<td>Requires a second factor, so a stolen password alone is insufficient</td>
+</tr>
+<tr>
+<td><strong>Encryption</strong></td>
+<td>Renders data unreadable without the key, protecting it in transit and at rest</td>
+</tr>
+<tr>
+<td><strong>Secure networks</strong></td>
+<td>Avoid unsecured public Wi-Fi; use a <strong>VPN</strong> when a public connection is unavoidable</td>
+</tr>
+<tr>
+<td><strong>Personal behaviour</strong></td>
+<td>Limiting what is shared publicly, checking privacy settings, verifying requests before responding</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Private vs personal information</strong> — <em>personal</em> information identifies you (name, date of birth, address, email, phone). <em>Private</em> information is what you choose not to disclose. The books you read are private but not personal; your date of birth is personal and should be kept private.</p>
+</blockquote>
+<hr>
+<h2 id="7-confusing-terms-quick-reference">7. Confusing Terms — Quick Reference</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+<th>Don&#39;t confuse with</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Threat</strong></td>
+<td>The <strong>actor</strong> or source of harm</td>
+<td><strong>Vulnerability</strong> — the <strong>weakness</strong> they exploit</td>
+</tr>
+<tr>
+<td><strong>Vulnerability</strong></td>
+<td>A weakness in a system</td>
+<td><strong>Risk</strong> — the <strong>potential harm</strong> arising from it</td>
+</tr>
+<tr>
+<td><strong>Exploit</strong></td>
+<td>The <strong>act</strong> of attacking</td>
+<td><strong>Vulnerability</strong> — the <strong>opening</strong> that allows it</td>
+</tr>
+<tr>
+<td><strong>Confidentiality</strong></td>
+<td>Data not <strong>seen</strong> by the unauthorised</td>
+<td><strong>Privacy</strong> — protection of <strong>personal</strong> data specifically</td>
+</tr>
+<tr>
+<td><strong>Integrity</strong></td>
+<td>Data not <strong>altered</strong></td>
+<td><strong>Availability</strong> — data <strong>reachable</strong> when needed</td>
+</tr>
+<tr>
+<td><strong>Phishing</strong></td>
+<td>Deception by <strong>email</strong></td>
+<td><strong>Smishing</strong> — by <strong>SMS</strong></td>
+</tr>
+<tr>
+<td><strong>Evil twin</strong></td>
+<td>A <strong>fake account</strong> impersonating a real person or brand</td>
+<td><strong>Identity theft</strong> — using a real person&#39;s details</td>
+</tr>
+<tr>
+<td><strong>Bot</strong></td>
+<td>A single automated program</td>
+<td><strong>Botnet</strong> — a <strong>network</strong> of compromised machines</td>
+</tr>
+<tr>
+<td><strong>Personal information</strong></td>
+<td>Identifies you</td>
+<td><strong>Private information</strong> — what you choose not to share</td>
+</tr>
+<tr>
+<td><strong>DDoS</strong></td>
+<td>Floods a service to deny <strong>availability</strong></td>
+<td><strong>Ransomware</strong> — encrypts data to deny availability <strong>and</strong> extort</td>
+</tr>
+</tbody></table>
+<hr>
+<blockquote>
+<p><strong>See also:</strong> <a href="Terminology.html">Terminology</a> | <a href="Data_Science.html">Data Science</a> | <a href="Data_Visualisation.html">Data Visualisation</a> | <a href="Enterprise_Project.html">Enterprise Project</a> | <a href="MOC.html">MOC</a></p>
+</blockquote>
+</article></main></div><nav class="rail" aria-label="On this page"><div class="rail-title">On this page</div><ul><li><a href="#1-the-core-vocabulary" data-target="1-the-core-vocabulary">1. The Core Vocabulary</a></li><li><a href="#2-social-networking-vulnerabilities" data-target="2-social-networking-vulnerabilities">2. Social Networking Vulnerabilities</a></li><li><a href="#3-cybercrime-threats-to-an-enterprise" data-target="3-cybercrime-threats-to-an-enterprise">3. Cybercrime Threats to an Enterprise</a></li><li><a href="#4-the-four-breach-attributes" data-target="4-the-four-breach-attributes">4. The Four Breach Attributes</a><ul class="sub"><li><a href="#4-1-worked-classification" data-target="4-1-worked-classification" data-parent="4-the-four-breach-attributes">4.1 Worked Classification</a></li></ul></li><li><a href="#5-legislation-and-frameworks" data-target="5-legislation-and-frameworks">5. Legislation and Frameworks</a></li><li><a href="#6-individual-privacy-protection" data-target="6-individual-privacy-protection">6. Individual Privacy Protection</a></li><li><a href="#7-confusing-terms-quick-reference" data-target="7-confusing-terms-quick-reference">7. Confusing Terms — Quick Reference</a></li></ul></nav><script>
+function toggleTheme(ev){
+var oldTheme=document.documentElement.getAttribute("data-theme")||"dark";
+var next=oldTheme==="light"?"dark":"light";
+function apply(){document.documentElement.setAttribute("data-theme",next);try{localStorage.setItem("vault-theme",next)}catch(e){}updateThemeIcons(next);}
+var reduced=false;try{reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
+if(reduced){apply();return;}
+if(window.__vaultThemeAnimating){return;}
+window.__vaultThemeAnimating=1;
+var newPaper=next==="light"?"#faf8f2":"#13151b";
+var W=window.innerWidth,H=window.innerHeight;
+var spacing=W<768?36:28;
+var maxR=spacing*0.78;
+var dpr=1;try{dpr=W<768?1:Math.min(window.devicePixelRatio||1,1.5);}catch(e){}
+var canvas=document.createElement("canvas");
+canvas.id="theme-wave";
+canvas.style.cssText="position:fixed;left:0;top:0;width:"+W+"px;height:"+H+"px;z-index:9999;pointer-events:none;";
+canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+var ctx=canvas.getContext("2d");
+try{ctx.setTransform(dpr,0,0,dpr,0,0);}catch(e){}
+ctx.fillStyle=newPaper;
+var dots=[];
+for(var y=spacing/2;y<H+spacing;y+=spacing){for(var x=spacing/2;x<W+spacing;x+=spacing){dots.push({x:x,y:y,delay:(x+y)/(W+H)*450,done:0});}}
+var waveMs=450,growMs=300;
+var start=Date.now();
+function easeOutCubic(p){return 1-Math.pow(1-p,3);}
+function step(){
+var elapsed=Date.now()-start;
+var allDone=true;
+var any=false;
+ctx.beginPath();
+for(var i=0;i<dots.length;i++){
+var d=dots[i];
+if(d.done){continue;}
+var p=(elapsed-d.delay)/growMs;
+if(p<0){allDone=false;continue;}
+if(p<1){allDone=false;}
+else{d.done=1;}
+var r=maxR*easeOutCubic(p<1?p:1);
+if(r>0){ctx.moveTo(d.x+r,d.y);ctx.arc(d.x,d.y,r,0,Math.PI*2);any=true;}
+}
+if(any){ctx.fill();}
+if(!allDone){requestAnimationFrame(step);return;}
+apply();
+canvas.style.transition="opacity 0.15s ease";
+canvas.style.opacity="0";
+setTimeout(function(){window.__vaultThemeAnimating=0;if(canvas.parentNode)canvas.parentNode.removeChild(canvas);},180);
+}
+document.body.appendChild(canvas);
+requestAnimationFrame(step);
+}
+function updateThemeIcons(theme){var icon=theme==="dark"?"☀":"☾";document.querySelectorAll(".theme-btn").forEach(function(b){b.textContent=icon;});}
+try{updateThemeIcons(document.documentElement.getAttribute("data-theme")||"dark");}catch(e){}
+function toggleMenu(force){document.body.classList.toggle("menu-open",force)}
+document.addEventListener("keydown",function(e){if(e.key==="/"&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();var s=document.querySelector(".side-search");if(s)s.focus()}});
+document.addEventListener("click",function(e){if(e.target.closest(".side a"))toggleMenu(false)});
+(function(){try{
+var links=Array.prototype.slice.call(document.querySelectorAll(".rail a"));
+if(!links.length||!window.IntersectionObserver)return;
+var map={};links.forEach(function(a){map[a.getAttribute("data-target")]=a});
+var obs=new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove("active");a.classList.remove("parent-active")});
+      var l=map[e.target.id];
+      if(l){l.classList.add("active");var p=l.getAttribute("data-parent");if(p&&map[p])map[p].classList.add("parent-active")}
+    }
+  });
+}, {rootMargin:"-20% 0px -70% 0px"});
+document.querySelectorAll(".prose h2[id], .prose h3[id]").forEach(function(h){obs.observe(h)});
+}catch(e){}})();
+(function(){try{
+var cv=document.getElementById("dotgrid");if(!cv)return;var ctx=cv.getContext("2d");if(!ctx)return;
+var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var W=0,H=0,dpr=1,cols=0,rows=0,SP=28,px=0,py=0,pt=0,hasP=false;
+function dotRGB(){try{return getComputedStyle(document.documentElement).getPropertyValue("--dot-rgb").trim()||"233,231,225"}catch(e){return "233,231,225"}}
+function resize(){dpr=Math.min(window.devicePixelRatio||1,window.innerWidth<700?1.5:2);SP=window.innerWidth<700?36:28;W=window.innerWidth;H=window.innerHeight;cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+"px";cv.style.height=H+"px";ctx.setTransform(dpr,0,0,dpr,0,0);cols=Math.ceil(W/SP)+1;rows=Math.ceil(H/SP)+1}
+var R=Math.random()*Math.PI*2;
+var FORCES=[
+ {ax:.42,ay:.15,tx:26,ty:31,px:R,py:R+1.3,circ:false},
+ {ax:.38,ay:.42,tx:37,ty:23,px:R+2.1,py:R+0.7,circ:false},
+ {ax:.30,ay:.30,tx:41,ty:41,px:R+4.0,py:R+4.0,circ:true}
+];
+function draw(now){var t=now/1000;var rgb=dotRGB();
+var activeForces=W>=1280?FORCES:FORCES.slice(0,1);
+var pFade=hasP?Math.max(0,1-(now-pt)/4000):0;
+ctx.clearRect(0,0,W,H);
+for(var y=0;y<rows;y++)for(var x=0;x<cols;x++){var ox=x*SP+10,oy=y*SP+10,a=0.14,dispX=0,dispY=0;
+for(var fi=0;fi<activeForces.length;fi++){var F=activeForces[fi];
+var fx=F.circ?W*(0.5+F.ax*Math.cos(t*2*Math.PI/F.tx+F.px)):W*(0.5+F.ax*Math.sin(t*2*Math.PI/F.tx+F.px));
+var fy=F.circ?H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py)):H*(0.5+F.ay*Math.sin(t*2*Math.PI/F.ty+F.py));
+var ddx=ox-fx,ddy=oy-fy,d=Math.sqrt(ddx*ddx+ddy*ddy);
+if(d<170&&d>0.01){var f=1-d/170;f=f*f;dispX+=(ddx/d)*6*f;dispY+=(ddy/d)*6*f;a+=0.20*f}}
+var dm=Math.sqrt(dispX*dispX+dispY*dispY);if(dm>9){dispX*=9/dm;dispY*=9/dm}
+var dx=ox+dispX,dy=oy+dispY;if(a>0.38)a=0.38;
+if(pFade>0){var pdx=ox-px,pdy=oy-py,pd=Math.sqrt(pdx*pdx+pdy*pdy);
+if(pd<150&&pd>0.01){var pf=1-pd/150;pf=pf*pf*pFade;dx+=(pdx/pd)*5*pf;dy+=(pdy/pd)*5*pf;a=Math.min(0.38,a+0.18*pf)}}
+ctx.beginPath();ctx.arc(dx,dy,1.3,0,Math.PI*2);ctx.fillStyle="rgba("+rgb+","+a.toFixed(3)+")";ctx.fill()}}
+function loop(now){if(!window.__vaultThemeAnimating)draw(now);if(!reduced)requestAnimationFrame(loop)}
+window.addEventListener("resize",resize);resize();
+window.addEventListener("pointermove",function(e){px=e.clientX;py=e.clientY;pt=performance.now();hasP=true},{passive:true});
+requestAnimationFrame(loop);
+}catch(e){}})();
+</script></body></html>
